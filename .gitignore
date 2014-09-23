@@ -1,0 +1,4 @@
+# ----- Python precompilati
+*.py[cod]
+# ----- Jasper precompilati
+*.jasper

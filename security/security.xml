@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="ticketing_external_user" model="res.groups">
+            <field name="name">Ticketing User</field>
+        </record>
+
+<!--
+        <record id="ticketing_external_manager" model="res.groups">
+            <field name="name">Ticketing Manager</field>
+            <field name="implied_ids" eval="[(4, ref('ticketing_external_user'))]"/>
+        </record>
+-->
+    </data>
+</openerp>
