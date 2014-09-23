@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+    <record id="enhanced_helpdesk_tree" model="ir.ui.view">
+        <field name="name">Enhanced HelpDesk Tree</field>
+        <field name="model">crm.helpdesk</field>
+        <field name="arch" type="xml">
+            <tree string="Helpdesk Support Tree"
+                    colors="black:state=='open';blue:state=='pending';gray:state in ('cancel','done')">
+                    <field name="name" string="Titolo" />
+                    <field name="date" string="Date"/>
+                    <field name="user_id"/>
+                    <field name="state"/>
+                </tree>
+        </field>
+    </record>
+    
+    <record id="enhanced_helpdesk_form" model="ir.ui.view">
+        <field name="name">Enhanced HelpDesk Form</field>
+        <field name="model">crm.helpdesk</field>
+        <field name="arch" type="xml">
+            <form string="Helpdesk Support">
+                <sheet string="Helpdesk Support">
+                    <group col="4" class="oe_header">
+                        <field name="name" string="Titolo"/>
+                        <field name="user_id" context="{'default_groups_ref': ['base.group_user', 'base.group_partner_manager', 'base.group_sale_salesman_all_leads']}"/>
+                        <field name="date"/>
+                        <field name="date_deadline"/>
+                    </group>
+                    <notebook>
+                        <page string="General">
+                            <group>
+                                <group string="Communication">
+                                    <field name="partner_id"
+                                        on_change="on_change_partner_id(partner_id)"/>
+                                    <field name="email_from"/>
+                                </group>
+                                <group string="Categorization">
+                                    <field name="priority" widget="priority"/>
+                                    <field name="categ_id" domain="[('object_id.model', '=', 'crm.helpdesk')]" context="{'object_name': 'crm.helpdesk'}"/>
+                                    <field name="channel_id"/>
+                                </group>
+                            </group>
+                            <separator string="Notes"/>
+                            <field name="description" widget="html"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_ids" widget="mail_thread"/>
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="action_enhanced_helpdesk">
+        <field name="name">Ticketing / Supporto</field>
+        <field name="res_model">crm.helpdesk</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="enhanced_helpdesk_tree"/>
+        <field name="context">{'form_view_ref': 'enhanced_helpdesk.enhanced_helpdesk_form'}</field>
+    </record>
+
+    <menuitem name="Supporto e Ticket"
+              parent="portal.portal_menu"
+              id="menu_enhanced_helpdesk"
+              groups="enhanced_helpdesk.ticketing_external_user"/>
+              
+    <menuitem name="Ticket"
+              parent="menu_enhanced_helpdesk"
+              action="action_enhanced_helpdesk"
+              id="menu_ticket_helpdesk"
+              groups="enhanced_helpdesk.ticketing_external_user"/>
+
+</data>
+</openerp>
