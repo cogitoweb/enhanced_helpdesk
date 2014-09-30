@@ -19,22 +19,5 @@
 #
 ##############################################################################
 
-{
-    'name': "Enhanced Helpdesk",
-    'version': '0.1',
-    'category': 'CRM',
-    'description': """Enhanced Openerp Helpdesk and Ticketing support""",
-    'author': 'Apulia Software Srl',
-    'website': 'www.apuliasoftware.it',
-    'license': 'AGPL-3',
-    "depends": ['crm_helpdesk'],
-    "data": [
-        'security/security.xml',
-        'security/ir.model.access.csv',
-        'view/crm_helpdesk_view.xml',
-        ],
-    "update_xml": [],
-    "demo_xml": [],
-    "active": False,
-    "installable": True
-}
+
+from . import crm_helpdesk

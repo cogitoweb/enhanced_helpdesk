@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2014 Apulia Software S.r.l. (<info@apuliasoftware.it>)
+#    Copyright (C) 2014 Apulia (<info@apuliasoftware.it>)
 #    All Rights Reserved
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,22 +19,23 @@
 #
 ##############################################################################
 
-{
-    'name': "Enhanced Helpdesk",
-    'version': '0.1',
-    'category': 'CRM',
-    'description': """Enhanced Openerp Helpdesk and Ticketing support""",
-    'author': 'Apulia Software Srl',
-    'website': 'www.apuliasoftware.it',
-    'license': 'AGPL-3',
-    "depends": ['crm_helpdesk'],
-    "data": [
-        'security/security.xml',
-        'security/ir.model.access.csv',
-        'view/crm_helpdesk_view.xml',
-        ],
-    "update_xml": [],
-    "demo_xml": [],
-    "active": False,
-    "installable": True
-}
+
+from openerp import models, fields, api
+
+
+class CrmHelpdesk(models.Model):
+
+    _inherit = "crm.helpdesk"
+
+    request_id = fields.Many2one('res.users',
+                                 required=True,
+                                 string='Richiedente',
+                                 default=lambda self: self.env.user)
+
+    @api.onchange('request_id')
+    def onchange_requestid(self):
+        self.user_id = False
+        if self.request_id:
+            self.partner_id = self.request_id.partner_id.parent_id.id
+            mail = self.request_id.email
+            self.email_from = mail

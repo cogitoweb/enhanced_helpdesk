@@ -6,11 +6,12 @@
             <field name="name">Ticketing User</field>
         </record>
 
-<!--
-        <record id="ticketing_external_manager" model="res.groups">
-            <field name="name">Ticketing Manager</field>
-            <field name="implied_ids" eval="[(4, ref('ticketing_external_user'))]"/>
-        </record>
--->
+        <record id="see_company_ticket" model="ir.rule">
+           <field name="name">See Company Ticket</field>
+           <field name="model_id" ref="model_crm_helpdesk"/>
+           <field name="groups" eval="[(4, ref('ticketing_external_user'))]"/>
+           <field name="domain_force">[('partner_id','child_of',[user.partner_id.parent_id.id])]</field>
+       </record>
+       
     </data>
 </openerp>
