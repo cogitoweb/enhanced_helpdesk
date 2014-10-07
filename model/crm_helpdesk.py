@@ -39,3 +39,15 @@ class CrmHelpdesk(models.Model):
             self.partner_id = self.request_id.partner_id.parent_id.id
             mail = self.request_id.email
             self.email_from = mail
+
+    @api.model
+    def create(self, values):
+        res = super(CrmHelpdesk, self).create(values)
+        task_value = {
+            'partner_id': values['partner_id'],
+            'name': values['name'],
+            'description': values['description'],
+            'ticket_id': res.id,
+            }
+        task_id = self.env['project.task'].sudo().create(task_value)
+        return res 

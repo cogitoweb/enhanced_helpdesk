@@ -24,7 +24,11 @@
                 <sheet string="Helpdesk Support">
                     <group col="4" class="oe_header">
                         <field name="name" string="Titolo"/>
-                        <field name="user_id" invisible="1" context="{'default_groups_ref': ['base.group_user', 'base.group_partner_manager', 'base.group_sale_salesman_all_leads']}"/>
+                        <field name="user_id" invisible="1"
+                            context="{'default_groups_ref':
+                                      ['base.group_user',
+                                       'base.group_partner_manager',
+                                       'base.group_sale_salesman_all_leads']}"/>
                         <field name="request_id" widget="selection"/>
                         <field name="date"/>
                         <field name="date_deadline"/>
@@ -39,7 +43,9 @@
                                 </group>
                                 <group string="Categorization">
                                     <field name="priority" widget="priority"/>
-                                    <field name="categ_id" domain="[('object_id.model', '=', 'crm.helpdesk')]" context="{'object_name': 'crm.helpdesk'}"/>
+                                    <field name="categ_id"
+                                        domain="[('object_id.model', '=', 'crm.helpdesk')]"
+                                        context="{'object_name': 'crm.helpdesk'}"/>
                                     <field name="channel_id"/>
                                 </group>
                             </group>
@@ -63,7 +69,6 @@
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="enhanced_helpdesk_tree"/>
-
         <field name="context">{'form_view_ref': 'enhanced_helpdesk.enhanced_helpdesk_form'}</field>
     </record>
 

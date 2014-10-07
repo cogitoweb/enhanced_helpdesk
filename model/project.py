@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2014 Apulia Software S.r.l. (<info@apuliasoftware.it>)
+#    Copyright (C) 2014 Andre@ (<a.gallina@cgsoftware.it>)
 #    All Rights Reserved
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,6 +19,12 @@
 #
 ##############################################################################
 
+from openerp import models, fields, api
 
-from . import crm_helpdesk
-from . import project
+
+class Task(models.Model):
+
+    _inherit = 'project.task'
+
+    # ----- Fields
+    ticket_id = fields.Many2one('crm.helpdesk')

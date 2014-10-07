@@ -32,6 +32,7 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         'view/crm_helpdesk_view.xml',
+        'view/project_view.xml',
         ],
     "update_xml": [],
     "demo_xml": [],
