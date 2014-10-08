@@ -32,6 +32,15 @@ class CrmHelpdesk(models.Model):
                                  string='Richiedente',
                                  default=lambda self: self.env.user)
 
+    _track = {
+        'state': {
+            'enhanced_helpdesk.open': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'open',
+            'enhanced_helpdesk.pending': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'pending',
+            'enhanced_helpdesk.done': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'done',
+            'enhanced_helpdesk.cancel': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
+        },
+    }
+
     @api.onchange('request_id')
     def onchange_requestid(self):
         self.user_id = False
@@ -49,5 +58,5 @@ class CrmHelpdesk(models.Model):
             'description': values['description'],
             'ticket_id': res.id,
             }
-        task_id = self.env['project.task'].sudo().create(task_value)
-        return res 
+        self.env['project.task'].sudo().create(task_value)
+        return res

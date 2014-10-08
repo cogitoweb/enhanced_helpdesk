@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <!-- Enhanced HelpDesk subtypes for messaging / Chatter -->
+        <record id="open" model="mail.message.subtype">
+            <field name="name">Ticket Aperto</field>
+            <field name="res_model">crm.helpdesk</field>
+            <field name="default" eval="False"/>
+            <field name="description">Ticket Aperto</field>
+        </record>
+        
+        <record id="pending" model="mail.message.subtype">
+            <field name="name">Ticket in Sospeso</field>
+            <field name="res_model">crm.helpdesk</field>
+            <field name="default" eval="False"/>
+            <field name="description">Ticket in Sospeso</field>
+        </record>
+        
+        <record id="done" model="mail.message.subtype">
+            <field name="name">Ticket Risolto</field>
+            <field name="res_model">crm.helpdesk</field>
+            <field name="default" eval="False"/>
+            <field name="description">Ticket Risolto</field>
+        </record>
+        
+        <record id="cancel" model="mail.message.subtype">
+            <field name="name">Ticket Annullato</field>
+            <field name="res_model">crm.helpdesk</field>
+            <field name="default" eval="False"/>
+            <field name="description">Ticket Annullato</field>
+        </record>
+    
+    </data>
+</openerp>

@@ -31,6 +31,7 @@
     "data": [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'data/helpdesk_data.xml',
         'view/crm_helpdesk_view.xml',
         'view/project_view.xml',
         ],
