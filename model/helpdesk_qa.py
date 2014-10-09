@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2014 Apulia Software S.r.l. (<info@apuliasoftware.it>)
+#    Copyright (C) 2014 Andre@ (<a.gallina@cgsoftware.it>)
 #    All Rights Reserved
 #
-#    This program is free software: you can redistribute it and/or modify
+#    This program is free software: you can redistribute it and/Start Date Locatedor modify
 #    it under the terms of the GNU Affero General Public License as published
 #    by the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
@@ -20,6 +20,17 @@
 ##############################################################################
 
 
-from . import crm_helpdesk
-from . import project
-from . import helpdesk_qa
+from openerp import models, fields, api
+
+
+class HelpdeskQA(models.Model):
+
+    _name = 'helpdesk.qa'
+
+    # ---- Fields
+
+    message = fields.Html('Message')
+    helpdesk_id = fields.Many2one('crm.helpdesk')
+    date = fields.Datetime(string='Message Date', default=fields.Date.today())
+    user_id = fields.Many2one('res.users', default=lambda self: self.env.user)
+

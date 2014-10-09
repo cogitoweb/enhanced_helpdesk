@@ -27,10 +27,13 @@ class CrmHelpdesk(models.Model):
 
     _inherit = "crm.helpdesk"
 
+    # ---- Fields
     request_id = fields.Many2one('res.users',
                                  required=True,
                                  string='Richiedente',
                                  default=lambda self: self.env.user)
+
+    helpdesk_qa_ids = fields.One2many('helpdesk.qa', 'helpdesk_id')
 
     _track = {
         'state': {

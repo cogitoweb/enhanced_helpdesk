@@ -59,6 +59,50 @@
                             <separator string="Notes"/>
                             <field name="description" widget="html"/>
                         </page>
+                        <page string="Comunicazioni">
+                            <group colspan="4">
+                                <field name="helpdesk_qa_ids" nolabel="1" class="messaggi">
+                                    <tree string="Elenco Messaggi">
+<!--
+                                        <field name="date" />
+                                        <field name="user_id" />
+-->
+                                        <field name="message" class="messaggi"/>
+                                    </tree>
+<!--
+                                    <form>
+                                        <field name="date" />
+                                        <field name="user_id" />
+                                        <newline/>
+                                        <field name="message" />
+                                    </form>
+-->
+<!--
+                                    <kanban>
+                                        <field name="message"/>
+                                            <templates>
+                                                <t t-name="kanban-box">
+                                                    <a t-if="! read_only_mode" type="delete" style="position: absolute; right: 0; padding: 4px; diplay: inline-block">X</a>
+                                                    <div class="oe_module_vignette">
+                                                    <div class="oe_module_desc">
+                                                    <div class="oe_kanban_box_content oe_kanban_color_bglight oe_kanban_color_border">
+                                                        <table class="oe_kanban_table">
+                                                            <tr>
+                                                                <td class="oe_kanban_title1" align="left" valign="middle">
+                                                                    <h4><a type="open"><field name="message"/></a></h4>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    </div>
+                                                    </div>
+                                                </t>
+                                            </templates>
+                                    </kanban>
+-->
+                                </field>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
                 <div class="oe_chatter">

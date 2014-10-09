@@ -13,6 +13,9 @@
             <field name="project_id" position="attributes">
                 <attribute name="domain">"[('partner_id', '=', partner_id)]"</attribute>
             </field>
+            <field name="description" position="attributes">
+                <attribute name="widget">html</attribute>
+            </field>
         </field>
     </record>
 
