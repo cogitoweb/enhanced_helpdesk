@@ -1,0 +1,20 @@
+.openerp .ticket_messages .oe_list_content {
+    border-collapse: separate;
+    border-spacing: 10px;
+}
+
+.openerp .ticket_messages .oe_list_field_text {
+    padding: 6px 6px 40px 6px!important;
+    border: 1px solid #808080;
+    /*white-space: normal!important;*/
+}
+
+.openerp .ticket_messages .oe_form_field_one2many_list_row_add {
+    padding-top: 15px;
+}
+
+.openerp .ticket_messages .oe_form_field_one2many_list_row_add a {
+    background: none repeat scroll 0 0 #7C7BAD;
+    color: white;
+    padding: 5px 18px;
+}

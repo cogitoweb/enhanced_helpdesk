@@ -27,7 +27,7 @@
     'author': 'Apulia Software Srl',
     'website': 'www.apuliasoftware.it',
     'license': 'AGPL-3',
-    "depends": ['crm_helpdesk'],
+    "depends": ['base', 'web', 'crm_helpdesk', 'project'],
     "data": [
         'security/security.xml',
         'security/ir.model.access.csv',

@@ -21,6 +21,14 @@
 
 
 from openerp import models, fields, api
+from BeautifulSoup import BeautifulSoup
+
+
+class IrAttachment(models.Model):
+
+    _inherit = 'ir.attachment'
+
+    helpdesk_qa_id = fields.Many2one('helpdesk.qa')
 
 
 class HelpdeskQA(models.Model):
@@ -29,8 +37,33 @@ class HelpdeskQA(models.Model):
 
     # ---- Fields
 
-    message = fields.Html('Message')
+    message = fields.Text('Message')
     helpdesk_id = fields.Many2one('crm.helpdesk')
     date = fields.Datetime(string='Message Date', default=fields.Date.today())
     user_id = fields.Many2one('res.users', default=lambda self: self.env.user)
+    complete_message = fields.Text(compute='_complete_message')
+    attachment_ids = fields.One2many('ir.attachment',
+                                     'helpdesk_qa_id')
 
+
+    @api.multi
+    def _complete_message(self):
+        for msg in self:
+            info = '%s - %s\n\n' % (msg.user_id.name, msg.date)
+            info = '%s%s' % (info, msg.message)
+            if len(msg.attachment_ids) > 0:
+                info = '%s\n\n%s Attachment(s)' % (info,
+                                                   len(msg.attachment_ids))
+            if msg.user_id.signature:
+                signature = msg.user_id.signature.replace('<br>', '\n')
+                signature = BeautifulSoup(signature)
+                info = '%s\n\n---\n%s' % (info, str(signature.text))
+            msg.complete_message = info
+
+
+class HelpdeskQAAttachment(models.Model):
+
+    _name = 'helpdesk.qa.attachment'
+
+    attachment = fields.Binary(required="1")
+    helpdesk_qa_id = fields.Many2one('helpdesk.qa')
