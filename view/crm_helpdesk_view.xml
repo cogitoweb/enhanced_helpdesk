@@ -29,71 +29,57 @@
         <field name="arch" type="xml">
             <form string="Helpdesk Support">
                 <header>
-                <field name="state" nolabel="1" widget="statusbar"
-                    clickable="True"
-                    statusbar_colors="{&quot;pending&quot;:&quot;blue&quot;}"
-                    readonly="1"/>
+                    <field name="state" nolabel="1" widget="statusbar"
+                        clickable="True"
+                        statusbar_colors="{&quot;pending&quot;:&quot;blue&quot;}"
+                        readonly="1"/>
                 </header>
                 <sheet string="Helpdesk Support">
                     <group col="4" class="oe_header">
-                        <field name="name" string="Titolo"/>
-                        <field name="user_id" invisible="1"
+                        <field name="user_id" invisible="1" colspan="4"
                             context="{'default_groups_ref':
                                       ['base.group_user',
                                        'base.group_partner_manager',
                                        'base.group_sale_salesman_all_leads']}"/>
-                        <field name="request_id" widget="selection"/>
-                        <field name="date" readonly="1"/>
-                        <field name="date_deadline" invisible="1"/>
+                        <field name="request_id" widget="selection" colspan="2"/>
+                        <field name="date" readonly="1" colspan="2"/>
+                        <field name="date_deadline" invisible="1" colspan="4"/>
+                        <separator string="Object" colspan="4"/>
+                        <h1 colspan="4">
+                            <field name="name" string="Titolo" colspan="4"/>
+                        </h1>
+                        <separator string="Description" colspan="4"/>
+                        <group colspan="3">
+                            <field name="description" widget="html" nolabel="1" colspan="4"/>
+                        </group>
+                        <group colspan="1">
+                            <field name="priority" widget="priority"/>
+                            <field name="categ_id"
+                                domain="[('object_id.model', '=', 'crm.helpdesk')]"
+                                context="{'object_name': 'crm.helpdesk'}"
+                                widget="selection"/>
+                            <field name="channel_id" invisible="1"/>
+                        </group>
                     </group>
-                    <notebook>
-                        <page string="General">
-                            <group>
-                                <group string="Communication">
-                                    <field name="partner_id"
-                                        on_change="on_change_partner_id(partner_id)"
-                                        invisible="1"/>
-                                    <field name="email_from" readonly="1"/>
-                                </group>
-                                <group string="Categorization">
-                                    <field name="priority" widget="priority"/>
-                                    <field name="categ_id"
-                                        domain="[('object_id.model', '=', 'crm.helpdesk')]"
-                                        context="{'object_name': 'crm.helpdesk'}"/>
-                                    <field name="channel_id"/>
-                                </group>
-                            </group>
-                            <separator string="Notes"/>
-                            <field name="description" widget="html"/>
-                        </page>
-                        <page string="Comunicazioni">
-                            <group colspan="4">
-                                <field name="helpdesk_qa_ids" nolabel="1" class="ticket_messages">
-                                    <tree string="Messagges List">
-                                        <field name="complete_message"/>
-                                    </tree>
-                                    <form string="New Message">
-                                        <field name="date" readonly="1" colspan="4"/>
-                                        <field name="message" colspan="4"/>
-                                        <separator string="Attachments" colspan="4"/>
-                                        <field name="attachment_ids" colspan="4" mode="kanban">
-                                            <form>
-                                                <label for="name" colspan="4"/>
-                                                <field name="name" colspan="4"/>
-                                                <label for="datas" colspan="4"/>
-                                                <field name="datas" colspan="4"/>
-                                            </form>
-                                        </field>
-                                    </form>
-                                </field>
-                            </group>
-                        </page>
-                    </notebook>
+                    <field name="helpdesk_qa_ids" nolabel="1" class="ticket_messages" colspan="4">
+                        <tree string="Messagges List">
+                            <field name="complete_message"/>
+                        </tree>
+                        <form string="New Message">
+                            <field name="date" readonly="1" colspan="4"/>
+                            <field name="message" colspan="4"/>
+                            <separator string="Attachments" colspan="4"/>
+                            <field name="attachment_ids" colspan="4" mode="kanban">
+                                <form>
+                                    <label for="name" colspan="4"/>
+                                    <field name="name" colspan="4"/>
+                                    <label for="datas" colspan="4"/>
+                                    <field name="datas" colspan="4"/>
+                                </form>
+                            </field>
+                        </form>
+                    </field>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_ids" widget="mail_thread"/>
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                </div>
             </form>
         </field>
     </record>
