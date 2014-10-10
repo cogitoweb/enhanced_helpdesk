@@ -54,7 +54,6 @@ class CrmHelpdesk(models.Model):
 
     @api.model
     def create(self, values):
-        import pdb; pdb.set_trace()
         res = super(CrmHelpdesk, self).create(values)
         task_value = {
             'partner_id': values['partner_id'],
