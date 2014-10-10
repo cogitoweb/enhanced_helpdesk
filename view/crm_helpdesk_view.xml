@@ -22,7 +22,7 @@
                 </tree>
         </field>
     </record>
-    
+
     <record id="enhanced_helpdesk_form" model="ir.ui.view">
         <field name="name">Enhanced HelpDesk Form</field>
         <field name="model">crm.helpdesk</field>
@@ -86,7 +86,6 @@
             </form>
         </field>
     </record>
-
 
     <record model="ir.actions.act_window" id="action_enhanced_helpdesk">
         <field name="name">Ticketing / Supporto</field>

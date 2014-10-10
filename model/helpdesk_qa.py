@@ -36,7 +36,6 @@ class HelpdeskQA(models.Model):
     _name = 'helpdesk.qa'
 
     # ---- Fields
-
     message = fields.Text('Message')
     helpdesk_id = fields.Many2one('crm.helpdesk')
     date = fields.Datetime(string='Message Date', default=fields.Date.today())
@@ -44,7 +43,6 @@ class HelpdeskQA(models.Model):
     complete_message = fields.Text(compute='_complete_message')
     attachment_ids = fields.One2many('ir.attachment',
                                      'helpdesk_qa_id')
-
 
     @api.multi
     def _complete_message(self):
@@ -59,11 +57,3 @@ class HelpdeskQA(models.Model):
                 signature = BeautifulSoup(signature)
                 info = '%s\n\n---\n%s' % (info, str(signature.text))
             msg.complete_message = info
-
-
-class HelpdeskQAAttachment(models.Model):
-
-    _name = 'helpdesk.qa.attachment'
-
-    attachment = fields.Binary(required="1")
-    helpdesk_qa_id = fields.Many2one('helpdesk.qa')

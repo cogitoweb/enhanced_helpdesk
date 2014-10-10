@@ -23,7 +23,14 @@
     'name': "Enhanced Helpdesk",
     'version': '0.1',
     'category': 'CRM',
-    'description': """Enhanced Openerp Helpdesk and Ticketing support""",
+    'description': """
+Enhanced Openerp Helpdesk and Ticketing support
+
+
+External depends:
+
+    * Python Beautiful Soup
+""",
     'author': 'Apulia Software Srl',
     'website': 'www.apuliasoftware.it',
     'license': 'AGPL-3',
