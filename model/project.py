@@ -28,3 +28,11 @@ class Task(models.Model):
 
     # ----- Fields
     ticket_id = fields.Many2one('crm.helpdesk')
+
+
+    def ticket_reply(self):
+        import pdb; pdb.set_trace()
+        res = self.env['ir.actions.act_window'].for_xml_id(
+            self._cr, self._uid, 'enhanced_helpdesk', 'action_ticket_reply',
+            self._context)
+        return res

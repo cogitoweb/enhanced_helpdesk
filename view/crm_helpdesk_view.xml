@@ -44,6 +44,9 @@
                         <field name="request_id" widget="selection" colspan="2"/>
                         <field name="date" readonly="1" colspan="2"/>
                         <field name="date_deadline" invisible="1" colspan="4"/>
+                        <field name="email_from" invisible="1" />
+                        <!--  Partner_id is required for annoying checking rules -->
+                        <field name="partner_id" invisible="1"/>
                         <separator string="Object" colspan="4"/>
                         <h1 colspan="4">
                             <field name="name" string="Titolo" colspan="4"/>

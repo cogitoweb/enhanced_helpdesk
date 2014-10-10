@@ -2,6 +2,16 @@
 <openerp>
 <data>
 
+    <record id="act_ticket_reply" model="ir.actions.act_window">
+            <field name="res_model">wizard.ticket.reply</field>
+            <field name="view_type">form</field>
+            <field name="name">Ticket Reply</field>
+            <field name="view_mode">form</field>
+<!--
+            <field name="context">{'search_default_event_id': active_id, 'default_event_id': active_id}</field>
+-->
+    </record>
+    
     <record id="ticket_view_task_form2" model="ir.ui.view">
         <field name="name">ticket.project.task.form</field>
         <field name="model">project.task</field>
@@ -15,6 +25,15 @@
             </field>
             <field name="description" position="attributes">
                 <attribute name="widget">html</attribute>
+            </field>
+            <field name="kanban_state" position="after">
+                <button class="oe_inline oe_stat_button" type="action"
+                    name="%(enhanced_helpdesk.action_ticket_reply)d"
+                    icon="fa-star"
+                    string="Ticket Reply"
+                    context="{'default_ticket_id': ticket_id}">
+                    
+                </button>
             </field>
         </field>
     </record>
