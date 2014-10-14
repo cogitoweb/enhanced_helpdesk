@@ -4,7 +4,7 @@
 #    Copyright (C) 2014 Andre@ (<a.gallina@cgsoftware.it>)
 #    All Rights Reserved
 #
-#    This program is free software: you can redistribute it and/Start Date Locatedor modify
+#    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as published
 #    by the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
@@ -57,3 +57,64 @@ class HelpdeskQA(models.Model):
                 signature = BeautifulSoup(signature)
                 info = '%s\n\n---\n%s' % (info, str(signature.text))
             msg.complete_message = info
+
+    @api.model
+    def create(self, values):
+        res = super(HelpdeskQA, self).create(values)
+        # ---- call a function to send mail
+        url = self.get_signup_url(res)
+        if url:
+            # ---- send mail to user
+            mail_to = ['"%s" <%s>' % (
+                res.helpdesk_id.request_id.partner_id.name,
+                res.helpdesk_id.email_from
+                )]
+        else:
+            # ---- send mail to techinical support
+            mail_to = ['"%s" <%s>' % (
+                res.helpdesk_id.user_id.name,
+                res.helpdesk_id.user_id.partner_id.email
+                )]
+        ir_model_data = self.env['ir.model.data']
+        template_id = ir_model_data.get_object_reference(
+            'enhanced_helpdesk', 'email_template_ticket_reply')[1] or False
+        template = self.env['email.template']
+        tmpl_br = template.browse(template_id)
+        text = tmpl_br.body_html
+        subject = tmpl_br.subject
+        text = template.render_template(text, 'crm.helpdesk',
+                                        res.helpdesk_id.id)
+        subject = template.render_template(subject, 'crm.helpdesk',
+                                           res.helpdesk_id.id)
+
+        # ---- Get active smtp server
+        mail_server = self.env['ir.mail_server'].search([],
+                                                        limit=1,
+                                                        order='sequence')
+        # ---- adding text to reply
+
+        text = '%s\n\n -- %s' % (text, res.complete_message)
+
+        text = "%s\n\n -- Accedi <a href='%s'>alla risposta</a>" % (text, url)
+        mail_value = {
+            'body_html': text,
+            'subject': subject,
+            'email_from': 'erp@openerp.com',
+            'email_to': mail_to,
+            'mail_server_id': mail_server.id,
+            }
+        msg = self.env['mail.mail'].sudo().create(mail_value)
+        self.env['mail.mail'].sudo().send([msg.id])
+        return res
+
+    def get_signup_url(self, record):
+        user_logged = self._uid
+        partner = record.helpdesk_id.request_id.partner_id
+        if user_logged == record.helpdesk_id.request_id.id:
+            return False
+        action = 'enhanced_helpdesk.action_enhanced_helpdesk'
+        partner.signup_prepare()
+        val = partner._get_signup_url_for_action(
+            action=action, view_type='form',
+            res_id=record.helpdesk_id.id)[partner.id]
+        return val

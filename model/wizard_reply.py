@@ -52,6 +52,11 @@ class wizard_ticket_reply(models.TransientModel):
                 'helpdesk_qa_id': reply_id.id,
                 }
             self.env['ir.attachment'].create(attach_value)
+
+        # ---- write new value on ticket
+        if not self.ticket_id.user_id:
+            self.ticket_id.user_id = self._uid
+        self.ticket_id.state = self.new_state
         return {'type': 'ir.actions.act_window_close'}
 
     @api.onchange('attachment')
