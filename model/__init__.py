@@ -23,4 +23,5 @@
 from . import crm_helpdesk
 from . import project
 from . import helpdesk_qa
+from . import res_partner
 from . import wizard_reply

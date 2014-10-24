@@ -95,11 +95,11 @@ class HelpdeskQA(models.Model):
 
         text = '%s\n\n -- %s' % (text, res.complete_message)
 
-        text = "%s\n\n -- Accedi <a href='%s'>alla risposta</a>" % (text, url)
+        text = "%s<br/> <a href='%s'>Accedi alla risposta</a>" % (text, url)
         mail_value = {
             'body_html': text,
             'subject': subject,
-            'email_from': 'erp@openerp.com',
+            'email_from': 'support@apuliasoftware.it',
             'email_to': mail_to,
             'mail_server_id': mail_server.id,
             }

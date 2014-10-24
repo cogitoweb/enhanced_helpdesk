@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2014 Apulia Software S.r.l. (<info@apuliasoftware.it>)
+#    Copyright (C) 2014 Andre@ (<a.gallina@cgsoftware.it>)
 #    All Rights Reserved
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,33 +19,19 @@
 #
 ##############################################################################
 
-{
-    'name': "Enhanced Helpdesk",
-    'version': '0.1',
-    'category': 'CRM',
-    'description': """
-Enhanced Openerp Helpdesk and Ticketing support
+from openerp import models, fields, api
 
 
-External depends:
+class Partner(models.Model):
 
-    * Python Beautiful Soup
-""",
-    'author': 'Apulia Software Srl',
-    'website': 'www.apuliasoftware.it',
-    'license': 'AGPL-3',
-    "depends": ['base', 'web', 'crm_helpdesk', 'project'],
-    "data": [
-        'security/security.xml',
-        'security/ir.model.access.csv',
-        'data/helpdesk_data.xml',
-        'view/crm_helpdesk_view.xml',
-        'view/wizard_ticket_reply.xml',
-        'view/project_view.xml',
-        'view/partner_view.xml',
-        ],
-    "update_xml": [],
-    "demo_xml": [],
-    "active": False,
-    "installable": True
-}
+    _inherit = 'res.partner'
+
+    ticket_count = fields.Integer(compute='_ticket_count')
+
+    @api.multi
+    def _ticket_count(self):
+        ticket = self.env['crm.helpdesk']
+        for partner in self:
+            partner.ticket_count = ticket.search_count(
+                [('partner_id', '=', partner.id),
+                 ('state', 'not in', ('done', 'cancel')),])

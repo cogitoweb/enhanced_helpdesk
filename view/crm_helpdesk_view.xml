@@ -107,5 +107,37 @@
               id="menu_ticket_helpdesk"
               groups="enhanced_helpdesk.ticketing_external_user"/>
 
+    <!-- INHERITH VIEW TO INSERT NEW MESSAGE FORM -->
+
+    <record id="crm_case_form_view_helpdesk_question_answer" model="ir.ui.view">
+        <field name="name">crm.case.form.view.qa</field>
+        <field name="model">crm.helpdesk</field>
+        <field name="inherit_id" ref="crm_helpdesk.crm_case_form_view_helpdesk"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@string='General']" position="after">
+            <page string="Comunicazioni">
+                <field name="helpdesk_qa_ids" nolabel="1" class="ticket_messages" colspan="4">
+                    <tree string="Messagges List">
+                        <field name="complete_message"/>
+                    </tree>
+                    <form string="New Message">
+                        <field name="date" readonly="1" colspan="4"/>
+                        <field name="message" colspan="4"/>
+                        <separator string="Attachments" colspan="4"/>
+                        <field name="attachment_ids" colspan="4" mode="kanban">
+                            <form>
+                                <label for="name" colspan="4"/>
+                                <field name="name" colspan="4"/>
+                                <label for="datas" colspan="4"/>
+                                <field name="datas" colspan="4"/>
+                            </form>
+                        </field>
+                    </form>
+                </field>
+            </page>
+            </xpath>
+        </field>
+    </record>
+
 </data>
 </openerp>
