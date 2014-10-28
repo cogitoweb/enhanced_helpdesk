@@ -43,6 +43,7 @@ External depends:
         'view/wizard_ticket_reply.xml',
         'view/project_view.xml',
         'view/partner_view.xml',
+        'view/company_view.xml',
         ],
     "update_xml": [],
     "demo_xml": [],

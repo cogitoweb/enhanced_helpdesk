@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2014 Apulia Software S.r.l. (<info@apuliasoftware.it>)
+#    Copyright (C) 2014 Andre@ (<a.gallina@cgsoftware.it>)
 #    All Rights Reserved
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,10 +19,11 @@
 #
 ##############################################################################
 
+from openerp import models, fields, api
 
-from . import crm_helpdesk
-from . import project
-from . import helpdesk_qa
-from . import res_partner
-from . import wizard_reply
-from . import res_company
+
+class Company(models.Model):
+
+    _inherit = 'res.company'
+
+    email_ticket = fields.Text()

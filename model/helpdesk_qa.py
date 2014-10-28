@@ -20,7 +20,7 @@
 ##############################################################################
 
 
-from openerp import models, fields, api
+from openerp import models, fields, api, SUPERUSER_ID
 from BeautifulSoup import BeautifulSoup
 
 
@@ -75,11 +75,16 @@ class HelpdeskQA(models.Model):
                 res.helpdesk_id.email_from
                 )]
         else:
-            # ---- send mail to techinical support
-            mail_to = ['"%s" <%s>' % (
-                res.helpdesk_id.user_id.name,
-                res.helpdesk_id.user_id.partner_id.email
-                )]
+            if res.helpdeks_id.user_id:
+                # ---- send mail to techinical support
+                mail_to = ['"%s" <%s>' % (
+                    res.helpdesk_id.user_id.name,
+                    res.helpdesk_id.user_id.partner_id.email
+                    )]
+            else:
+                # ---- get email from company
+                company = self.env['res.users'].browse(SUPERUSER_ID).company_id
+                mail_to = ['"%s" <%s>' % (company.name, company.email_ticket)]
         ir_model_data = self.env['ir.model.data']
         template_id = ir_model_data.get_object_reference(
             'enhanced_helpdesk', 'email_template_ticket_reply')[1] or False
@@ -93,9 +98,8 @@ class HelpdeskQA(models.Model):
                                            res.helpdesk_id.id)
 
         # ---- Get active smtp server
-        mail_server = self.env['ir.mail_server'].search([],
-                                                        limit=1,
-                                                        order='sequence')
+        mail_server = self.env['ir.mail_server'].sudo().search(
+            [], limit=1, order='sequence')
         # ---- adding text to reply
 
         text = '%s\n\n -- %s' % (text, res.complete_message)
