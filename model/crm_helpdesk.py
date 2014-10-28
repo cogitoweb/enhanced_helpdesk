@@ -20,7 +20,7 @@
 ##############################################################################
 
 
-from openerp import models, fields, api
+from openerp import models, fields, api, SUPERUSER_ID
 
 
 class CrmHelpdesk(models.Model):
@@ -62,4 +62,35 @@ class CrmHelpdesk(models.Model):
             'ticket_id': res.id,
             }
         self.env['project.task'].sudo().create(task_value)
+
+        # ---- send mail to support for the new ticket
+        company = self.env['res.users'].browse(SUPERUSER_ID).company_id
+        mail_to = ['"%s" <%s>' % (company.name, company.email_ticket)]
+        ir_model_data = self.env['ir.model.data']
+        template_id = ir_model_data.get_object_reference(
+            'enhanced_helpdesk', 'email_template_ticket_new')[1] or False
+        template = self.env['email.template']
+        tmpl_br = template.sudo().browse(template_id)
+        text = tmpl_br.body_html
+        subject = tmpl_br.subject
+        text = template.render_template(text, 'crm.helpdesk',
+                                        res.helpdesk_id.id)
+        subject = template.render_template(subject, 'crm.helpdesk',
+                                           res.helpdesk_id.id)
+
+        # ---- Get active smtp server
+        mail_server = self.env['ir.mail_server'].sudo().search(
+            [], limit=1, order='sequence')
+        # ---- adding text to reply
+        text = '%s\n\n -- %s' % (text, res.description)
+
+        mail_value = {
+            'body_html': text,
+            'subject': subject,
+            'email_from': 'support@apuliasoftware.it',
+            'email_to': mail_to,
+            'mail_server_id': mail_server.id,
+            }
+        msg = self.env['mail.mail'].sudo().create(mail_value)
+        self.env['mail.mail'].sudo().send([msg.id])
         return res
