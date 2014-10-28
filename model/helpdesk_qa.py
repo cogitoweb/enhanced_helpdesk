@@ -96,15 +96,14 @@ class HelpdeskQA(models.Model):
                                         res.helpdesk_id.id)
         subject = template.render_template(subject, 'crm.helpdesk',
                                            res.helpdesk_id.id)
-
         # ---- Get active smtp server
         mail_server = self.env['ir.mail_server'].sudo().search(
             [], limit=1, order='sequence')
         # ---- adding text to reply
-
         text = '%s\n\n -- %s' % (text, res.complete_message)
-
-        text = "%s<br/> <a href='%s'>Accedi alla risposta</a>" % (text, url)
+        if url:
+            text = "%s<br/> <a href='%s'>Accedi alla risposta</a>" % (text,
+                                                                      url)
         mail_value = {
             'body_html': text,
             'subject': subject,

@@ -31,7 +31,16 @@
             <field name="description">Ticket Annullato</field>
         </record>
 
-        <!-- Template Email Reply -->
+        <!-- Template Email New Ticket -->
+        <record id="email_template_ticket_new" model="email.template">
+            <field name="name">New Ticket Created</field>
+            <field name="model_id" ref="enhanced_helpdesk.model_helpdesk_qa" />
+            <field name="email_from"> <![CDATA[${object.company_id.email}]]></field>
+            <field name="subject"> <![CDATA[Nuovo Ticket - [#${object.id}] ${object.name}]]> </field>
+            <field name="body_html"> <![CDATA[Un nuovo ticket è stato creato ]]> </field>
+        </record>
+
+        <!-- Template Email Reply Ticket -->
         <record id="email_template_ticket_reply" model="email.template">
             <field name="name">New Ticket Reply</field>
             <field name="model_id" ref="enhanced_helpdesk.model_helpdesk_qa" />
