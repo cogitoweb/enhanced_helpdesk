@@ -89,7 +89,7 @@ class HelpdeskQA(models.Model):
         template_id = ir_model_data.get_object_reference(
             'enhanced_helpdesk', 'email_template_ticket_reply')[1] or False
         template = self.env['email.template']
-        tmpl_br = template.browse(template_id)
+        tmpl_br = template.sudo().browse(template_id)
         text = tmpl_br.body_html
         subject = tmpl_br.subject
         text = template.render_template(text, 'crm.helpdesk',
