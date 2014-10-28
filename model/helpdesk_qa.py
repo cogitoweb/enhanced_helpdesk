@@ -103,8 +103,9 @@ class HelpdeskQA(models.Model):
         # ---- adding text to reply
 
         text = '%s\n\n -- %s' % (text, res.complete_message)
-
-        text = "%s<br/> <a href='%s'>Accedi alla risposta</a>" % (text, url)
+        if url:
+            text = "%s<br/> <a href='%s'>Accedi alla risposta</a>" % (text,
+                                                                      url)
         mail_value = {
             'body_html': text,
             'subject': subject,
