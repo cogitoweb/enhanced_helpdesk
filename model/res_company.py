@@ -26,4 +26,4 @@ class Company(models.Model):
 
     _inherit = 'res.company'
 
-    email_ticket = fields.Text()
+    email_ticket = fields.Char()
