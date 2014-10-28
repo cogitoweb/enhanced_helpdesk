@@ -49,8 +49,10 @@
                         <field name="partner_id" invisible="1"/>
                         <separator string="Object" colspan="4"/>
                         <h1 colspan="4">
-                            <field name="id" readonly="1" colspan="1" nolabel="1"/>
-                            <field name="name" string="Titolo" colspan="3" nolabel="1"/>
+                            #<field name="id" readonly="1" colspan="1" nolabel="1"
+                                class="oe_inline"/> - 
+                            <field name="name" string="Titolo" colspan="3" nolabel="1"
+                                class="oe_inline"/>
                         </h1>
                         <separator string="Description" colspan="4"/>
                         <group colspan="3">
