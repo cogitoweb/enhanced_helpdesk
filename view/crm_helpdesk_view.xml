@@ -53,7 +53,7 @@
                         </h1>
                         <separator string="Description" colspan="4"/>
                         <group colspan="3">
-                            <field name="description" widget="html" nolabel="1" colspan="4"/>
+                            <field name="description" widget="html" nolabel="1" colspan="4" />
                         </group>
                         <group colspan="1">
                             <field name="priority" widget="priority"/>
@@ -71,6 +71,7 @@
                         <form string="New Message">
                             <field name="date" readonly="1" colspan="4"/>
                             <field name="message" colspan="4"/>
+                            <field name="complete_message" colspan="4" invisible="1"/>
                             <separator string="Attachments" colspan="4"/>
                             <field name="attachment_ids" colspan="4" mode="kanban">
                                 <form>

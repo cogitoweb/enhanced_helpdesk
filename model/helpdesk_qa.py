@@ -58,6 +58,11 @@ class HelpdeskQA(models.Model):
                 info = '%s\n\n---\n%s' % (info, str(signature.text))
             msg.complete_message = info
 
+    @api.onchange('message')
+    def onchange_message(self):
+        if self.message:
+            self.complete_message = 'Message Preview\n\n%s' % (self.message)
+
     @api.model
     def create(self, values):
         res = super(HelpdeskQA, self).create(values)
