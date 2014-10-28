@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+    <!--  Company inherited form -->
+    <record id="view_res_company_email_ticket" model="ir.ui.view">
+        <field name="name">view.company.email.ticket</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <field name="email" position="after">
+                <field name="email_ticket" />
+            </field>
+        </field>
+   </record>
+
+</data>
+</openerp>
