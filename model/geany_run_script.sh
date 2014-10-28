@@ -2,7 +2,7 @@
 
 rm $0
 
-python "crm_helpdesk.py"
+python "helpdesk_qa.py"
 
 echo "
 

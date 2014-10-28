@@ -75,7 +75,7 @@ class HelpdeskQA(models.Model):
                 res.helpdesk_id.email_from
                 )]
         else:
-            if res.helpdeks_id.user_id:
+            if res.helpdesk_id.user_id:
                 # ---- send mail to techinical support
                 mail_to = ['"%s" <%s>' % (
                     res.helpdesk_id.user_id.name,
