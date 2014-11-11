@@ -44,6 +44,7 @@ External depends:
         'view/project_view.xml',
         'view/partner_view.xml',
         'view/company_view.xml',
+        'workflow/helpdesk_workflow.xml',
         ],
     "update_xml": [],
     "demo_xml": [],

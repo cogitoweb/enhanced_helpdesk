@@ -74,9 +74,9 @@ class CrmHelpdesk(models.Model):
         text = tmpl_br.body_html
         subject = tmpl_br.subject
         text = template.render_template(text, 'crm.helpdesk',
-                                        res.helpdesk_id.id)
+                                        res.id)
         subject = template.render_template(subject, 'crm.helpdesk',
-                                           res.helpdesk_id.id)
+                                           res.id)
 
         # ---- Get active smtp server
         mail_server = self.env['ir.mail_server'].sudo().search(
@@ -94,3 +94,15 @@ class CrmHelpdesk(models.Model):
         msg = self.env['mail.mail'].sudo().create(mail_value)
         self.env['mail.mail'].sudo().send([msg.id])
         return res
+
+    @api.multi
+    def close_ticket(self):
+        self.write({'state': 'done'})
+
+    @api.multi
+    def cancel_ticket(self):
+        self.write({'state': 'cancel'})
+
+    @api.multi
+    def reopen_ticket(self):
+        self.write({'state': 'draft'})
