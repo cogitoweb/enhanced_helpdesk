@@ -9,6 +9,11 @@
         </xpath>
     </template>
 
+    <record id="action_eh_home_page" model="ir.actions.client">
+        <field name="name">Enhanced Helpdesk Home</field>
+        <field name="tag">enhanced_helpdesk.homepage</field>
+    </record>
+
     <record id="enhanced_helpdesk_tree" model="ir.ui.view">
         <field name="name">Enhanced HelpDesk Tree</field>
         <field name="model">crm.helpdesk</field>

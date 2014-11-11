@@ -20,7 +20,8 @@
 ##############################################################################
 
 
-from openerp import models, fields, api, SUPERUSER_ID
+from openerp import models, fields, api, SUPERUSER_ID, _
+from openerp.exceptions import Warning
 from BeautifulSoup import BeautifulSoup
 
 
@@ -62,6 +63,19 @@ class HelpdeskQA(models.Model):
     def onchange_message(self):
         if self.message:
             self.complete_message = 'Message Preview\n\n%s' % (self.message)
+
+    @api.multi
+    def unlink(self):
+        for qa in self:
+            # ----- Impossible to delete other user's messages
+            if qa.user_id.id != self.env.user.id:
+                raise Warning(
+                    _('Can not delete messages posted from other users'))
+            # ----- Impossibile to delete messages with an answer
+            if qa.search([('helpdesk_id', '=', qa.helpdesk_id.id), ('id', '>', qa.id)]):
+                raise Warning(
+                    _('Can not delete messages with an answer'))
+        return super(HelpdeskQA, self).unlink()
 
     @api.model
     def create(self, values):
@@ -116,7 +130,7 @@ class HelpdeskQA(models.Model):
         return res
 
     def get_signup_url(self, record):
-        user_logged = self._uid
+        user_logged = self.env.user.id
         partner = record.helpdesk_id.request_id.partner_id
         if user_logged == record.helpdesk_id.request_id.id:
             return False

@@ -1,5 +1,5 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
 access_crm_helpdesk_user,crm_helpdesk_user,model_crm_helpdesk,ticketing_external_user,1,1,1,0
 access_res_partner_ticket,res_partner_ticketuser,base.model_res_partner,ticketing_external_user,1,1,0,0
-access_helpdesk_qa,helpdeks_ticketuser,model_helpdesk_qa,ticketing_external_user,1,1,1,0
+access_helpdesk_qa,helpdeks_ticketuser,model_helpdesk_qa,ticketing_external_user,1,1,1,1
 access_crm_case_categ,crm_case_caeg_ticketuser,crm.model_crm_case_categ,ticketing_external_user,1,0,0,0
