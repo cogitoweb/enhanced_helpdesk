@@ -15,11 +15,11 @@
         <field name="arch" type="xml">
             <tree string="Helpdesk Support Tree"
                     colors="black:state=='open';blue:state=='pending';gray:state in ('cancel','done')">
-                    <field name="name" string="Titolo" />
-                    <field name="date" string="Date"/>
-                    <field name="user_id"/>
-                    <field name="state"/>
-                </tree>
+                <field name="name" string="Titolo" />
+                <field name="date" string="Date"/>
+                <field name="user_id"/>
+                <field name="state"/>
+            </tree>
         </field>
     </record>
 

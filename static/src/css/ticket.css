@@ -18,3 +18,16 @@
     color: white;
     padding: 5px 18px;
 }
+
+.ticket_messages th.oe_list_record_delete {
+    background: #FFF;
+    border-left: 0px solid #FFF !important;
+}
+
+.ticket_messages .oe_list_content > tfoot {
+    background: #FFF;
+}
+
+.openerp .oe_list_content td.oe_form_field_one2many_list_row_add {
+    padding: 6px 0px;
+}
