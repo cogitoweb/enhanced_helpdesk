@@ -87,6 +87,12 @@
             <field name="act_to" ref="act_done"/>
             <field name="signal">ticket_pending_done</field>
         </record>
+        
+        <record id="t8" model="workflow.transition">
+            <field name="act_from" ref="act_pending"/>
+            <field name="act_to" ref="act_open"/>
+            <field name="signal">ticket_pending_open</field>
+        </record>
 
         <record id="t20" model="workflow.transition">
             <field name="act_from" ref="act_draft"/>

@@ -106,3 +106,11 @@ class CrmHelpdesk(models.Model):
     @api.multi
     def reopen_ticket(self):
         self.write({'state': 'draft'})
+
+    @api.multi
+    def working_ticket(self):
+        self.write({'state': 'open'})
+
+    @api.multi
+    def pending_ticket(self):
+        self.write({'state': 'pending'})

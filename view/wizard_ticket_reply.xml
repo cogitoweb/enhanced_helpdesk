@@ -20,6 +20,14 @@
                   <footer>
                       <button name="reply" string="Reply" type="object" class="oe_highlight"/>
                       or
+                      <button name="ticket_close" string="Set Close" type="object" class="oe_highlight"/>
+                      or
+                      <button name="ticket_working" string="Set Working" type="object" class="oe_highlight"/>
+                      or
+                      <button name="ticket_pending" string="Set Pending" type="object" class="oe_highlight"/>
+                      or
+                      <button name="ticket_cancel" string="Set Cancel" type="object" class="oe_highlight"/>
+                      or
                       <button string="Cancel" class="oe_link" special="cancel" />
                   </footer>
             </form>
