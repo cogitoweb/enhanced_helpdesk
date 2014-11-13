@@ -48,7 +48,9 @@ class HelpdeskQA(models.Model):
     @api.multi
     def _complete_message(self):
         for msg in self:
-            info = '%s - %s\n\n' % (msg.user_id.name, msg.date)
+            info = '<img height="40px" \
+src="/web/binary/image?model=res.partner&id=%s&field=image_medium" \
+/> %s - %s<br /><br />' % (msg.user_id.partner_id.id, msg.user_id.name, msg.date)
             info = '%s%s' % (info, msg.message)
             if len(msg.attachment_ids) > 0:
                 info = '%s\n\n%s Attachment(s)' % (info,
@@ -56,7 +58,7 @@ class HelpdeskQA(models.Model):
             if msg.user_id.signature:
                 signature = msg.user_id.signature.replace('<br>', '\n')
                 signature = BeautifulSoup(signature)
-                info = '%s\n\n---\n%s' % (info, str(signature.text))
+                info = '%s<br /><br />---\n%s' % (info, str(signature.text))
             msg.complete_message = info
 
     @api.onchange('message')
@@ -72,7 +74,8 @@ class HelpdeskQA(models.Model):
                 raise Warning(
                     _('Can not delete messages posted from other users'))
             # ----- Impossibile to delete messages with an answer
-            if qa.search([('helpdesk_id', '=', qa.helpdesk_id.id), ('id', '>', qa.id)]):
+            if qa.search([('helpdesk_id', '=', qa.helpdesk_id.id),
+                          ('id', '>', qa.id)]):
                 raise Warning(
                     _('Can not delete messages with an answer'))
         return super(HelpdeskQA, self).unlink()

@@ -6,6 +6,7 @@
     <template id="assets_backend" name="enhanced_hd_ticket assets" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
             <link rel="stylesheet" href="/enhanced_helpdesk/static/src/css/ticket.css"/>
+            <script type="text/javascript" src="/enhanced_helpdesk/static/src/js/helpdesk.js"></script>
         </xpath>
     </template>
 
