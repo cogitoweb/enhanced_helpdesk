@@ -10,17 +10,13 @@
         </xpath>
     </template>
 
-    <record id="action_eh_home_page" model="ir.actions.client">
-        <field name="name">Enhanced Helpdesk Home</field>
-        <field name="tag">enhanced_helpdesk.homepage</field>
-    </record>
-
     <record id="enhanced_helpdesk_tree" model="ir.ui.view">
         <field name="name">Enhanced HelpDesk Tree</field>
         <field name="model">crm.helpdesk</field>
         <field name="arch" type="xml">
             <tree string="Helpdesk Support Tree"
                     colors="black:state=='open';blue:state=='pending';gray:state in ('cancel','done')">
+                <field name="id" string="#" />
                 <field name="name" string="Titolo" />
                 <field name="date" string="Date"/>
                 <field name="user_id"/>
@@ -102,13 +98,33 @@
         </field>
     </record>
 
+    <record id="search_enhanced_helpdesk" model="ir.ui.view">
+        <field name="name">Enhanced Helpdesk</field>
+        <field name="model">crm.helpdesk</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Tickets">
+                <field name="id" />
+                <field name="name" />
+                <field name="description" />
+                <field name="date" />
+                <filter name="filter_draft" domain="[('state', '=', 'draft')]" string="Draft"/>
+                <filter name="filter_done" domain="[('state', '=', 'done')]" string="Close"/>
+                <filter name="filter_cancel" domain="[('state', '=', 'cancel')]" string="Cancel"/>
+                <filter name="filter_pending" domain="[('state', '=', 'pending')]" string="Pending"/>
+                <filter name="filter_open" domain="[('state', '=', 'open')]" string="Working"/>
+            </search>
+        </field>
+    </record>
+
     <record model="ir.actions.act_window" id="action_enhanced_helpdesk">
         <field name="name">Ticketing / Supporto</field>
         <field name="res_model">crm.helpdesk</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="enhanced_helpdesk_tree"/>
-        <field name="context">{'form_view_ref': 'enhanced_helpdesk.enhanced_helpdesk_form'}</field>
+        <field name="search_view_id" ref="search_enhanced_helpdesk"/>
+        <field name="context">{'needaction_menu_ref':1,'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form','search_default_filter_draft':1,'search_default_filter_pending':1,'search_default_filter_open':1, }</field>
     </record>
 
     <menuitem name="Supporto e Ticket"
