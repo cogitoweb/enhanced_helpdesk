@@ -10,25 +10,23 @@
                   <group colspan="4">
                       <field name="ticket_id"/>
                       <field name="ticket_reply"/>
-                      <field name="new_state" readonly="False"/>
+                      <field name="new_state" readonly="True"/>
                       <field name="attachment_name"
                           attrs="{'required': [('flag_name', '=', True)]}"/>
                       <field name="flag_name" invisible="1" />
                       <field name="attachment"/>
                   </group>
-                  
                   <footer>
                       <button name="reply" string="Reply" type="object" class="oe_highlight"/>
-                      or
-                      <button name="ticket_close" string="Set Close" type="object" class="oe_highlight"/>
-                      or
-                      <button name="ticket_working" string="Set Working" type="object" class="oe_highlight"/>
-                      or
-                      <button name="ticket_pending" string="Set Pending" type="object" class="oe_highlight"/>
-                      or
-                      <button name="ticket_cancel" string="Set Cancel" type="object" class="oe_highlight"/>
-                      or
-                      <button string="Cancel" class="oe_link" special="cancel" />
+                        <button name="ticket_close" string="Set Close" type="object" class="oe_highlight"
+                            attrs="{'invisible': ['!', ('new_state', 'in', ('draft', 'open', 'pending'))]}"/>
+                        <button name="ticket_working" string="Set Working" type="object" class="oe_highlight"
+                            attrs="{'invisible': ['!', ('new_state', 'in', ('draft', 'pending'))]}"/>
+                        <button name="ticket_pending" string="Set Pending" type="object" class="oe_highlight"
+                            attrs="{'invisible': ['!', ('new_state', 'in', ('draft', 'open'))]}"/>
+                        <button name="ticket_cancel" string="Set Cancel" type="object" class="oe_highlight"
+                            attrs="{'invisible': ['!', ('new_state', 'in', ('draft'))]}"/>
+                        <button string="Cancel" class="oe_link" special="cancel" />
                   </footer>
             </form>
             </field>
