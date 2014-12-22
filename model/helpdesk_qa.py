@@ -86,8 +86,8 @@ src="/web/binary/image?model=res.partner&id=%s&field=image_medium" \
         # ----- Company Recordset
         company = self.env['res.users'].browse(SUPERUSER_ID).company_id
         # ---- Call a function to send mail
-        url = self.get_signup_url(res)
-        if url:
+        #~ url = self.get_signup_url(res)
+        if res.helpdesk_id.external_ticket_url:
             # ---- Send mail to user
             mail_to = ['"%s" <%s>' % (
                 res.helpdesk_id.request_id.partner_id.name,
@@ -110,18 +110,14 @@ src="/web/binary/image?model=res.partner&id=%s&field=image_medium" \
         tmpl_br = template.sudo().browse(template_id)
         text = tmpl_br.body_html
         subject = tmpl_br.subject
-        text = template.render_template(text, 'crm.helpdesk',
-                                        res.helpdesk_id.id)
-        subject = template.render_template(subject, 'crm.helpdesk',
-                                           res.helpdesk_id.id)
+        text = template.render_template(text, 'helpdesk.qa',
+                                        res.id)
+        subject = template.render_template(subject, 'helpdesk.qa',
+                                           res.id)
         # ---- Get active smtp server
         mail_server = self.env['ir.mail_server'].sudo().search(
             [], limit=1, order='sequence')
-        # ---- Adding text to reply
-        text = '%s\n\n -- %s' % (text, res.complete_message)
-        if url:
-            text = "%s<br/> <a href='%s'>Accedi alla risposta</a>" % (text,
-                                                                      url)
+
         mail_value = {
             'body_html': text,
             'subject': subject,
@@ -132,15 +128,3 @@ src="/web/binary/image?model=res.partner&id=%s&field=image_medium" \
         msg = self.env['mail.mail'].sudo().create(mail_value)
         self.env['mail.mail'].sudo().send([msg.id])
         return res
-
-    def get_signup_url(self, record):
-        user_logged = self.env.user.id
-        partner = record.helpdesk_id.request_id.partner_id
-        if user_logged == record.helpdesk_id.request_id.id:
-            return False
-        action = 'enhanced_helpdesk.action_enhanced_helpdesk'
-        partner.signup_prepare()
-        val = partner._get_signup_url_for_action(
-            action=action, view_type='form',
-            res_id=record.helpdesk_id.id)[partner.id]
-        return val

@@ -32,7 +32,7 @@ class CrmHelpdesk(models.Model):
                                  required=True,
                                  string='Richiedente',
                                  default=lambda self: self.env.user)
-
+    external_ticket_url = fields.Char(compute='_get_external_ticket_url')
     helpdesk_qa_ids = fields.One2many('helpdesk.qa', 'helpdesk_id')
 
     _track = {
@@ -43,6 +43,24 @@ class CrmHelpdesk(models.Model):
             'enhanced_helpdesk.cancel': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
         },
     }
+
+    @api.multi
+    def _get_external_ticket_url(self):
+        for ticket in self:
+            url = self.get_signup_url(ticket)
+            self.external_ticket_url = url or ''
+
+    def get_signup_url(self, ticket):
+        user_logged = self.env.user.id
+        partner = ticket.request_id.partner_id
+        if user_logged == partner.id:
+            return False
+        action = 'enhanced_helpdesk.action_enhanced_helpdesk'
+        partner.signup_prepare()
+        val = partner._get_signup_url_for_action(
+            action=action, view_type='form',
+            res_id=ticket.id)[partner.id]
+        return val
 
     @api.onchange('request_id')
     def onchange_requestid(self):
