@@ -36,8 +36,8 @@ External depends:
     'license': 'AGPL-3',
     "depends": ['base', 'web', 'crm_helpdesk', 'project'],
     'external_dependencies' : {
-        'python' : ['beautifulsoup'],
-        }
+        'python' : ['BeautifulSoup'],
+        },
     "data": [
         'security/security.xml',
         'security/ir.model.access.csv',

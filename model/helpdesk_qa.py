@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2014 Andre@ (<a.gallina@cgsoftware.it>)
+#    Copyright (C) 2014 Andre@ (<info@apuliasoftware.it>)
 #    All Rights Reserved
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -83,24 +83,25 @@ src="/web/binary/image?model=res.partner&id=%s&field=image_medium" \
     @api.model
     def create(self, values):
         res = super(HelpdeskQA, self).create(values)
-        # ---- call a function to send mail
+        # ----- Company Recordset
+        company = self.env['res.users'].browse(SUPERUSER_ID).company_id
+        # ---- Call a function to send mail
         url = self.get_signup_url(res)
         if url:
-            # ---- send mail to user
+            # ---- Send mail to user
             mail_to = ['"%s" <%s>' % (
                 res.helpdesk_id.request_id.partner_id.name,
                 res.helpdesk_id.email_from
                 )]
         else:
             if res.helpdesk_id.user_id:
-                # ---- send mail to techinical support
+                # ---- Send mail to techinical support
                 mail_to = ['"%s" <%s>' % (
                     res.helpdesk_id.user_id.name,
                     res.helpdesk_id.user_id.partner_id.email
                     )]
             else:
-                # ---- get email from company
-                company = self.env['res.users'].browse(SUPERUSER_ID).company_id
+                # ---- Use company email
                 mail_to = ['"%s" <%s>' % (company.name, company.email_ticket)]
         ir_model_data = self.env['ir.model.data']
         template_id = ir_model_data.get_object_reference(
@@ -116,7 +117,7 @@ src="/web/binary/image?model=res.partner&id=%s&field=image_medium" \
         # ---- Get active smtp server
         mail_server = self.env['ir.mail_server'].sudo().search(
             [], limit=1, order='sequence')
-        # ---- adding text to reply
+        # ---- Adding text to reply
         text = '%s\n\n -- %s' % (text, res.complete_message)
         if url:
             text = "%s<br/> <a href='%s'>Accedi alla risposta</a>" % (text,
@@ -124,7 +125,7 @@ src="/web/binary/image?model=res.partner&id=%s&field=image_medium" \
         mail_value = {
             'body_html': text,
             'subject': subject,
-            'email_from': 'support@apuliasoftware.it',
+            'email_from': company.email_ticket,
             'email_to': mail_to,
             'mail_server_id': mail_server.id,
             }

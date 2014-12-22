@@ -87,7 +87,7 @@ class CrmHelpdesk(models.Model):
         mail_value = {
             'body_html': text,
             'subject': subject,
-            'email_from': 'support@apuliasoftware.it',
+            'email_from': company.email_ticket,
             'email_to': mail_to,
             'mail_server_id': mail_server.id,
             }
