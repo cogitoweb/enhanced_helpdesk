@@ -55,7 +55,6 @@ class wizard_ticket_reply(models.TransientModel):
                     'helpdesk_qa_id': reply_id.id,
                     }
                 self.env['ir.attachment'].create(attach_value)
-
         # ---- write new value on ticket
         if not self.ticket_id.user_id:
             self.ticket_id.user_id = self._uid
@@ -65,7 +64,6 @@ class wizard_ticket_reply(models.TransientModel):
             wf_service.trg_validate(self.env.user.id, 'crm.helpdesk',
                                     self.ticket_id.id,
                                     wkf_trigger, self._cr)
-
         return {'type': 'ir.actions.act_window_close'}
 
     @api.multi

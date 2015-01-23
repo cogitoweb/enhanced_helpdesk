@@ -47,7 +47,8 @@
                                        'base.group_sale_salesman_all_leads']}"
                             attrs="{'readonly': [('state', 'in', ('cancel','done'))]}"/>
                         <field name="request_id" widget="selection" colspan="2"
-                            attrs="{'readonly': [('state', 'in', ('cancel','done'))]}"/>
+                            attrs="{'readonly': [('state', 'in', ('cancel','done'))]}"
+                            domain="[('id', '=', uid)]"/>
                         <field name="date" readonly="1" colspan="2"/>
                         <field name="date_deadline" invisible="1" colspan="4"/>
                         <field name="email_from" invisible="1" />
@@ -83,12 +84,14 @@
                             <field name="message" colspan="4"/>
                             <field name="complete_message" colspan="4" invisible="1"/>
                             <separator string="Attachments" colspan="4"/>
-                            <field name="attachment_ids" colspan="4" mode="kanban">
+                            <field name="attachment_ids" colspan="4" mode="kanban" context="{'default_res_id':parent.id, 'default_res_model':'helpdesk.qa'}">
                                 <form>
                                     <label for="name" colspan="4"/>
                                     <field name="name" colspan="4"/>
                                     <label for="datas" colspan="4"/>
                                     <field name="datas" colspan="4"/>
+                                    <field name="res_id" colspan="4"/>
+                                    <field name="res_model" colspan="4"/>
                                 </form>
                             </field>
                         </form>

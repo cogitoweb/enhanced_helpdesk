@@ -6,6 +6,10 @@
             <field name="name">Ticketing User</field>
         </record>
 
+        <record id="ticketing_support" model="res.groups">
+            <field name="name">Ticketing Support</field>
+        </record>
+
         <record id="see_company_ticket" model="ir.rule">
            <field name="name">See Company Ticket</field>
            <field name="model_id" ref="model_crm_helpdesk"/>

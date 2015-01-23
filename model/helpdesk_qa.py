@@ -117,7 +117,6 @@ src="/web/binary/image?model=res.partner&id=%s&field=image_medium" \
         # ---- Get active smtp server
         mail_server = self.env['ir.mail_server'].sudo().search(
             [], limit=1, order='sequence')
-
         mail_value = {
             'body_html': text,
             'subject': subject,

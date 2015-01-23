@@ -37,10 +37,14 @@ class CrmHelpdesk(models.Model):
 
     _track = {
         'state': {
-            'enhanced_helpdesk.open': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'open',
-            'enhanced_helpdesk.pending': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'pending',
-            'enhanced_helpdesk.done': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'done',
-            'enhanced_helpdesk.cancel': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
+            'enhanced_helpdesk.open':
+            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'open',
+            'enhanced_helpdesk.pending':
+            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'pending',
+            'enhanced_helpdesk.done':
+            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'done',
+            'enhanced_helpdesk.cancel':
+            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
         },
     }
 
@@ -80,7 +84,6 @@ class CrmHelpdesk(models.Model):
             'ticket_id': res.id,
             }
         self.env['project.task'].sudo().create(task_value)
-
         # ---- send mail to support for the new ticket
         company = self.env['res.users'].browse(SUPERUSER_ID).company_id
         mail_to = ['"%s" <%s>' % (company.name, company.email_ticket)]
@@ -95,7 +98,6 @@ class CrmHelpdesk(models.Model):
                                         res.id)
         subject = template.render_template(subject, 'crm.helpdesk',
                                            res.id)
-
         # ---- Get active smtp server
         mail_server = self.env['ir.mail_server'].sudo().search(
             [], limit=1, order='sequence')
