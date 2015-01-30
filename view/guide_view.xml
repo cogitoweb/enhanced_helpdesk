@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+    <record id="crm_helpdesk_guide_form" model="ir.ui.view">
+        <field name="name">crm.helpdesk.guide.form</field>
+        <field name="model">crm.helpdesk.guide</field>
+        <field name="arch" type="xml">
+            <form string="Guide">
+                <header>
+                    <button name="open_url" string="Visualizza Guida" type="object" class="oe_highlight"/>
+                    <button name="set_draft" string="Bozza" type="object" states="need_review,published"/>
+                    <button name="set_need_review" string="Revisiona" type="object" states="draft,published"/>
+                    <button name="set_published" string="Pubblica" type="object" states="draft,need_review"/>
+                    <field name="state"  widget="statusbar" statusbar_visible="draft,need_review,published" statusbar_colors='{"need_review":"red","published":"blue"}'/>
+                </header>
+                <sheet string="Guide">
+                    <label for="title"/><field name="title" />
+                    <label for="description"/><field name="description" />
+                    <label for="url"/><field name="url" />
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Guide Kanban View -->
+    <record model="ir.ui.view" id="crm_helpdesk_guide_kanban">
+        <field name="name">rcrm.helpdesk.guide.kanban</field>
+        <field name="model">crm.helpdesk.guide</field>
+        <field name="arch" type="xml">
+            <kanban create="false">
+                <field name="title"/>
+                <field name="description"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <a t-attf-href="#{record.url.raw_value}" target="_blank">
+                            <field name="url" invisible="1"/>
+                            <img t-att-src='_s + "/enhanced_helpdesk/static/src/img/guide.png"' class="oe_kanban_image"/>
+                        </a>
+                        <div class="oe_kanban_vignette oe_semantic_html_override">
+                            <div class="oe_kanban_details">
+                                <h4 class="oe_partner_heading"><field name="title"/></h4>
+                                <ul>
+                                    <li><field name="description"/></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="crm_helpdesk_guide_tree" model="ir.ui.view">
+        <field name="name">crm.helpdesk.guide.tree</field>
+        <field name="model">crm.helpdesk.guide</field>
+        <field name="arch" type="xml">
+            <tree string="Guide" colors="black:state=='published';red:state=='need_review';gray:state=='draft'">
+                <field name="title" />
+                <field name="url" />
+                <field name="state" />
+                <button name="open_url" string="Visualizza Guida" type="object"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="search_crm_helpdesk_guide" model="ir.ui.view">
+        <field name="name">Guide</field>
+        <field name="model">crm.helpdesk.guide</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Guide">
+                <field name="title" />
+                <field name="description" />
+            </search>
+        </field>
+    </record>
+
+    <!-- Ticket User Action for Guide -->
+    <record id="user_crm_helpdesk_guide_action" model="ir.actions.act_window">
+        <field name="name">Guide</field>
+        <field name="res_model">crm.helpdesk.guide</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban</field>
+        <field name="search_view_id" ref="search_crm_helpdesk_guide"/>
+        <field name="domain">[('state', '=', 'published')]</field>
+    </record>
+
+    <!-- Support User Action for Guide -->
+    <record id="support_crm_helpdesk_guide_action" model="ir.actions.act_window">
+        <field name="name">Guide</field>
+        <field name="res_model">crm.helpdesk.guide</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="search_crm_helpdesk_guide"/>
+    </record>
+
+    <!-- Ticket User Menu for Guide -->
+    <menuitem id="user_crm_helpdesk_guide_menu" action="user_crm_helpdesk_guide_action"
+        parent="menu_enhanced_helpdesk" sequence="10" name="Guide"
+        string="Guide" groups="ticketing_external_user"/>
+
+    <!-- Support User Menu for Guide -->
+    <menuitem id="support_crm_helpdesk_guide_menu" action="support_crm_helpdesk_guide_action"
+        parent="base.menu_aftersale" sequence="10" name="Guide"
+        string="Guide" groups="ticketing_support"/>
+
+</data>
+</openerp>

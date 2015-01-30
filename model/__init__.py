@@ -26,3 +26,4 @@ from . import helpdesk_qa
 from . import res_partner
 from . import wizard_reply
 from . import res_company
+from . import guide

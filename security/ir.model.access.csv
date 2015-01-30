@@ -5,3 +5,5 @@ access_res_users_ticket,res_users_ticketuser,base.model_res_users,ticketing_exte
 access_helpdesk_qa,helpdeks_ticketuser,model_helpdesk_qa,ticketing_external_user,1,1,1,1
 access_crm_case_categ,crm_case_caeg_ticketuser,crm.model_crm_case_categ,ticketing_external_user,1,0,0,0
 access_ir_attachment,ir_attachment_ticketuser,base.model_ir_attachment,ticketing_external_user,1,1,1,1
+access_crm_helpdesk_guide_user,crm_helpdesk_guide_ticketuser,model_crm_helpdesk_guide,ticketing_external_user,1,0,0,0
+access_crm_helpdesk_guide_support,crm_helpdesk_guide_supportuser,model_crm_helpdesk_guide,ticketing_support,1,1,1,1
