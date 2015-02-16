@@ -34,6 +34,8 @@ class CrmHelpdesk(models.Model):
                                  default=lambda self: self.env.user)
     external_ticket_url = fields.Char(compute='_get_external_ticket_url')
     helpdesk_qa_ids = fields.One2many('helpdesk.qa', 'helpdesk_id')
+    attachment_ids = fields.One2many('ir.attachment',
+                                     'crm_helpdesk_id')
 
     _track = {
         'state': {

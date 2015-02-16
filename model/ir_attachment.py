@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2014 Apulia Software S.r.l. (<info@apuliasoftware.it>)
+#    Copyright (C) 2014 Andre@ (<info@apuliasoftware.it>)
 #    All Rights Reserved
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -20,11 +20,12 @@
 ##############################################################################
 
 
-from . import ir_attachment
-from . import crm_helpdesk
-from . import project
-from . import helpdesk_qa
-from . import res_partner
-from . import wizard_reply
-from . import res_company
-from . import guide
+from openerp import models, fields
+
+
+class IrAttachment(models.Model):
+
+    _inherit = 'ir.attachment'
+
+    helpdesk_qa_id = fields.Many2one('helpdesk.qa')
+    crm_helpdesk_id = fields.Many2one('crm.helpdesk')

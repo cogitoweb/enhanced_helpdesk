@@ -73,6 +73,20 @@
                                 attrs="{'readonly': [('state', 'in', ('cancel','done'))]}"/>
                             <field name="channel_id" invisible="1"/>
                         </group>
+                        <separator string="Attachments" colspan="4"/>
+                        <field name="attachment_ids" colspan="4" mode="kanban"
+                                context="{'default_res_id':uid, 'default_res_model':'res.users'}"
+                                nolabel="1"
+                                attrs="{'readonly': [('state', 'in', ('cancel','done'))]}">
+                            <form>
+                                <label for="name" colspan="4"/>
+                                <field name="name" colspan="4"/>
+                                <label for="datas" colspan="4"/>
+                                <field name="datas" colspan="4"/>
+                                <field name="res_id" colspan="4" readonly="False" invisible="True"/>
+                                <field name="res_model" colspan="4" readonly="False" invisible="True"/>
+                            </form>
+                        </field>
                     </group>
                     <field name="helpdesk_qa_ids" nolabel="1" class="ticket_messages" colspan="4"
                         attrs="{'readonly': [('state', 'in', ('cancel','done'))], 'invisible': [('id', '=', False)]}">
@@ -84,14 +98,14 @@
                             <field name="message" colspan="4"/>
                             <field name="complete_message" colspan="4" invisible="1"/>
                             <separator string="Attachments" colspan="4"/>
-                            <field name="attachment_ids" colspan="4" mode="kanban" context="{'default_res_id':parent.id, 'default_res_model':'helpdesk.qa'}">
+                            <field name="attachment_ids" colspan="4" mode="kanban" context="{'default_res_id':uid, 'default_res_model':'res.users'}">
                                 <form>
                                     <label for="name" colspan="4"/>
                                     <field name="name" colspan="4"/>
                                     <label for="datas" colspan="4"/>
                                     <field name="datas" colspan="4"/>
-                                    <field name="res_id" colspan="4"/>
-                                    <field name="res_model" colspan="4"/>
+                                    <field name="res_id" colspan="4" readonly="False" invisible="True"/>
+                                    <field name="res_model" colspan="4" readonly="False" invisible="True"/>
                                 </form>
                             </field>
                         </form>

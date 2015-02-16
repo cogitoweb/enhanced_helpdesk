@@ -25,13 +25,6 @@ from openerp.exceptions import Warning
 from BeautifulSoup import BeautifulSoup
 
 
-class IrAttachment(models.Model):
-
-    _inherit = 'ir.attachment'
-
-    helpdesk_qa_id = fields.Many2one('helpdesk.qa')
-
-
 class HelpdeskQA(models.Model):
 
     _name = 'helpdesk.qa'
