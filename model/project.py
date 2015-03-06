@@ -28,3 +28,25 @@ class Task(models.Model):
 
     # ----- Fields
     ticket_id = fields.Many2one('crm.helpdesk')
+    rel_helpdesk_qa_ids = fields.One2many(string='Messages',
+                                          related='ticket_id.helpdesk_qa_ids',
+                                          readonly=True)
+    ticket_last_answer_user_id = fields.Many2one(
+        'res.users', compute='compute_ticket_last_answer',
+        string="Last Answer User")
+    ticket_last_answer_date = fields.Datetime(
+        compute='compute_ticket_last_answer',
+        string="Last Answer Date")
+
+    @api.multi
+    def compute_ticket_last_answer(self):
+        for task in self:
+            user_id = False
+            date = False
+            # ----- Keep the user from the last answer
+            if task.rel_helpdesk_qa_ids:
+                answer = task.rel_helpdesk_qa_ids[-1]
+                user_id = answer.user_id.id
+                date = answer.date
+            task.ticket_last_answer_user_id = user_id
+            task.ticket_last_answer_date = date

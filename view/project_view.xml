@@ -14,8 +14,9 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
-            <field name="partner_id" position="after">
-                <field name="ticket_id" />
+            <field name="reviewer_id" position="after">
+                <field name="ticket_last_answer_user_id" attrs="{'invisible': [('ticket_id', '=', False)]}"/>
+                <field name="ticket_last_answer_date" attrs="{'invisible': [('ticket_id', '=', False)]}"/>
             </field>
             <field name="project_id" position="attributes">
                 <attribute name="domain">"[('partner_id', '=', partner_id)]"</attribute>
@@ -31,6 +32,18 @@
                     attrs="{'invisible': [('ticket_id', '=', False)]}"
                     context="{'default_ticket_id': ticket_id}" />
             </field>
+            <notebook position="inside">
+                <page string="Helpdesk" attrs="{'invisible': [('ticket_id', '=', False)]}">
+                    <label for="ticket_id"/>
+                    <field name="ticket_id" readonly="True"/>
+                    <label for="rel_helpdesk_qa_ids"/>
+                    <field name="rel_helpdesk_qa_ids" >
+                        <tree string="Messagges List">
+                            <field name="complete_message" string="Message"/>
+                        </tree>
+                    </field>
+                </page>
+            </notebook>
         </field>
     </record>
 
