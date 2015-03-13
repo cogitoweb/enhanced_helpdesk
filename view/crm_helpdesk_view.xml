@@ -37,6 +37,8 @@
                     <button name="ticket_close" states="draft" string="Close"/>
                     <button name="ticket_cancel" states="draft" string="Cancel"/>
                     <button name="ticket_reopen" states="done" string="Reopen"/>
+                    <button name="%(action_change_ticket_user)d" states="draft"
+                            string="Change User" type="action" groups="enhanced_helpdesk.ticketing_support"/>
                 </header>
                 <sheet string="Helpdesk Support">
                     <group col="4" class="oe_header">
@@ -46,6 +48,7 @@
                                        'base.group_partner_manager',
                                        'base.group_sale_salesman_all_leads']}"
                             attrs="{'readonly': [('state', 'in', ('cancel','done'))]}"/>
+                        <!-- Ticket User see only it self -->
                         <field name="request_id" widget="selection" colspan="2"
                             attrs="{'readonly': [('state', 'in', ('cancel','done'))]}"
                             domain="[('id', '=', uid)]"/>

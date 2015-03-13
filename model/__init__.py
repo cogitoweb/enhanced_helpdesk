@@ -21,6 +21,7 @@
 
 
 from . import ir_attachment
+from . import wizard_change_user
 from . import crm_helpdesk
 from . import project
 from . import helpdesk_qa

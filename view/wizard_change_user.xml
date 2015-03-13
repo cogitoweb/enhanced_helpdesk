@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="wizard_change_ticket_user_view" model="ir.ui.view">
+            <field name="name">Change User</field>
+            <field name="model">wizard.change.ticket.user</field>
+            <field name="arch" type="xml">
+              <form string="Change User">
+                  <field name="user_id" colspan="4"/>
+                  <footer>
+                      <button name="apply" string="Apply" type="object" class="oe_highlight"/>
+                      <button string="Cancel" class="oe_link" special="cancel" />
+                  </footer>
+            </form>
+            </field>
+        </record>
+
+        <record id="action_change_ticket_user" model="ir.actions.act_window">
+            <field name="name">Change User</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wizard.change.ticket.user</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="wizard_change_ticket_user_view"/>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>

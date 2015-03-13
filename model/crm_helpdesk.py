@@ -26,6 +26,7 @@ from openerp import models, fields, api, SUPERUSER_ID
 class CrmHelpdesk(models.Model):
 
     _inherit = "crm.helpdesk"
+    _rec_name = 'display_name'
 
     # ---- Fields
     request_id = fields.Many2one('res.users',
@@ -36,6 +37,8 @@ class CrmHelpdesk(models.Model):
     helpdesk_qa_ids = fields.One2many('helpdesk.qa', 'helpdesk_id')
     attachment_ids = fields.One2many('ir.attachment',
                                      'crm_helpdesk_id')
+    display_name = fields.Char(string='Ticket',
+                               compute='_compute_display_name',)
 
     _track = {
         'state': {
@@ -49,6 +52,11 @@ class CrmHelpdesk(models.Model):
             lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
         },
     }
+
+    @api.one
+    @api.depends('name')
+    def _compute_display_name(self):
+        self.display_name = '#%s - %s' % (self.id, self.name)
 
     @api.multi
     def _get_external_ticket_url(self):
@@ -73,8 +81,7 @@ class CrmHelpdesk(models.Model):
         self.user_id = False
         if self.request_id:
             self.partner_id = self.request_id.partner_id.parent_id.id
-            mail = self.request_id.email
-            self.email_from = mail
+            self.email_from = self.request_id.email
 
     @api.model
     def create(self, values):
