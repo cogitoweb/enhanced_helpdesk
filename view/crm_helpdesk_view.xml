@@ -48,7 +48,6 @@
                                        'base.group_partner_manager',
                                        'base.group_sale_salesman_all_leads']}"
                             attrs="{'readonly': [('state', 'in', ('cancel','done'))]}"/>
-                        <!-- Ticket User see only it self -->
                         <field name="request_id" widget="selection" colspan="2"
                             attrs="{'readonly': [('state', 'in', ('cancel','done'))]}"
                             domain="[('id', '=', uid)]"/>
@@ -65,6 +64,8 @@
                         <group colspan="3">
                             <field name="description" widget="html" nolabel="1" colspan="4"
                                 attrs="{'readonly': [('state', 'in', ('cancel','done'))]}"/>
+                            <field name="related_ticket" nolabel="1" colspan="4" readonly="1"
+                                    attrs="{'invisible': [('related_ticket', '=', False)]}"/>
                         </group>
                         <group colspan="1">
                             <field name="priority" widget="priority"

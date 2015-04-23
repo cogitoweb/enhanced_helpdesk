@@ -21,6 +21,10 @@
 
 
 from openerp import models, fields, api, SUPERUSER_ID
+import logging
+
+
+_logger = logging.getLogger(__name__)
 
 
 class CrmHelpdesk(models.Model):
@@ -39,6 +43,7 @@ class CrmHelpdesk(models.Model):
                                      'crm_helpdesk_id')
     display_name = fields.Char(string='Ticket',
                                compute='_compute_display_name',)
+    related_ticket = fields.Html()
 
     _track = {
         'state': {
@@ -78,10 +83,16 @@ class CrmHelpdesk(models.Model):
 
     @api.onchange('request_id')
     def onchange_requestid(self):
+        _logger.info('BlaBlaCar')
         self.user_id = False
         if self.request_id:
             self.partner_id = self.request_id.partner_id.parent_id.id
             self.email_from = self.request_id.email
+
+    @api.onchange('description')
+    def onchange_description(self):
+        self.related_ticket = '<br/><strong>Related Tickets</strong><br/> \
+Remember to search your problem in old tickets before to open new one'
 
     @api.model
     def create(self, values):
