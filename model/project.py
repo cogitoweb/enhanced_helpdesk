@@ -37,6 +37,13 @@ class Task(models.Model):
     ticket_last_answer_date = fields.Datetime(
         compute='compute_ticket_last_answer',
         string="Last Answer Date")
+    ticket_state = fields.Selection([('draft', 'New'),
+                                     ('open', 'In Progress'),
+                                     ('pending', 'Pending'),
+                                     ('done', 'Closed'),
+                                     ('cancel', 'Cancelled')],
+                                    related='ticket_id.state',
+                                    string='Ticket State')
 
     @api.multi
     def compute_ticket_last_answer(self):
