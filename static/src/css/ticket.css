@@ -31,3 +31,29 @@
 .openerp .oe_list_content td.oe_form_field_one2many_list_row_add {
     padding: 6px 0px;
 }
+
+/* KANBAN SECTION */
+
+.openerp .oe_kanban_view.oe_kanban_ungrouped .oe_kanban_column .oe_kanban_record {
+    display: block !important;
+}
+
+.openerp .oe_kanban_view .oe_kanban_card, .openerp .oe_kanban_view .oe_kanban_quick_create {
+    padding: 10px;
+}
+
+.ticket_message_block {
+    min-width: 600px;
+    font-size: 15px;
+}
+
+.ticket_state {
+    width: 50%;
+    text-align: right;
+    float: right !important;
+}
+
+.ticket_title {
+    font-size: 18px;
+    font-weight: bold;
+}

@@ -33,6 +33,9 @@ class CrmHelpdesk(models.Model):
     _rec_name = 'display_name'
 
     # ---- Fields
+    source = fields.Selection(
+        [('portal', 'Portal'), ('phone', 'Phone'), ('mail', 'Mail')],
+        string='Source', default='portal')
     request_id = fields.Many2one('res.users',
                                  required=True,
                                  string='Richiedente',

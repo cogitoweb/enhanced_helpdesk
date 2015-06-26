@@ -17,6 +17,7 @@ Features
 * Support User reply to a ticket directly from the relative task
 * User can see all the ticket created by himself and his colleagues
 * Merge duplicated tickets
+* Documetation links area
 
 Contributors
 ------------

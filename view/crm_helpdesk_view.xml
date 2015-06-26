@@ -25,6 +25,36 @@
         </field>
     </record>
 
+    <record id="enhanced_helpdesk_kanban" model="ir.ui.view">
+        <field name="name">Enhanced HelpDesk Kanban</field>
+        <field name="model">crm.helpdesk</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name" />
+                <field name="state" />
+                <field name="description" />
+                <field name="request_id" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <p class="ticket_state"><field name="state"/></p>
+                                <p style="width:50%" >
+                                    <img t-att-src="kanban_image('res.users', 'image_small', record.request_id.raw_value)" t-att-title="record.request_id.value" width="24" height="24" class="oe_kanban_avatar"/>
+                                    <field name="date" />
+                                </p>
+                                <p class="ticket_title"><field name="display_name"/></p>
+                                <div class="ticket_message_block">
+                                    <t t-raw="record.description.raw_value"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id="enhanced_helpdesk_form" model="ir.ui.view">
         <field name="name">Enhanced HelpDesk Form</field>
         <field name="model">crm.helpdesk</field>
@@ -70,6 +100,7 @@
                                     attrs="{'invisible': [('related_ticket', '=', False)]}"/>
                         </group>
                         <group colspan="1">
+                            <field name="source" groups="enhanced_helpdesk.ticketing_support"/>
                             <field name="priority" widget="priority"
                                 attrs="{'readonly': [('state', 'in', ('cancel','done'))]}"/>
                             <field name="categ_id"
@@ -158,8 +189,8 @@
         <field name="name">Ticketing / Supporto</field>
         <field name="res_model">crm.helpdesk</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="enhanced_helpdesk_tree"/>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" ref="enhanced_helpdesk_kanban"/>
         <field name="search_view_id" ref="search_enhanced_helpdesk"/>
         <field name="context">{'needaction_menu_ref':1,'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form','search_default_filter_draft':1,'search_default_filter_pending':1,'search_default_filter_open':1, }</field>
     </record>
