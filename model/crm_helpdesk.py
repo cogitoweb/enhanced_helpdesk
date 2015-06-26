@@ -93,9 +93,45 @@ class CrmHelpdesk(models.Model):
         self.related_ticket = '<br/><strong>Related Tickets</strong><br/> \
 Remember to search your problem in old tickets before to open new one'
 
+    def send_notification_mail(self, template_xml_id=None,
+                               object_class=None, object_id=False,
+                               expande=None):
+        # ---- send mail to support for the new ticket
+        company = self.env['res.users'].browse(SUPERUSER_ID).company_id
+        mail_to = ['"%s" <%s>' % (company.name, company.email_ticket)]
+        ir_model_data = self.env['ir.model.data']
+        template_id = ir_model_data.get_object_reference(
+            'enhanced_helpdesk', template_xml_id)[1] or False
+        template_model = self.env['email.template']
+        template = template_model.sudo().browse(template_id)
+        text = template.body_html
+        subject = template.subject
+        text = template_model.render_template(text, object_class, object_id)
+        subject = template_model.render_template(subject, object_class,
+                                                 object_id)
+        # ---- Get active smtp server
+        mail_server = self.env['ir.mail_server'].sudo().search(
+            [], limit=1, order='sequence')
+        # ---- Adding text to mail body
+        if expande and expande.get('after_body', False):
+            text = '%s\n\n -- %s' % (text, expande['after_body'])
+        # ----- Create and send mail
+        mail_value = {
+            'body_html': text,
+            'subject': subject,
+            'email_from': company.email_ticket,
+            'email_to': mail_to,
+            'mail_server_id': mail_server.id,
+            }
+        mail_model = self.env['mail.mail']
+        msg = mail_model.sudo().create(mail_value)
+        mail_model.sudo().send([msg.id])
+        return msg.id
+
     @api.model
     def create(self, values):
         res = super(CrmHelpdesk, self).create(values)
+        # ----- Create task related with this ticket
         task_value = {
             'partner_id': values['partner_id'],
             'name': values['name'],
@@ -104,34 +140,12 @@ Remember to search your problem in old tickets before to open new one'
             }
         self.env['project.task'].sudo().create(task_value)
         # ---- send mail to support for the new ticket
-        company = self.env['res.users'].browse(SUPERUSER_ID).company_id
-        mail_to = ['"%s" <%s>' % (company.name, company.email_ticket)]
-        ir_model_data = self.env['ir.model.data']
-        template_id = ir_model_data.get_object_reference(
-            'enhanced_helpdesk', 'email_template_ticket_new')[1] or False
-        template = self.env['email.template']
-        tmpl_br = template.sudo().browse(template_id)
-        text = tmpl_br.body_html
-        subject = tmpl_br.subject
-        text = template.render_template(text, 'crm.helpdesk',
-                                        res.id)
-        subject = template.render_template(subject, 'crm.helpdesk',
-                                           res.id)
-        # ---- Get active smtp server
-        mail_server = self.env['ir.mail_server'].sudo().search(
-            [], limit=1, order='sequence')
-        # ---- adding text to reply
-        text = '%s\n\n -- %s' % (text, res.description)
-
-        mail_value = {
-            'body_html': text,
-            'subject': subject,
-            'email_from': company.email_ticket,
-            'email_to': mail_to,
-            'mail_server_id': mail_server.id,
-            }
-        msg = self.env['mail.mail'].sudo().create(mail_value)
-        self.env['mail.mail'].sudo().send([msg.id])
+        self.send_notification_mail(
+            template_xml_id='email_template_ticket_new',
+            object_class='crm.helpdesk',
+            object_id=res.id,
+            expande={'after_body': res.description}
+            )
         return res
 
     @api.multi

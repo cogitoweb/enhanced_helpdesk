@@ -79,7 +79,6 @@ src="/web/binary/image?model=res.partner&id=%s&field=image_medium" \
         # ----- Company Recordset
         company = self.env['res.users'].browse(SUPERUSER_ID).company_id
         # ---- Call a function to send mail
-        #~ url = self.get_signup_url(res)
         if res.helpdesk_id.external_ticket_url:
             # ---- Send mail to user
             mail_to = ['"%s" <%s>' % (
