@@ -43,6 +43,8 @@ class CrmHelpdesk(models.Model):
                                      'crm_helpdesk_id')
     display_name = fields.Char(string='Ticket',
                                compute='_compute_display_name',)
+    merge_ticket_id = fields.Many2one('crm.helpdesk')
+    merge_ticket_ids = fields.One2many('crm.helpdesk', 'merge_ticket_id')
     related_ticket = fields.Html()
 
     _track = {
@@ -55,6 +57,10 @@ class CrmHelpdesk(models.Model):
             lambda self, cr, uid, obj, ctx=None: obj['state'] == 'done',
             'enhanced_helpdesk.cancel':
             lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
+        },
+        'merge_ticket_id': {
+            'enhanced_helpdesk.merged':
+            lambda self, cr, uid, o, c=None: o['merge_ticket_id'] is not False,
         },
     }
 

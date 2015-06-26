@@ -39,6 +39,8 @@
                     <button name="ticket_reopen" states="done" string="Reopen"/>
                     <button name="%(action_change_ticket_user)d" states="draft"
                             string="Change User" type="action" groups="enhanced_helpdesk.ticketing_support"/>
+                    <button name="%(action_merge_ticket)d" states="draft"
+                            string="Merge Tickets" type="action" groups="enhanced_helpdesk.ticketing_support"/>
                 </header>
                 <sheet string="Helpdesk Support">
                     <group col="4" class="oe_header">
@@ -114,6 +116,20 @@
                             </field>
                         </form>
                     </field>
+                    <group>
+                        <field name="merge_ticket_id" readonly="1" colspan="4"
+                               attrs="{'invisible':[('merge_ticket_id', '=', False)]}"
+                               context="{'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form'}"/>
+                        <field name="merge_ticket_ids" colspan="4" readonly="1"
+                               attrs="{'invisible':[('merge_ticket_ids', '=', [])]}">
+                            <tree string="Merge">
+                                <field name="id" string="#" />
+                                <field name="name" string="Titolo" />
+                                <field name="date" string="Date"/>
+                            </tree>
+                        </field>
+                    </group>
+
                 </sheet>
             </form>
         </field>

@@ -43,6 +43,7 @@ External depends:
         'security/ir.model.access.csv',
         'data/helpdesk_data.xml',
         'view/wizard_change_user.xml',
+        'view/wizard_merge_ticket.xml',
         'view/crm_helpdesk_view.xml',
         'view/wizard_ticket_reply.xml',
         'view/project_view.xml',

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="wizard_merge_ticket_view" model="ir.ui.view">
+            <field name="name">Merge Ticket</field>
+            <field name="model">wizard.merge.ticket</field>
+            <field name="arch" type="xml">
+              <form string="Merge Ticket">
+                  <group colspan="4">
+                      <field name="destination_ticket_id"/>
+                  </group>
+                  <footer>
+                      <button name="do_merge" string="Merge" type="object" class="oe_highlight"
+                            attrs="{'invisible': [('destination_ticket_id', '=', False)]}"/>
+                      <button string="Cancel" class="oe_link" special="cancel" />
+                  </footer>
+            </form>
+            </field>
+        </record>
+
+        <record id="action_merge_ticket" model="ir.actions.act_window">
+            <field name="name">Merge Ticket</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wizard.merge.ticket</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="wizard_merge_ticket_view"/>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>
