@@ -9,6 +9,21 @@
             <field name="view_mode">form</field>
     </record>
 
+    <record id="view_ticket_task_search_form" model="ir.ui.view">
+        <field name="name">ticket.project.task.search.form</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_search_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="ticket_id" string="Ticket"/>
+            </field>
+            <filter name="draft" position="after">
+                <filter string="From Ticket" name="from_ticket"
+                        domain="[('ticket_id', '!=', False)]"/>
+            </filter>
+        </field>
+    </record>
+
     <record id="ticket_view_task_form2" model="ir.ui.view">
         <field name="name">ticket.project.task.form</field>
         <field name="model">project.task</field>
