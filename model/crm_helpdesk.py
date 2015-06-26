@@ -83,7 +83,6 @@ class CrmHelpdesk(models.Model):
 
     @api.onchange('request_id')
     def onchange_requestid(self):
-        _logger.info('BlaBlaCar')
         self.user_id = False
         if self.request_id:
             self.partner_id = self.request_id.partner_id.parent_id.id

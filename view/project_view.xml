@@ -31,7 +31,7 @@
         <field name="arch" type="xml">
             <field name="project_id" position="after">
                 <t t-if="record.ticket_id">
-                    Ticket <i><field name="ticket_id" /></i><br />
+                    <br />Ticket <i><field name="ticket_id" /></i><br />
                 </t>
             </field>
         </field>
