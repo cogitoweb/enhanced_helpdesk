@@ -24,6 +24,19 @@
         </field>
     </record>
 
+    <record id="view_ticket_task_kanban" model="ir.ui.view">
+        <field name="name">ticket.project.task.kanban</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban"/>
+        <field name="arch" type="xml">
+            <field name="project_id" position="after">
+                <t t-if="record.ticket_id">
+                    Ticket <i><field name="ticket_id" /></i><br />
+                </t>
+            </field>
+        </field>
+    </record>
+
     <record id="ticket_view_task_form2" model="ir.ui.view">
         <field name="name">ticket.project.task.form</field>
         <field name="model">project.task</field>
