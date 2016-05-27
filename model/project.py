@@ -38,8 +38,8 @@ class Task(models.Model):
         compute='compute_ticket_last_answer',
         string="Last Answer Date")
     ticket_state = fields.Selection([('draft', 'New'),
-                                     ('open', 'In Progress'),
                                      ('pending', 'Pending'),
+                                     ('open', 'In Progress'),
                                      ('done', 'Closed'),
                                      ('cancel', 'Cancelled')],
                                     related='ticket_id.state',
@@ -57,3 +57,46 @@ class Task(models.Model):
                 date = answer.date
             task.ticket_last_answer_user_id = user_id
             task.ticket_last_answer_date = date
+
+class Project(models.Model): 
+    
+    _inherit = 'project.project'
+    
+    # il campo di riferimento è 
+    ### invoiced_hours su task
+    ### invoiced_hours su issue
+    total_billable_hours = fields.Float(compute='compute_total_billable_hours', store=True)
+    used_billable_hours = fields.Float(compute='compute_total_billable_hours', store=True)
+    locked_billable_hours = fields.Float(compute='compute_total_billable_hours', store=True)
+    free_billable_hours = fields.Float(compute='compute_total_billable_hours', store=True)
+    
+    @api.depends('tasks.invoiced_hours')
+    def compute_total_billable_hours(self):
+        for record in self:
+            
+            ## one liner
+            # sum(task.invoiced_hours for task in record.tasks)
+            
+            tot = 0
+            used = 0
+            locked = 0
+            free = 0
+            
+            for task in record.tasks:
+                
+                if task.invoiced_hours > 0:
+                    if task.stage_id.name in ['Analysis', 'Specification', 'Design', 'Development', 'Testing', 'Merge',
+                        'Waiting Response', 'Waiting Instructions', 'Suspended']:
+                        locked = locked + task.invoiced_hours
+                    elif task.stage_id.name in ['Done']:
+                        used = used + task.invoiced_hours
+                elif task.invoiced_hours < 0:
+                    if task.stage_id.name in ['Done']:
+                            tot = tot - task.invoiced_hours
+
+            free = tot - (used + locked)
+            
+            record.total_billable_hours = tot
+            record.used_billable_hours = used
+            record.locked_billable_hours = locked
+            record.free_billable_hours = free

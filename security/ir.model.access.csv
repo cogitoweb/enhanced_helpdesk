@@ -7,3 +7,4 @@ access_crm_case_categ,crm_case_caeg_ticketuser,crm.model_crm_case_categ,ticketin
 access_ir_attachment,ir_attachment_ticketuser,base.model_ir_attachment,ticketing_external_user,1,1,1,1
 access_crm_helpdesk_guide_user,crm_helpdesk_guide_ticketuser,model_crm_helpdesk_guide,ticketing_external_user,1,0,0,0
 access_crm_helpdesk_guide_support,crm_helpdesk_guide_supportuser,model_crm_helpdesk_guide,ticketing_support,1,1,1,1
+access_helpdesk_qa_support,helpdeks_ticketuser_support,model_helpdesk_qa,ticketing_support,1,1,1,1

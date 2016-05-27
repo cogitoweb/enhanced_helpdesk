@@ -18,6 +18,7 @@
                     colors="black:state=='open';blue:state=='pending';gray:state in ('cancel','done')">
                 <field name="id" string="#" />
                 <field name="name" string="Titolo" />
+                <field name="project_id" string="Progetto" />
                 <field name="date" string="Date"/>
                 <field name="user_id"/>
                 <field name="state"/>
@@ -29,8 +30,9 @@
         <field name="name">Enhanced HelpDesk Kanban</field>
         <field name="model">crm.helpdesk</field>
         <field name="arch" type="xml">
-            <kanban>
+            <kanban default_order="priority desc" default_group_by="state" quick_create="false" edit="false">
                 <field name="name" />
+                <field name="project_id" />
                 <field name="state" />
                 <field name="description" />
                 <field name="request_id" />
@@ -38,12 +40,16 @@
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_card oe_kanban_global_click">
                             <div class="oe_kanban_content">
-                                <p class="ticket_state"><field name="state"/></p>
+                                <p class="ticket_state">
+                                    <field name="state"/>
+                                    <field name="priority" widget="priority"/>
+                                </p>
                                 <p style="width:50%" >
                                     <img t-att-src="kanban_image('res.users', 'image_small', record.request_id.raw_value)" t-att-title="record.request_id.value" width="24" height="24" class="oe_kanban_avatar"/>
                                     <field name="date" />
                                 </p>
                                 <p class="ticket_title"><field name="display_name"/></p>
+                                <p class="ticket_title"><field name="project_id"/></p>
                                 <div class="ticket_message_block">
                                     <t t-raw="record.description.raw_value"/>
                                 </div>
@@ -58,59 +64,80 @@
     <record id="enhanced_helpdesk_form" model="ir.ui.view">
         <field name="name">Enhanced HelpDesk Form</field>
         <field name="model">crm.helpdesk</field>
+        <field name="groups_id" eval="[(6, 0, [ref('enhanced_helpdesk.ticketing_external_user') ])]" /> 
         <field name="arch" type="xml">
             <form string="Helpdesk Support">
                 <header>
-                    <field name="state" nolabel="1" widget="statusbar"
-                        statusbar_colors="{&quot;pending&quot;:&quot;blue&quot;}"
-                        attrs="{'readonly': [('state', 'in', ('cancel','done'))]}"/>
-                    <button name="ticket_close" states="draft" string="Close"/>
-                    <button name="ticket_cancel" states="draft" string="Cancel"/>
-                    <button name="ticket_reopen" states="done" string="Reopen"/>
-                    <button name="%(action_change_ticket_user)d" states="draft"
-                            string="Change User" type="action" groups="enhanced_helpdesk.ticketing_support"/>
+                    <field name="state" widget="statusbar"  statusbar_colors="{&quot;pending&quot;:&quot;blue&quot;}" />
+                    
+                    <button name="ticket_cancel" string="Annulla richiesta" attrs="{'invisible': ['|',('id', '=', False),('state', '!=', 'draft')]}" />
+                    <button name="ticket_reopen" states="cancel" string="Riapri richiesta"/>
+                    
+                    <button name="working_ticket" states="pending" string="Approva stima" /> 
+                    
+                    <!--<button name="%(action_change_ticket_user)d" states="draft"
+                            string="Change User" type="action" groups="enhanced_helpdesk.ticketing_support"/> 
                     <button name="%(action_merge_ticket)d" states="draft"
-                            string="Merge Tickets" type="action" groups="enhanced_helpdesk.ticketing_support"/>
+                            string="Merge Tickets" type="action" groups="enhanced_helpdesk.ticketing_support"/>-->
                 </header>
                 <sheet string="Helpdesk Support">
                     <group col="4" class="oe_header">
+                        
+                        <h2 colspan="4" attrs="{'invisible': [('id', '=', False)]}">
+                            Ticket ID #<field name="id" class="oe_inline" readonly="1" colspan="1" nolabel="1"/>
+                        </h2>
+                        
                         <field name="user_id" invisible="1" colspan="4"
                             context="{'default_groups_ref':
                                       ['base.group_user',
                                        'base.group_partner_manager',
-                                       'base.group_sale_salesman_all_leads']}"
-                            attrs="{'readonly': [('state', 'in', ('cancel','done'))]}"/>
+                                       'base.group_sale_salesman_all_leads']}" />
+                        
                         <field name="request_id" widget="selection" colspan="2"
-                            attrs="{'readonly': [('state', 'in', ('cancel','done'))]}"
+                            attrs="{'readonly': True}"
                             domain="[('id', '=', uid)]"/>
-                        <field name="date" readonly="1" colspan="2"/>
+                        
+                        <field name="date" readonly="1" colspan="2" string="Data"/>
                         <field name="date_deadline" invisible="1" colspan="4"/>
                         <field name="email_from" invisible="1" />
                         <!--  Partner_id is required for annoying checking rules -->
                         <field name="partner_id" invisible="1"/>
-                        <separator string="Object" colspan="4"/>
-                        <h1 colspan="4">Ticket ID #<field name="id" class="oe_inline" readonly="1" colspan="1" nolabel="1"/></h1>
-                        <h1 colspan="4"><field name="name" string="Titolo" colspan="4" nolabel="1"
-                            attrs="{'readonly': [('state', 'in', ('cancel','done'))]}"/></h1>
-                        <separator string="Description" colspan="4"/>
-                        <group colspan="3">
-                            <field name="description" widget="html" nolabel="1" colspan="4"
-                                attrs="{'readonly': [('state', 'in', ('cancel','done'))]}"/>
-                            <field name="related_ticket" nolabel="1" colspan="4" readonly="1"
-                                    attrs="{'invisible': [('related_ticket', '=', False)]}"/>
-                        </group>
-                        <group colspan="1">
+                        
+                        <group colspan="2">
+                            <field name="project_id" widget="selection" colspan="2"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            
+                            <field name="channel_id" invisible="1"/>
                             <field name="source" groups="enhanced_helpdesk.ticketing_support"/>
-                            <field name="priority" widget="priority"
-                                attrs="{'readonly': [('state', 'in', ('cancel','done'))]}"/>
-                            <field name="categ_id"
+                        </group>
+                        
+                        <group colspan="2">
+                            <field name="categ_id" colspan="1"
                                 domain="[('object_id.model', '=', 'crm.helpdesk')]"
                                 context="{'object_name': 'crm.helpdesk'}"
                                 widget="selection"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+
+                            <field name="priority" widget="priority" colspan="1"
                                 attrs="{'readonly': [('state', 'in', ('cancel','done'))]}"/>
-                            <field name="channel_id" invisible="1"/>
                         </group>
-                        <separator string="Attachments" colspan="4"/>
+                        
+                        <group colspan="4">
+                            <field name="name" string="Oggetto" colspan="4"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                        
+                        <separator string="Descrizione" colspan="4"/>
+                        
+                        <group colspan="4">
+                            <field name="description" widget="html" nolabel="1" colspan="4"
+                                attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="related_ticket" nolabel="1" colspan="4" readonly="1"
+                                    attrs="{'invisible': [('related_ticket', '=', False)]}"/>
+                        </group>
+
+                        <separator string="Allegati" colspan="4"/>
+                        
                         <field name="attachment_ids" colspan="4" mode="kanban"
                                 context="{'default_res_id':uid, 'default_res_model':'res.users'}"
                                 nolabel="1"
@@ -124,29 +151,35 @@
                                 <field name="res_model" colspan="4" readonly="False" invisible="True"/>
                             </form>
                         </field>
+                        
+                        <separator string="Messaggi" colspan="4"/>
+                        
+                        <field name="helpdesk_qa_ids" nolabel="1" class="ticket_messages" colspan="4"
+                            attrs="{'readonly': [('state', 'in', ('cancel','done'))], 'invisible': [('id', '=', False)]}">
+
+                            <tree string="Messagges List">
+                                <field name="complete_message" string=""/>
+                            </tree>
+                            <form string="New Message">
+                                <field name="date" readonly="1" colspan="4"/>
+                                <field name="message" colspan="4"/>
+                                <field name="complete_message" colspan="4" invisible="1"/>
+                                <separator string="Attachments" colspan="4"/>
+                                <field name="attachment_ids" colspan="4" mode="kanban" context="{'default_res_id':uid, 'default_res_model':'res.users'}">
+                                    <form>
+                                        <label for="name" colspan="4"/>
+                                        <field name="name" colspan="4"/>
+                                        <label for="datas" colspan="4"/>
+                                        <field name="datas" colspan="4"/>
+                                        <field name="res_id" colspan="4" readonly="False" invisible="True"/>
+                                        <field name="res_model" colspan="4" readonly="False" invisible="True"/>
+                                    </form>
+                                </field>
+                            </form>
+                        </field>
+                        
                     </group>
-                    <field name="helpdesk_qa_ids" nolabel="1" class="ticket_messages" colspan="4"
-                        attrs="{'readonly': [('state', 'in', ('cancel','done'))], 'invisible': [('id', '=', False)]}">
-                        <tree string="Messagges List">
-                            <field name="complete_message" string="Message"/>
-                        </tree>
-                        <form string="New Message">
-                            <field name="date" readonly="1" colspan="4"/>
-                            <field name="message" colspan="4"/>
-                            <field name="complete_message" colspan="4" invisible="1"/>
-                            <separator string="Attachments" colspan="4"/>
-                            <field name="attachment_ids" colspan="4" mode="kanban" context="{'default_res_id':uid, 'default_res_model':'res.users'}">
-                                <form>
-                                    <label for="name" colspan="4"/>
-                                    <field name="name" colspan="4"/>
-                                    <label for="datas" colspan="4"/>
-                                    <field name="datas" colspan="4"/>
-                                    <field name="res_id" colspan="4" readonly="False" invisible="True"/>
-                                    <field name="res_model" colspan="4" readonly="False" invisible="True"/>
-                                </form>
-                            </field>
-                        </form>
-                    </field>
+                    
                     <group>
                         <field name="merge_ticket_id" readonly="1" colspan="4"
                                attrs="{'invisible':[('merge_ticket_id', '=', False)]}"
@@ -165,6 +198,27 @@
             </form>
         </field>
     </record>
+
+    <record id="enhanced_helpdesk_form_support" model="ir.ui.view">
+        <field name="name">Enhanced HelpDesk Form</field>
+        <field name="model">crm.helpdesk</field>
+        <field name="inherit_id" ref="enhanced_helpdesk_form" />    
+        <field name="groups_id" eval="[([ref('enhanced_helpdesk.ticketing_support') ])]" />    
+        
+        <field name="arch" type="xml">
+            <xpath expr="//form/header/field[@name='state']" position="replace">
+
+                <field name="state" widget="statusbar" clickable="True"
+                           statusbar_colors="{&quot;pending&quot;:&quot;blue&quot;}" />
+
+            </xpath>
+        </field>
+        
+    </record>
+
+
+
+
 
     <record id="search_enhanced_helpdesk" model="ir.ui.view">
         <field name="name">Enhanced Helpdesk</field>
@@ -198,12 +252,14 @@
     <menuitem name="Supporto e Ticket"
               parent="portal.portal_menu"
               id="menu_enhanced_helpdesk"
+              sequence="1"
               groups="enhanced_helpdesk.ticketing_external_user"/>
               
     <menuitem name="Ticket"
               parent="menu_enhanced_helpdesk"
               action="action_enhanced_helpdesk"
               id="menu_ticket_helpdesk"
+              sequence="2"
               groups="enhanced_helpdesk.ticketing_external_user"/>
 
     <!-- INHERITH VIEW TO INSERT NEW MESSAGE FORM -->

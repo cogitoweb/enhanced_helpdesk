@@ -1,6 +1,5 @@
 .openerp .ticket_messages .oe_list_content {
     border-collapse: separate;
-    border-spacing: 10px;
 }
 
 .openerp .ticket_messages .oe_list_field_text {
@@ -34,12 +33,16 @@
 
 /* KANBAN SECTION */
 
-.openerp .oe_kanban_view.oe_kanban_ungrouped .oe_kanban_column .oe_kanban_record {
-    display: block !important;
+.openerp .oe_kanban_view .oe_kanban_content.enhanced_helpdesk_project_kanban  h4 {
+    height:28px;
 }
 
-.openerp .oe_kanban_view .oe_kanban_card, .openerp .oe_kanban_view .oe_kanban_quick_create {
-    padding: 10px;
+.openerp .oe_kanban_view .enhanced_helpdesk_project_kanban .oe_kanban_footer_left > span {
+    width: 100%;
+}
+
+.openerp .oe_form .oe_form_group .oe_form_group_cell.oe_group_right {
+    padding-left: 8px;
 }
 
 .ticket_message_block {

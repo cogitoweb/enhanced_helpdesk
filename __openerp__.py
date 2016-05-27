@@ -34,7 +34,7 @@ External depends:
     'author': 'Apulia Software Srl',
     'website': 'www.apuliasoftware.it',
     'license': 'AGPL-3',
-    "depends": ['base', 'web', 'crm_helpdesk', 'project', 'portal'],
+    "depends": ['base', 'web', 'crm_helpdesk', 'project', 'portal', 'base_cogitoweb'],
     'external_dependencies': {
         'python': ['BeautifulSoup'],
         },

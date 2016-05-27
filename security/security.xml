@@ -9,15 +9,50 @@
         <record id="ticketing_support" model="res.groups">
             <field name="name">Ticketing Support</field>
         </record>
+        
+        <record id="see_portal_projects" model="ir.rule">
+            <field name="name">See Portal own projects</field>
+            <field name="model_id" ref="project.model_project_project"/>
+            <field name="groups" eval="[(4,ref('ticketing_external_user'))]"/>
+            <field name="domain_force">['|',
+             ('partner_id.child_ids', 'in', [user.partner_id.id]),
+             ('partner_id', 'in', [user.partner_id.id]),
+             ('privacy_visibility', 'in', ['portal']),
+            ]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="perm_write" eval="False"/>
+       </record>
+       
+       <record id="see_portal_tasks" model="ir.rule">
+            <field name="name">See Portal own tasks</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="groups" eval="[(4,ref('ticketing_external_user'))]"/>
+            <field name="domain_force">['|',
+             ('partner_id.child_ids', 'in', [user.partner_id.id]),
+             ('partner_id', 'in', [user.partner_id.id]),
+             ('invoiced_hours', '>', 0),
+             ('project_id.privacy_visibility', 'in', ['portal']),
+            ]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="perm_write" eval="False"/>
+       </record>
+       
 
+        <!--
         <record id="see_company_ticket" model="ir.rule">
            <field name="name">See Company Ticket</field>
            <field name="model_id" ref="model_crm_helpdesk"/>
            <field name="groups" eval="[(4, ref('ticketing_external_user'))]"/>
            <field name="domain_force">[('partner_id','child_of',[user.partner_id.parent_id.id])]</field>
         </record>
-
+        -->
+        
         <!-- Contrast base.res_partner_portal_public_rule permissions -->
+        <!--
         <record id="see_reply_from_other_user_ticket" model="ir.rule">
             <field name="name">See Reply From Other Users Ticket</field>
             <field name="model_id" ref="base.model_res_partner"/>
@@ -28,6 +63,7 @@
             <field name="perm_unlink" eval="False"/>
             <field name="perm_write" eval="False"/>
        </record>
+       -->
 
     </data>
 </openerp>

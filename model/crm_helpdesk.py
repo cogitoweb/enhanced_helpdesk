@@ -36,10 +36,12 @@ class CrmHelpdesk(models.Model):
     source = fields.Selection(
         [('portal', 'Portal'), ('phone', 'Phone'), ('mail', 'Mail')],
         string='Source', default='portal')
+        
     request_id = fields.Many2one('res.users',
                                  required=True,
                                  string='Richiedente',
                                  default=lambda self: self.env.user)
+
     external_ticket_url = fields.Char(compute='_get_external_ticket_url')
     helpdesk_qa_ids = fields.One2many('helpdesk.qa', 'helpdesk_id')
     attachment_ids = fields.One2many('ir.attachment',
@@ -50,12 +52,14 @@ class CrmHelpdesk(models.Model):
     merge_ticket_ids = fields.One2many('crm.helpdesk', 'merge_ticket_id')
     related_ticket = fields.Html()
 
+    project_id = fields.Many2one('project.project', required=True, string='Progetto')
+
     _track = {
         'state': {
-            'enhanced_helpdesk.open':
-            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'open',
             'enhanced_helpdesk.pending':
             lambda self, cr, uid, obj, ctx=None: obj['state'] == 'pending',
+            'enhanced_helpdesk.open':
+            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'open',
             'enhanced_helpdesk.done':
             lambda self, cr, uid, obj, ctx=None: obj['state'] == 'done',
             'enhanced_helpdesk.cancel':
@@ -99,8 +103,7 @@ class CrmHelpdesk(models.Model):
 
     @api.onchange('description')
     def onchange_description(self):
-        self.related_ticket = '<br/><strong>Related Tickets</strong><br/> \
-Remember to search your problem in old tickets before to open new one'
+        self.related_ticket = ''
 
     def send_notification_mail(self, template_xml_id=None,
                                object_class=None, object_id=False,
@@ -142,7 +145,9 @@ Remember to search your problem in old tickets before to open new one'
         res = super(CrmHelpdesk, self).create(values)
         # ----- Create task related with this ticket
         task_value = {
+            'project_id': values['project_id'],
             'partner_id': values['partner_id'],
+            'user_id': "",
             'name': values['name'],
             'description': values['description'],
             'ticket_id': res.id,
