@@ -48,11 +48,17 @@ class CrmHelpdesk(models.Model):
                                      'crm_helpdesk_id')
     display_name = fields.Char(string='Ticket',
                                compute='_compute_display_name',)
+    display_id = fields.Char(string='Ticket ID',
+                               compute='_compute_display_name',)
     merge_ticket_id = fields.Many2one('crm.helpdesk')
     merge_ticket_ids = fields.One2many('crm.helpdesk', 'merge_ticket_id')
     related_ticket = fields.Html()
 
     project_id = fields.Many2one('project.project', required=True, string='Progetto')
+    
+    task_id = fields.Many2one('project.task')
+    task_invoiced_hours = fields.Float(string='Ore stimate', related='task_id.invoiced_hours')
+    task_deadline = fields.Date(string='Deadline', related='task_id.date_deadline')
 
     _track = {
         'state': {
@@ -75,6 +81,7 @@ class CrmHelpdesk(models.Model):
     @api.depends('name')
     def _compute_display_name(self):
         self.display_name = '#%s - %s' % (self.id, self.name)
+        self.display_id = '#%s' % (self.id)
 
     @api.multi
     def _get_external_ticket_url(self):
@@ -152,7 +159,11 @@ class CrmHelpdesk(models.Model):
             'description': values['description'],
             'ticket_id': res.id,
             }
-        self.env['project.task'].sudo().create(task_value)
+        task_id = self.env['project.task'].sudo().create(task_value)
+        
+        # ---- register self task
+        res.task_id = task_id
+        
         # ---- send mail to support for the new ticket
         self.send_notification_mail(
             template_xml_id='email_template_ticket_new',
@@ -176,6 +187,7 @@ class CrmHelpdesk(models.Model):
 
     @api.multi
     def working_ticket(self):
+        _logger.error('test set working ticket %s', 'aaaaa')
         self.write({'state': 'open'})
 
     @api.multi

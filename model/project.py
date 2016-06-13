@@ -28,6 +28,7 @@ class Task(models.Model):
 
     # ----- Fields
     ticket_id = fields.Many2one('crm.helpdesk')
+    ticket_display_id = fields.Char(string='Ticket ID', related='ticket_id.display_id')
     rel_helpdesk_qa_ids = fields.One2many(string='Messages',
                                           related='ticket_id.helpdesk_qa_ids',
                                           readonly=True)

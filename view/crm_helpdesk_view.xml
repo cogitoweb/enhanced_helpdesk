@@ -9,23 +9,25 @@
             <script type="text/javascript" src="/enhanced_helpdesk/static/src/js/helpdesk.js"></script>
         </xpath>
     </template>
-
-    <record id="enhanced_helpdesk_tree" model="ir.ui.view">
-        <field name="name">Enhanced HelpDesk Tree</field>
-        <field name="model">crm.helpdesk</field>
-        <field name="arch" type="xml">
-            <tree string="Helpdesk Support Tree"
+    
+    <!-- socrascrivo vista tree per utenti helpdesk -->
+    <record model="ir.ui.view" id="crm_case_tree_view_helpdesk">
+            <field name="name">CRM - Helpdesk Support Tree</field>
+            <field name="model">crm.helpdesk</field>
+            <field name="arch" type="xml">
+                <tree string="Helpdesk Support Tree"
                     colors="black:state=='open';blue:state=='pending';gray:state in ('cancel','done')">
-                <field name="id" string="#" />
-                <field name="name" string="Titolo" />
-                <field name="project_id" string="Progetto" />
-                <field name="date" string="Date"/>
-                <field name="user_id"/>
-                <field name="state"/>
-            </tree>
-        </field>
-    </record>
+                    <field name="id" string="ID" />
+                    <field name="name" string="Oggetto" />
+                    <field name="priority"/>
+                    <field name="state"/>
+                    <field name="task_invoiced_hours" attrs="{'invisible': [('state', '=', 'draft')]}" sum="Stimate" />
+                    <field name="task_deadline" attrs="{'invisible': [('state', '=', 'draft')]}" />
+                </tree>
+            </field>
+   </record>
 
+    <!-- dichiaro kanban per utenti helpdesk -->
     <record id="enhanced_helpdesk_kanban" model="ir.ui.view">
         <field name="name">Enhanced HelpDesk Kanban</field>
         <field name="model">crm.helpdesk</field>
@@ -33,6 +35,9 @@
             <kanban default_order="priority desc" default_group_by="state" quick_create="false" edit="false">
                 <field name="name" />
                 <field name="project_id" />
+                <field name="task_id" />
+                <field name="task_invoiced_hours" />
+                <field name="task_deadline" />
                 <field name="state" />
                 <field name="description" />
                 <field name="request_id" />
@@ -44,14 +49,21 @@
                                     <field name="state"/>
                                     <field name="priority" widget="priority"/>
                                 </p>
-                                <p style="width:50%" >
+                                <p class="ticket_info" >
                                     <img t-att-src="kanban_image('res.users', 'image_small', record.request_id.raw_value)" t-att-title="record.request_id.value" width="24" height="24" class="oe_kanban_avatar"/>
+                                    <field name="project_id"/>
                                     <field name="date" />
                                 </p>
+                               
                                 <p class="ticket_title"><field name="display_name"/></p>
-                                <p class="ticket_title"><field name="project_id"/></p>
+                                
+                                 <p class="task_info" t-if="(record.state.raw_value != 'draft')">
+                                    ore stimate: <strong><field name="task_invoiced_hours" /></strong><br />
+                                    consegna entro il <strong><field name="task_deadline" /></strong><br />
+                                </p>
+                                
                                 <div class="ticket_message_block">
-                                    <t t-raw="record.description.raw_value"/>
+                                    <t t-raw="record.description.raw_value" attrs="{'invisible': [('description', '=', False)]}" />
                                 </div>
                             </div>
                         </div>
@@ -61,6 +73,7 @@
         </field>
     </record>
 
+    <!-- dichiaro form per utenti helpdesk -->
     <record id="enhanced_helpdesk_form" model="ir.ui.view">
         <field name="name">Enhanced HelpDesk Form</field>
         <field name="model">crm.helpdesk</field>
@@ -73,7 +86,7 @@
                     <button name="ticket_cancel" string="Annulla richiesta" attrs="{'invisible': ['|',('id', '=', False),('state', '!=', 'draft')]}" />
                     <button name="ticket_reopen" states="cancel" string="Riapri richiesta"/>
                     
-                    <button name="working_ticket" states="pending" string="Approva stima" /> 
+                    <button name="ticket_pending_open" states="pending" string="Approva stima" /> 
                     
                     <!--<button name="%(action_change_ticket_user)d" states="draft"
                             string="Change User" type="action" groups="enhanced_helpdesk.ticketing_support"/> 
@@ -109,6 +122,9 @@
                             
                             <field name="channel_id" invisible="1"/>
                             <field name="source" groups="enhanced_helpdesk.ticketing_support"/>
+                            
+                            <field name="task_id" attrs="{'readonly': True, 'invisible': ['|',('state', '=', 'draft'),('task_id', '=', False)]}" action="action_view_portal_task"  />
+                            <field name="task_invoiced_hours" widget="float_time" string="Ore stimate" attrs="{'invisible': ['|',('state', '=', 'draft'),('task_id', '=', False)]}" />
                         </group>
                         
                         <group colspan="2">
@@ -122,8 +138,10 @@
                                 attrs="{'readonly': [('state', 'in', ('cancel','done'))]}"/>
                         </group>
                         
+                        <separator string="Oggetto" colspan="4"/>
+                        
                         <group colspan="4">
-                            <field name="name" string="Oggetto" colspan="4"
+                            <field name="name" nolabel="1" colspan="4"
                                 attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                         
@@ -199,6 +217,23 @@
         </field>
     </record>
 
+
+    <record id="enhanced_helpdesk_tree" model="ir.ui.view">
+        <field name="name">Enhanced HelpDesk Tree</field>
+        <field name="model">crm.helpdesk</field>
+        <field name="arch" type="xml">
+            <tree string="Helpdesk Support Tree"
+                    colors="black:state=='open';blue:state=='pending';gray:state in ('cancel','done')">
+                <field name="id" string="#" />
+                <field name="name" string="Titolo" />
+                <field name="project_id" string="Progetto" />
+                <field name="date" string="Date"/>
+                <field name="user_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
     <record id="enhanced_helpdesk_form_support" model="ir.ui.view">
         <field name="name">Enhanced HelpDesk Form</field>
         <field name="model">crm.helpdesk</field>
@@ -210,15 +245,9 @@
 
                 <field name="state" widget="statusbar" clickable="True"
                            statusbar_colors="{&quot;pending&quot;:&quot;blue&quot;}" />
-
             </xpath>
         </field>
-        
     </record>
-
-
-
-
 
     <record id="search_enhanced_helpdesk" model="ir.ui.view">
         <field name="name">Enhanced Helpdesk</field>

@@ -36,7 +36,7 @@
             <field name="context">{'search_default_Current': 1}</field>
     </record>
     
-    <!-- override kanban -->
+    <!-- override kanban project -->
     <record id="enhanced_helpdesk_project_kanban" model="ir.ui.view">
         <field name="name">Enhanced HelpDesk Project Kanban</field>
         <field name="model">project.project</field>
@@ -99,7 +99,7 @@
         </field>
     </record>
     
-    <!-- override tree -->
+    <!-- override tree project -->
     <record id="view_project" model="ir.ui.view">
         <field name="name">project.project.tree</field>
         <field name="model">project.project</field>
@@ -148,6 +148,16 @@
                                 <field name="name" string="Project Name"/>
                             </h1>
                         </div>
+                        <div class="oe_right oe_button_box" name="buttons">
+                            <button class="oe_inline oe_stat_button" type="action" name="%(action_view_portal_task)d" icon="fa-tasks" 
+                                    context="{'search_default_project_id': id}">
+                                <div>Tasks</div>
+                           </button>
+                           <button class="oe_inline oe_stat_button" type="action" name="%(action_enhanced_helpdesk)d" icon="fa-ticket" 
+                                    context="{'search_default_project_id': id}">
+                                <div>Tickets</div>
+                           </button>
+                       </div>
                         <group>
                             <group col="4">
                                 <field name="user_id" string="Project Manager" readonly="True"
@@ -204,41 +214,28 @@
         </record>
         
         
-        <!-- add for all Disponibilità su progetto -->
+    <!-- add for all Disponibilità su progetto -->
         
-        <record id="project_issue.view_project_form_inherited" model="ir.ui.view">
-            <field name="name">project.project.form</field>
-            <field name="model">project.project</field>
+    <record id="project_issue.view_project_form_inherited" model="ir.ui.view">
+        <field name="name">project.project.form</field>
+        <field name="model">project.project</field>
 
-            <field name="arch" type="xml">
-                
-                <xpath expr="//form/sheet/notebook/page[@name='team']" position="before">
-                    
-                    <page string="Bonus / Banca ore" name="bonus">
-                            <group string="Situazione disponibilità" name="disp">
-                                <field name="total_billable_hours" widget="float_time" string="Ore complessive" />
-                                <field name="used_billable_hours" widget="float_time" string="Ore consumate"  />
-                                <field name="locked_billable_hours" widget="float_time" string="Ore allocate"  />
-                                <field name="free_billable_hours" widget="float_time" string="Ore disponibili"  />
-                            </group>
-                        </page>
-                    
-                </xpath>
-            </field>
-        </record>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        <field name="arch" type="xml">
+
+            <xpath expr="//form/sheet/notebook/page[@name='team']" position="before">
+
+                <page string="Bonus / Banca ore" name="bonus">
+                        <group string="Situazione disponibilità" name="disp">
+                            <field name="total_billable_hours" widget="float_time" string="Ore complessive" />
+                            <field name="used_billable_hours" widget="float_time" string="Ore consumate"  />
+                            <field name="locked_billable_hours" widget="float_time" string="Ore allocate"  />
+                            <field name="free_billable_hours" widget="float_time" string="Ore disponibili"  />
+                        </group>
+                    </page>
+
+            </xpath>
+        </field>
+    </record>
         
     
     <!-- abilitazione menu task -->
@@ -246,7 +243,7 @@
     <record id="action_view_portal_task" model="ir.actions.act_window">
         <field name="name">Tasks</field>
         <field name="res_model">project.task</field>
-        <field name="view_mode">kanban,tree,form,gantt</field>
+        <field name="view_mode">kanban,tree,form</field>
         <field name="search_view_id" ref="project.view_task_search_form"/>
         <field name="help" type="html">
             <p>
@@ -257,12 +254,8 @@
 
     <menuitem name="Tasks" id="portal_services_tasks" parent="portal.portal_projects"
         action="action_view_portal_task" sequence="12"/>
-    
-    
-    
-    <!-- end 2z -->
-    
-    
+
+
     <record id="act_ticket_reply" model="ir.actions.act_window">
             <field name="res_model">wizard.ticket.reply</field>
             <field name="view_type">form</field>
@@ -285,16 +278,31 @@
         </field>
     </record>
 
+  
+    <!-- override task kanban -->
     <record id="view_ticket_task_kanban" model="ir.ui.view">
         <field name="name">ticket.project.task.kanban</field>
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_kanban"/>
+        
+        <field name="ticket_display_id" />
+        
         <field name="arch" type="xml">
             <field name="project_id" position="after">
                 <t t-if="record.ticket_id">
-                    <br />Ticket <i><field name="ticket_id" /></i><br />
+                    <br />Ticket <i>#<field name="ticket_display_id" /></i><br />
                 </t>
             </field>
+            
+            <!-- rimuovo dati privati -->
+            <xpath expr="//field[@name='remaining_hours']" position="replace"> 
+            </xpath>
+            
+            <!-- rimuovo dati privati 
+            <xpath expr="//div[@class='oe_kanban_content']" position="replace"> 
+            </xpath>
+            -->
+            
         </field>
     </record>
 
@@ -306,7 +314,7 @@
             <field name="reviewer_id" position="after">
                 <field name="ticket_last_answer_user_id" attrs="{'invisible': [('ticket_id', '=', False)]}"/>
                 <field name="ticket_last_answer_date" attrs="{'invisible': [('ticket_id', '=', False)]}"/>
-                <field name="ticket_state" readonly="True"/>
+                <field name="ticket_state" readonly="True" attrs="{'invisible': [('ticket_id', '=', False)]}"/>
             </field>
             <field name="project_id" position="attributes">
                 <attribute name="domain">"[('partner_id', '=', partner_id)]"</attribute>
@@ -320,13 +328,13 @@
                     icon="fa-star"
                     string="Ticket Reply"
                     attrs="{'invisible': [('ticket_id', '=', False)]}"
-                    context="{'default_ticket_id': ticket_id}" />
+                    context="{'default_ticket_id': ticket_id}" groups="enhanced_helpdesk.ticketing_support" />
             </field>
             <notebook position="inside">
                 <page string="Helpdesk" attrs="{'invisible': [('ticket_id', '=', False)]}">
-                    <label for="ticket_id"/>
-                    <field name="ticket_id" readonly="True"/>
-                    <label for="rel_helpdesk_qa_ids"/>
+
+                    Ticket <strong><field name="ticket_id" readonly="True"/></strong> <br />
+                    
                     <field name="rel_helpdesk_qa_ids" >
                         <tree string="Messagges List">
                             <field name="complete_message" string="Message"/>
