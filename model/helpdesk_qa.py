@@ -22,7 +22,6 @@
 
 from openerp import models, fields, api, SUPERUSER_ID, _
 from openerp.exceptions import Warning
-from BeautifulSoup import BeautifulSoup
 
 
 class HelpdeskQA(models.Model):
@@ -48,10 +47,10 @@ src="/web/binary/image?model=res.partner&id=%s&field=image_medium" \
             if len(msg.attachment_ids) > 0:
                 info = '%s\n\n%s Attachment(s)' % (info,
                                                    len(msg.attachment_ids))
-            if msg.user_id.signature:
-                signature = msg.user_id.signature.replace('<br>', '\n')
-                signature = BeautifulSoup(signature)
-                info = '%s<br /><br />---\n%s' % (info, str(signature.text))
+#            if msg.user_id.signature:
+#                signature = msg.user_id.signature.replace('<br>', '\n')
+#                signature = BeautifulSoup(signature)
+#                info = '%s<br /><br />---\n%s' % (info, str(signature.text))
             msg.complete_message = info
 
     @api.onchange('message')

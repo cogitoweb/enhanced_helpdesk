@@ -19,6 +19,7 @@
         <record id="act_done" model="workflow.activity">
             <field name="wkf_id" ref="wkf"/>
             <field name="name">done</field>
+            <field name="flow_stop">True</field>
             <field name="action">close_ticket()</field>
             <field name="kind">function</field>
         </record>
@@ -45,6 +46,17 @@
             <field name="kind">function</field>
         </record>
 
+        <record id="act_refuse" model="workflow.activity">
+            <field name="wkf_id" ref="wkf"/>
+            <field name="name">refused</field>
+            <field name="flow_stop">True</field>
+            <field name="action">refuse_ticket()</field>
+            <field name="kind">function</field>
+        </record>
+        
+        
+        
+        
 
         <record id="t1" model="workflow.transition">
             <field name="act_from" ref="act_draft"/>
@@ -98,6 +110,12 @@
             <field name="act_from" ref="act_draft"/>
             <field name="act_to" ref="act_cancel"/>
             <field name="signal">ticket_cancel</field>
+        </record>
+        
+        <record id="t21" model="workflow.transition">
+            <field name="act_from" ref="act_pending"/>
+            <field name="act_to" ref="act_refuse"/>
+            <field name="signal">ticket_refuse</field>
         </record>
 
     </data>

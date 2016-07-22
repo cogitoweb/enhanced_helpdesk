@@ -25,19 +25,12 @@
     'category': 'CRM',
     'description': """
 Enhanced Openerp Helpdesk and Ticketing support
-
-
-External depends:
-
-    * Python Beautiful Soup
 """,
     'author': 'Apulia Software Srl',
     'website': 'www.apuliasoftware.it',
     'license': 'AGPL-3',
     "depends": ['base', 'web', 'crm_helpdesk', 'project', 'portal', 'base_cogitoweb'],
-    'external_dependencies': {
-        'python': ['BeautifulSoup'],
-        },
+
     "data": [
         'security/security.xml',
         'security/ir.model.access.csv',
@@ -49,6 +42,7 @@ External depends:
         'view/project_view.xml',
         'view/partner_view.xml',
         'view/company_view.xml',
+        'view/account_invoice_view.xml',
         'view/guide_view.xml',
         'workflow/helpdesk_workflow.xml',
         ],

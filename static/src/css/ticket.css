@@ -31,6 +31,20 @@
     padding: 6px 0px;
 }
 
+.openerp .oe_form header .oe_clear {
+    display:none;
+    clear: none;
+}
+
+.openerp .oe_form header:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
 /* KANBAN SECTION */
 
 .openerp .oe_kanban_view .oe_kanban_content.enhanced_helpdesk_project_kanban  h4 {
@@ -43,11 +57,6 @@
 
 .openerp .oe_form .oe_form_group .oe_form_group_cell.oe_group_right {
     padding-left: 8px;
-}
-
-.ticket_message_block {
-    min-width: 600px;
-    font-size: 15px;
 }
 
 .ticket_state {
