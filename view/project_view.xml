@@ -221,6 +221,7 @@
                         </group>
                         <notebook>
                        
+                       <!-- incompatibile con update sakes managment
                             <page string="Bonus / Banca ore" name="bonus">
                                 <group string="Situazione disponibilità" name="disp">
                                     <field name="total_points" string="Punti complessivi" />
@@ -229,6 +230,8 @@
                                     <field name="free_points" string="Punti disponibili"  />
                                 </group>
                             </page>
+                        -->
+                        
                         
                             <page string="Team" name="team">
                                 <field colspan="4" name="members" widget="many2many_kanban" context="{'default_groups_ref': ['base.group_user', 'base.group_partner_manager', 'project.group_project_user']}">
@@ -279,6 +282,7 @@
 
             <xpath expr="//form/sheet/notebook/page[@name='team']" position="before">
 
+            <!-- incompatibile con update sakes managment
                 <page string="Bonus / Banca ore" name="bonus">
                         <group string="Situazione disponibilità" name="disp">
                             <field name="total_points" string="Punti complessivi" />
@@ -287,7 +291,7 @@
                             <field name="free_points" string="Punti disponibili"  />
                         </group>
                     </page>
-
+            -->
             </xpath>
         </field>
     </record>
