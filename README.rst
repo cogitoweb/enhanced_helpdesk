@@ -3,11 +3,6 @@ Enhanced Helpdesk
 
 Enhanced Helpdesk and Ticketing Support for Odoo
 
-Python Library
---------------
-
-* BeautifulSoup
-
 Features
 --------
 

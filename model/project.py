@@ -45,6 +45,8 @@ class Task(models.Model):
                                      ('cancel', 'Cancelled')],
                                     related='ticket_id.state',
                                     string='Ticket State')
+                            
+    points = fields.Integer(string='Points')                        
 
     @api.multi
     def compute_ticket_last_answer(self):
@@ -64,19 +66,18 @@ class Project(models.Model):
     _inherit = 'project.project'
     
     # il campo di riferimento è 
-    ### invoiced_hours su task
-    ### invoiced_hours su issue
-    total_billable_hours = fields.Float(compute='compute_total_billable_hours', store=True)
-    used_billable_hours = fields.Float(compute='compute_total_billable_hours', store=True)
-    locked_billable_hours = fields.Float(compute='compute_total_billable_hours', store=True)
-    free_billable_hours = fields.Float(compute='compute_total_billable_hours', store=True)
+    ### points su task
+    total_points = fields.Integer(compute='compute_total_points', store=True)
+    used_points = fields.Integer(compute='compute_total_points', store=True)
+    locked_points = fields.Integer(compute='compute_total_points', store=True)
+    free_points = fields.Integer(compute='compute_total_points', store=True)
     
-    @api.depends('tasks.invoiced_hours')
-    def compute_total_billable_hours(self):
+    @api.depends('tasks.points', 'tasks.stage_id')
+    def compute_total_points(self):
         for record in self:
             
             ## one liner
-            # sum(task.invoiced_hours for task in record.tasks)
+            # sum(task.points for task in record.tasks)
             
             tot = 0
             used = 0
@@ -85,19 +86,19 @@ class Project(models.Model):
             
             for task in record.tasks:
                 
-                if task.invoiced_hours > 0:
+                if task.points > 0:
                     if task.stage_id.name in ['Analysis', 'Specification', 'Design', 'Development', 'Testing', 'Merge',
                         'Waiting Response', 'Waiting Instructions', 'Suspended']:
-                        locked = locked + task.invoiced_hours
+                        locked = locked + task.points
                     elif task.stage_id.name in ['Done']:
-                        used = used + task.invoiced_hours
-                elif task.invoiced_hours < 0:
+                        used = used + task.points
+                elif task.points < 0:
                     if task.stage_id.name in ['Done']:
-                            tot = tot - task.invoiced_hours
+                            tot = tot - task.points
 
             free = tot - (used + locked)
             
-            record.total_billable_hours = tot
-            record.used_billable_hours = used
-            record.locked_billable_hours = locked
-            record.free_billable_hours = free
+            record.total_points = tot
+            record.used_points = used
+            record.locked_points = locked
+            record.free_points = free

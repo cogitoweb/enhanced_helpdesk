@@ -16,9 +16,36 @@
                               'default_partner_id': active_id}">
                     <field string="Ticket" name="ticket_count" widget="statinfo"/>
                 </button>     
-                    
-                    
             </xpath>
+        </field>
+   </record>
+   
+   <!--  Partners inherited form for ticket users -->
+   <!-- nascondo campi privati -->
+    <record id="view_open_ticket_partner_info_form_ticket_user" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="view_open_ticket_partner_info_form"/>
+        
+        <field name="groups_id" eval="[(4,[ref('enhanced_helpdesk.ticketing_external_user') ])]" />
+        
+        <field name="arch" type="xml">
+        
+            <xpath expr="//form" position="attributes">
+                <attribute name="edit">false</attribute> 
+                <attribute name="create">false</attribute> 
+            </xpath>
+        
+            <xpath expr="//div[@name='buttons']" position="attributes">
+                <attribute name="invisible">True</attribute> 
+            </xpath>
+            
+            <xpath expr="//notebook" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            
+            <xpath expr="//field[@name='message_follower_ids']" position="replace">
+            </xpath>
+            
         </field>
    </record>
 

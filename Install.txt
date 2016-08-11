@@ -1,0 +1,7 @@
+
+upgrade cogito_portal
+crea un utente abilitato a portal per il customer
+aggiungi all'utente il gruppo ticketing user
+abilita agli utenti interni il gruppo ticketing support
+pubblica in portal i progetti di interesse
+carica i punti sui task che vuoi esporre

@@ -55,10 +55,23 @@ class CrmHelpdesk(models.Model):
     related_ticket = fields.Html()
 
     project_id = fields.Many2one('project.project', required=True, string='Progetto')
+    task_id = fields.Many2one('project.task', required=False, string='Task')
     
-    task_id = fields.Many2one('project.task')
-    task_invoiced_hours = fields.Float(string='Ore stimate', related='task_id.invoiced_hours')
+    task_points = fields.Integer(string='Punti stimati', related='task_id.points')
     task_deadline = fields.Date(string='Deadline', related='task_id.date_deadline')
+    
+        # override
+    state = fields.Selection(
+                [('draft', 'New'),
+                 ('pending', 'Pending'),
+                 ('open', 'In Progress'),
+                 ('done', 'Closed'),
+                 ('cancel', 'Cancelled')], 'Status', readonly=True, track_visibility='onchange',
+                                  help='The status is set to \'Draft\', when a case is created.\
+                                  \nIf the case is in progress the status is set to \'Open\'.\
+                                  \nWhen the case is over, the status is set to \'Done\'.\
+                                  \nIf the case needs to be reviewed then the status is set to \'Pending\'.')
+    
 
     _track = {
         'state': {
@@ -180,6 +193,30 @@ class CrmHelpdesk(models.Model):
     @api.multi
     def cancel_ticket(self):
         self.write({'state': 'cancel'})
+        
+        task = self.task_id
+        task.sudo().write({'stage_id': 8})
+        
+        self.send_notification_mail(
+            template_xml_id='email_template_ticket_new',
+            object_class='crm.helpdesk',
+            object_id=self.id,
+            expande={'after_body': 'task annullato'}
+            )
+            
+    @api.multi
+    def refuse_ticket(self):
+        self.write({'state': 'cancel'})
+        
+        task = self.task_id
+        task.sudo().write({'stage_id': 8})
+        
+        self.send_notification_mail(
+            template_xml_id='email_template_ticket_new',
+            object_class='crm.helpdesk',
+            object_id=self.id,
+            expande={'after_body': 'stima rifiutata'}
+            )
 
     @api.multi
     def reopen_ticket(self):
@@ -187,7 +224,6 @@ class CrmHelpdesk(models.Model):
 
     @api.multi
     def working_ticket(self):
-        _logger.error('test set working ticket %s', 'aaaaa')
         self.write({'state': 'open'})
 
     @api.multi

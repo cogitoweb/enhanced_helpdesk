@@ -1,101 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
 <data>
-
-    <!-- disabilito menu messaging -->
-    
-    <record id="group_with_no_access" model="res.groups"> <!-- gruppo fake -->
-        <field name="name">Group - No user</field>
-    </record>
-    
-    <record id="portal.portal_messages" model="ir.ui.menu">
-        <field name="groups_id" eval="[(3,ref('base.group_portal'))]"/>
-    </record>
-    
-    <record id="portal.portal_inbox" model="ir.ui.menu">
-        <field name="groups_id" eval="[(3,ref('base.group_portal'))]"/>
-    </record>
-    
-    <record id="portal.portal_mail_archivesfeeds" model="ir.ui.menu">
-        <field name="groups_id" eval="[(3,ref('base.group_portal'))]"/>
-    </record>  
-    
-    <menuitem action="" parent="" id="portal.portal_messages" groups="group_with_no_access"/>
-    <menuitem action="" parent="" id="portal.portal_inbox" groups="group_with_no_access"/>
-    <menuitem action="" parent="" id="portal.portal_mail_archivesfeeds" groups="group_with_no_access"/>
-    
-    
-    <!-- azione custom su project -->
-    <record id="portal_project.open_view_project" model="ir.actions.act_window">
-            <field name="name">Progetti e situazione</field>
-            <field name="res_model">project.project</field>
-            <field name="view_type">form</field>
-            <field name="domain">[]</field>
-            <field name="view_mode">kanban,tree,form</field>
-            <field name="view_id" ref="enhanced_helpdesk_project_kanban"/>
-            <field name="context">{'search_default_Current': 1}</field>
-    </record>
     
     <!-- override kanban project -->
     <record id="enhanced_helpdesk_project_kanban" model="ir.ui.view">
         <field name="name">Enhanced HelpDesk Project Kanban</field>
-        <field name="model">project.project</field>
-        <field name="inherit_id" ref="project_issue.view_project_kanban_inherited" />    
+        <field name="model">project.project</field>  
+        <field name="priority">1</field>  
+        <field name="inherit_id"></field>  
         <field name="groups_id" eval="[(4,[ref('enhanced_helpdesk.ticketing_external_user') ])]" />    
 
         <field name="arch" type="xml">
             
-            <xpath expr="//kanban" position="inside">
-                <field name="total_billable_hours"/>
-                <field name="used_billable_hours"/>
-                <field name="locked_billable_hours"/>
-                <field name="free_billable_hours"/>
-            </xpath>
-            
-            <xpath expr="//kanban/templates" position="replace">
+            <kanban class="oe_background_grey">
+
+                <field name="total_points"/>
+                <field name="used_points"/>
+                <field name="locked_points"/>
+                <field name="free_points"/>
+                <field name="effective_hours"/>
+                <field name="planned_hours"/>
+                <field name="name"/>
+                <field name="members"/>
+                <field name="use_tasks"/>
+                <field name="user_id"/>
+                <field name="date"/>
+                <field name="color"/>
+                <field name="task_count"/>
+                <field name="task_ids"/>
+                <field name="alias_id"/>
+                <field name="alias_name"/>
+                <field name="alias_domain"/>
+                <field name="doc_count"/>
                 
                 <templates>
-                        <t t-name="kanban-box">
-                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_project oe_kanban_global_click oe_kanban_action" 
-                                    data-type="switch_form">
-                                <div class="oe_kanban_content enhanced_helpdesk_project_kanban">
-                                    <h4 class="text-center"><strong><field name="name"/></strong></h4>
+                    <t t-name="kanban-box">
+                    
+                        <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_project oe_kanban_global_click">
+
+                            <div class="oe_kanban_content enhanced_helpdesk_project_kanban" style="position:relative">
+                                <h4 class="text-center"><strong><field name="name" /></strong></h4>
+                
+                                <div class="text-center oe_kanban_alias">
+                                    <small><i class="fa fa-user"></i> 
+                                    PM: <field name="user_id" />
+                                    </small>
+                                </div>
+                
+                                <div class="oe_kanban_footer_left">
+                                
+                                    <strong>Task attivi: <t t-raw="record.task_count.raw_value"/>
+                                    <a type="open" style="position:absolute;width:100%;height:100%;display:block;top:0;left:0;"></a>
+                                    </strong>
+                                    <br />
+                                
+                                    <strong>Punti</strong><br />
                                     
-                                    <div class="text-center oe_kanban_alias">
-                                        <small><i class="fa fa-user"></i> 
-                                        PM: <field name="user_id" />
-                                        </small>
-                                    </div>
-                                    
-                                    <div class="oe_kanban_footer_left">
-                                        
-                                        <span>
-                                            <span class="oe_e">R</span>
-                                            Complessivo: <strong><t t-esc="Math.round(record.total_billable_hours.raw_value)" /> </strong>
-                                        </span><br />
+                                    <span>
+                                        <span title="punti" class="oe_e">_</span>
+                                        Complessivi: <strong><field name="total_points"/> </strong>
+                                    </span><br />
 
-                                        <span>
-                                            <span class="oe_e">R</span>
-                                            Consumato: <strong><t t-esc="Math.round(record.used_billable_hours.raw_value)" /> </strong>
-                                        </span><br />
+                                    <span>
+                                        <span title="punti" class="oe_e">_</span>
+                                        Consumati: <strong><field name="used_points"/> </strong>
+                                    </span><br />
 
-                                        <span>
-                                            <span class="oe_e">R</span>
-                                            Allocato: <strong><t t-esc="Math.round(record.locked_billable_hours.raw_value)" /> </strong>
-                                        </span><br />
+                                    <span>
+                                        <span title="punti" class="oe_e">_</span>
+                                        Allocati: <strong><field name="locked_points"/> </strong>
+                                    </span><br />
 
-                                        <span>
-                                            <span class="oe_e">R</span>
-                                            Disponibili: <strong><t t-esc="Math.round(record.free_billable_hours.raw_value)" /> </strong>
-                                        </span>
-                                        <br />
-                                    </div>
+                                    <span>
+                                        <span title="punti" class="oe_e">_</span>
+                                        Disponibili: <strong><field name="free_points"/> </strong>
+                                    </span>
+
                                 </div>
                             </div>
-                        </t> 
+                        </div>
+                    
+                    </t>
                 </templates>
                 
-            </xpath>
+            </kanban>
+            
         </field>
     </record>
     
@@ -104,6 +93,7 @@
         <field name="name">project.project.tree</field>
         <field name="model">project.project</field>
         <field name="field_parent">child_ids</field>
+        <field name="priority">1</field>
 
         <field name="groups_id" eval="[(4,[ref('enhanced_helpdesk.ticketing_external_user') ])]" />  
 
@@ -113,130 +103,39 @@
 
                 <field name="name" string="Project Name"/>
                 <field name="user_id" string="Project Manager"/>
-                <field name="total_billable_hours" widget="float_time" string="Ore complessive" sum="Totali" />
-                <field name="used_billable_hours" widget="float_time" string="Ore consumate" sum="Consumate" />
-                <field name="locked_billable_hours" widget="float_time" string="Ore allocate" sum="Allocate" />
-                <field name="free_billable_hours" widget="float_time" string="Ore disponibili" sum="Disponibili" />
+                <field name="total_points" string="Punti complessivi" sum="Totali" />
+                <field name="used_points" string="Punti consumati" sum="Consumati" />
+                <field name="locked_points" string="Punti allocati" sum="Allocati" />
+                <field name="free_points" string="Punti disponibili" sum="Disponibili" />
                 <field name="state"/>
 
             </tree>
 
         </field>
     </record>
+    
+    <!-- override tree task -->
+    <record id="view_task_tree2" model="ir.ui.view">
+            <field name="name">project.task.tree</field>
+            <field name="model">project.task</field>
+            <field name="priority">1</field>
+
+            <field name="groups_id" eval="[(4,[ref('enhanced_helpdesk.ticketing_external_user') ])]" />  
         
-    <!-- override Project show -->
-    <record id="enhanced_helpdesk_project_edit_project" model="ir.ui.view">
-            <field name="name">project.project.form</field>
-            <field name="model">project.project</field>
-            <field name="inherit_id" ref="project_issue.view_project_form_inherited" />
-            
-            <field name="groups_id" eval="[(4,[ref('enhanced_helpdesk.ticketing_external_user') ])]" />
-            
             <field name="arch" type="xml">
-                
-                <xpath expr="//form" position="replace">
-                
-                    <form string="Project">
-                    <header>
-                        <field name="state" widget="statusbar" statusbar_visible="open,close" statusbar_colors='{"pending":"blue"}' readonly="1"/>
-                    </header>
-                    <sheet string="Project">
-                        <field name="analytic_account_id" invisible="1" required="0"/>
-                        <div class="oe_title">
-                            <label for="name" class="oe_edit_only" string="Project Name"/>
-                            <h1>
-                                <field name="name" string="Project Name"/>
-                            </h1>
-                        </div>
-                        <div class="oe_right oe_button_box" name="buttons">
-                            <button class="oe_inline oe_stat_button" type="action" name="%(action_view_portal_task)d" icon="fa-tasks" 
-                                    context="{'search_default_project_id': id}">
-                                <div>Tasks</div>
-                           </button>
-                           <button class="oe_inline oe_stat_button" type="action" name="%(action_enhanced_helpdesk)d" icon="fa-ticket" 
-                                    context="{'search_default_project_id': id}">
-                                <div>Tickets</div>
-                           </button>
-                       </div>
-                        <group>
-                            <group col="4">
-                                <field name="user_id" string="Project Manager" readonly="True"
-                                        context="{'default_groups_ref': ['base.group_user', 'base.group_partner_manager', 'project.group_project_manager']}"/>
-                                <newline/>
-                                <field name="partner_id" readonly="True" string="Customer"/>
-                            </group>
-                        </group>
-                        <notebook>
-                            <page string="Bonus / Banca ore" name="bonus">
-                                <group string="Situazione disponibilità" name="disp">
-                                    <field name="total_billable_hours" widget="float_time" string="Ore complessive" />
-                                    <field name="used_billable_hours" widget="float_time" string="Ore consumate"  />
-                                    <field name="locked_billable_hours" widget="float_time" string="Ore allocate"  />
-                                    <field name="free_billable_hours" widget="float_time" string="Ore disponibili"  />
-                                </group>
-                            </page>
-                            
-                            <page string="Team" name="team">
-                                <field colspan="4" name="members" widget="many2many_kanban" context="{'default_groups_ref': ['base.group_user', 'base.group_partner_manager', 'project.group_project_user']}">
-                                    <kanban quick_create="false" create="true" delete="true">
-                                        <field name="name"/>
-                                        <templates>
-                                            <t t-name="kanban-box">
-                                                <div style="position: relative">
-                                                    <a t-if="! read_only_mode" type="delete" style="position: absolute; right: 0; padding: 4px; diplay: inline-block">X</a>
-                                                    <div class="oe_module_vignette">
-                                                        <img t-att-src="kanban_image('res.users', 'image_small', record.id.value)" class="oe_avatar oe_kanban_avatar_smallbox"/>
-                                                        <div class="oe_module_desc">
-                                                            <field name="name"/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </t>
-                                        </templates>
-                                    </kanban>
-                                </field>
-                            </page>
-                            <page string="Other Info">
-                                <group string="Miscellaneous" name="misc">
-                                    <field name="date_start" string="Start Date"/>
-                                    <field name="date" string="End Date"/>
-                                    <field name="sequence" groups="base.group_no_one"/>
-                                    <field name="active" attrs="{'invisible':[('state','in',['open', 'pending', 'template'])]}"/>
-                                    <field name="currency_id" groups="base.group_multi_currency" required="1"/>
-                                    <field name="parent_id" string="Parent" help="Append this project to another one using analytic accounts hierarchy" domain="[('id','!=',analytic_account_id)]" context="{'current_model': 'project.project'}" />
-                                </group>
-                            </page>
-                        </notebook>
-                    </sheet>
-                    </form>
-                </xpath>
+                <tree string="Tasks">
+                    <field name="id" />
+                    <field name="ticket_id" />
+                    <field name="name"/>
+                    <field name="stage_id"/>
+                    <field name="project_id"/>
+                    <field name="points" string="Punti" sum="Totali" />
+                    <field name="user_id" />
+                    <field name="date_deadline" />
+
+                </tree>
             </field>
         </record>
-        
-        
-    <!-- add for all Disponibilità su progetto -->
-        
-    <record id="project_issue.view_project_form_inherited" model="ir.ui.view">
-        <field name="name">project.project.form</field>
-        <field name="model">project.project</field>
-
-        <field name="arch" type="xml">
-
-            <xpath expr="//form/sheet/notebook/page[@name='team']" position="before">
-
-                <page string="Bonus / Banca ore" name="bonus">
-                        <group string="Situazione disponibilità" name="disp">
-                            <field name="total_billable_hours" widget="float_time" string="Ore complessive" />
-                            <field name="used_billable_hours" widget="float_time" string="Ore consumate"  />
-                            <field name="locked_billable_hours" widget="float_time" string="Ore allocate"  />
-                            <field name="free_billable_hours" widget="float_time" string="Ore disponibili"  />
-                        </group>
-                    </page>
-
-            </xpath>
-        </field>
-    </record>
-        
     
     <!-- abilitazione menu task -->
     
@@ -277,13 +176,134 @@
             </filter>
         </field>
     </record>
+        
+    <!-- override Project show -->
+    <record id="enhanced_helpdesk_project_edit_project" model="ir.ui.view">
+            <field name="name">project.project.form</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project_issue.view_project_form_inherited" />
+            
+            <field name="groups_id" eval="[(4,[ref('enhanced_helpdesk.ticketing_external_user') ])]" />
+            
+            <field name="arch" type="xml">
+                
+                <xpath expr="//form" position="replace">
+                
+                    <form string="Project">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="open,close" statusbar_colors='{"pending":"blue"}' readonly="1"/>
+                    </header>
+                    <sheet string="Project">
+                        <field name="analytic_account_id" invisible="1" required="0"/>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Project Name"/>
+                            <h1>
+                                <field name="name" string="Project Name"/>
+                            </h1>
+                        </div>
+                        <div class="oe_right oe_button_box" name="buttons">
+                            <button class="oe_inline oe_stat_button" type="action" name="%(action_view_portal_task)d" icon="fa-tasks" 
+                                    context="{'search_default_project_id': id}">
+                                <div>Tasks</div>
+                           </button>
+                           <button class="oe_inline oe_stat_button" type="action" name="%(action_enhanced_helpdesk)d" icon="fa-ticket" 
+                                    context="{'search_default_project_id': id}">
+                                <div>Tickets</div>
+                           </button>
+                       </div>
+                        <group>
+                            <group col="4">
+                                <field name="user_id" string="Project Manager" readonly="True" options="{'no_open': True}"
+                                        context="{'default_groups_ref': ['base.group_user', 'base.group_partner_manager', 'project.group_project_manager']}"/>
+                                <newline/>
+                                <field name="partner_id" readonly="True" string="Customer"/>
+                            </group>
+                        </group>
+                        <notebook>
+                       
+                       <!-- incompatibile con update sakes managment
+                            <page string="Bonus / Banca ore" name="bonus">
+                                <group string="Situazione disponibilità" name="disp">
+                                    <field name="total_points" string="Punti complessivi" />
+                                    <field name="used_points" string="Punti consumati"  />
+                                    <field name="locked_points" string="Punti allocati"  />
+                                    <field name="free_points" string="Punti disponibili"  />
+                                </group>
+                            </page>
+                        -->
+                        
+                        
+                            <page string="Team" name="team">
+                                <field colspan="4" name="members" widget="many2many_kanban" context="{'default_groups_ref': ['base.group_user', 'base.group_partner_manager', 'project.group_project_user']}">
+                                    <kanban quick_create="false" create="true" delete="true">
+                                        <field name="name"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div style="position: relative">
+                                                    <a t-if="! read_only_mode" type="delete" style="position: absolute; right: 0; padding: 4px; diplay: inline-block">X</a>
+                                                    <div class="oe_module_vignette">
+                                                        <img t-att-src="kanban_image('res.users', 'image_small', record.id.value)" class="oe_avatar oe_kanban_avatar_smallbox"/>
+                                                        <div class="oe_module_desc">
+                                                            <field name="name"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </page>
+                            <page string="Other Info">
+                                <group string="Miscellaneous" name="misc">
+                                    <field name="date_start" string="Start Date"/>
+                                    <field name="date" string="End Date"/>
+                                    <field name="sequence" groups="base.group_no_one"/>
+                                    <field name="active" attrs="{'invisible':[('state','in',['open', 'pending', 'template'])]}"/>
+                                    <field name="currency_id" groups="base.group_multi_currency" required="1"/>
+                                    <field name="parent_id" string="Parent" help="Append this project to another one using analytic accounts hierarchy" domain="[('id','!=',analytic_account_id)]" context="{'current_model': 'project.project'}" />
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    </form>
+                </xpath>
+            </field>
+        </record>
+        
+        
+    <!-- add for all Disponibilità su progetto -->        
+    <record id="project_issue.view_project_form_inherited_banca_ore" model="ir.ui.view">
+        <field name="name">project.project.form</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project_issue.view_project_form_inherited" />
+        <field name="priority" eval="5" />
 
+        <field name="arch" type="xml">
+
+            <xpath expr="//form/sheet/notebook/page[@name='team']" position="before">
+
+            <!-- incompatibile con update sakes managment
+                <page string="Bonus / Banca ore" name="bonus">
+                        <group string="Situazione disponibilità" name="disp">
+                            <field name="total_points" string="Punti complessivi" />
+                            <field name="used_points" string="Punti consumati"  />
+                            <field name="locked_points" string="Punti allocati"  />
+                            <field name="free_points" string="Punti disponibili"  />
+                        </group>
+                    </page>
+            -->
+            </xpath>
+        </field>
+    </record>
+     
   
     <!-- override task kanban -->
     <record id="view_ticket_task_kanban" model="ir.ui.view">
         <field name="name">ticket.project.task.kanban</field>
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_kanban"/>
+        
+        <field name="groups_id" eval="[(4,[ref('enhanced_helpdesk.ticketing_external_user') ])]" /> 
         
         <field name="ticket_display_id" />
         
@@ -298,10 +318,10 @@
             <xpath expr="//field[@name='remaining_hours']" position="replace"> 
             </xpath>
             
-            <!-- rimuovo dati privati 
-            <xpath expr="//div[@class='oe_kanban_content']" position="replace"> 
-            </xpath>
-            -->
+            <!-- rimuovo messaggi 
+            <xpath expr="//div[@class='oe_chatter']" position="replace"> 
+            </xpath>-->
+            
             
         </field>
     </record>
@@ -311,17 +331,32 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
+            
+            <!-- nascondo dati privati impostandoli solo sul gruppo enhanced_helpdesk.ticketing_support -->
+
+            <field name="invoiced_hours" position="attributes">
+                <attribute name="groups">enhanced_helpdesk.ticketing_support</attribute>
+            </field>
+            
+            <field name="reviewer_id" position="attributes">
+                <attribute name="groups">enhanced_helpdesk.ticketing_support</attribute>
+            </field>
+            
+            <field name="project_ref_id" position="attributes">
+                <attribute name="groups">enhanced_helpdesk.ticketing_support</attribute>
+            </field>
+
             <field name="reviewer_id" position="after">
-                <field name="ticket_last_answer_user_id" attrs="{'invisible': [('ticket_id', '=', False)]}"/>
+                <field name="ticket_last_answer_user_id" attrs="{'invisible': [('ticket_id', '=', False)]}" options="{'no_open': True}" />
                 <field name="ticket_last_answer_date" attrs="{'invisible': [('ticket_id', '=', False)]}"/>
                 <field name="ticket_state" readonly="True" attrs="{'invisible': [('ticket_id', '=', False)]}"/>
+                <field name="points"/>
             </field>
-            <field name="project_id" position="attributes">
-                <attribute name="domain">"[('partner_id', '=', partner_id)]"</attribute>
-            </field>
+            
             <field name="description" position="attributes">
                 <attribute name="widget">html</attribute>
             </field>
+            
             <field name="kanban_state" position="after">
                 <button class="oe_inline oe_stat_button" type="action"
                     name="%(enhanced_helpdesk.action_ticket_reply)d"
@@ -330,20 +365,62 @@
                     attrs="{'invisible': [('ticket_id', '=', False)]}"
                     context="{'default_ticket_id': ticket_id}" groups="enhanced_helpdesk.ticketing_support" />
             </field>
+            
             <notebook position="inside">
                 <page string="Helpdesk" attrs="{'invisible': [('ticket_id', '=', False)]}">
 
-                    Ticket <strong><field name="ticket_id" readonly="True"/></strong> <br />
+                    <group string="Ticket" name="ticket">
                     
-                    <field name="rel_helpdesk_qa_ids" >
-                        <tree string="Messagges List">
-                            <field name="complete_message" string="Message"/>
-                        </tree>
-                    </field>
+                        <strong><field name="ticket_id" readonly="True" context="{'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form'}"/></strong>
+                        
+                    </group>
+                    
+                    <group string="Messaggi" name="messages">
+                    
+                        <field name="rel_helpdesk_qa_ids" >
+                            <tree string="Messagges List">
+                                <field name="complete_message" string=""/>
+                            </tree>
+                        </field>
+                    </group>
+                    
                 </page>
             </notebook>
+            
+            
+            
+            
         </field>
     </record>
+    
+    <record id="ticket_view_task_form2_ticketuser" model="ir.ui.view">
+        <field name="name">ticket.project.task.form</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="ticket_view_task_form2"/>
+        
+        <field name="groups_id" eval="[(4,[ref('enhanced_helpdesk.ticketing_external_user') ])]" />
+        
+        <field name="arch" type="xml">
+            
+            <!-- rendo in readlony i punti -->
+
+            <field name="points" position="attributes">
+                <attribute name="readonly">True</attribute>
+            </field>
+            
+            <!-- rendo in readlony la status bar -->
+            
+            <field name="stage_id" position="replace">
+                <field name="stage_id" widget="statusbar" attrs="{'readonly':True}"  options="{'fold_field': 'fold'}"/>
+            </field>
+
+            <xpath expr="//page[@string='Extra Info']" position="replace">
+            </xpath>
+
+           
+        </field>
+    </record>
+    
 
 </data>
 </openerp>
