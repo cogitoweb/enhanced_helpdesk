@@ -372,11 +372,23 @@
         <field name="context">{'needaction_menu_ref':1,'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form','search_default_filter_draft':1,'search_default_filter_pending':1,'search_default_filter_open':1, }</field>
     </record>
 
-    <menuitem name="Ticket"
-          parent="base.menu_aftersale"
-          action="action_enhanced_helpdesk_support"
-          id="menu_ticket_helpdesk_support"
+    <!-- ordinamento menu -->
+    <menuitem name="Helpdesk and Support" id="crm_helpdesk.menu_help_support_main" sequence="15"/>     
+     
+          
+    <!-- submenu items -->
+    <menuitem name="Richieste / Ticket"
+          action=""
+          parent="crm_helpdesk.menu_help_support_main"
+          id="menu_help_support_ticket_title"
           groups="enhanced_helpdesk.ticketing_support"/>
+          
+    <menuitem name="Ticket"
+          action="action_enhanced_helpdesk_support"
+          parent="menu_help_support_ticket_title"
+          id="menu_help_support_ticket_action"
+          groups="enhanced_helpdesk.ticketing_support"/>
+          
 
 </data>
 </openerp>

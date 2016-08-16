@@ -137,7 +137,25 @@
             </field>
         </record>
     
-    <!-- abilitazione menu task -->
+    
+    <!-- cambio menu projects -->
+    
+    <record id="action_view_portal_project" model="ir.actions.act_window">
+        <field name="name">Projects</field>
+        <field name="res_model">project.project</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" ref="enhanced_helpdesk_project_kanban"/>
+        <field name="help" type="html">
+            <p>
+                You have no related Projects....
+            </p>
+        </field>
+    </record>
+    
+    <menuitem name="Projects" id="portal_project.portal_services_projects" parent="portal.portal_projects"
+        action="action_view_portal_project" sequence="10"/>
+    
+    <!-- cambio menu task -->
     
     <record id="action_view_portal_task" model="ir.actions.act_window">
         <field name="name">Tasks</field>
