@@ -372,8 +372,8 @@
         <field name="context">{'needaction_menu_ref':1,'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form','search_default_filter_draft':1,'search_default_filter_pending':1,'search_default_filter_open':1, }</field>
     </record>
 
-    <!-- ordinamento menu -->
-    <menuitem name="Helpdesk and Support" id="crm_helpdesk.menu_help_support_main" sequence="15"/>     
+    <!-- ordinamento menu e azione di default -->
+    <menuitem name="Helpdesk and Support" id="crm_helpdesk.menu_help_support_main" action="action_enhanced_helpdesk_support" sequence="15"/>     
      
           
     <!-- submenu items -->
