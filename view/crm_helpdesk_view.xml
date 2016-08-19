@@ -109,22 +109,19 @@
                                        'base.group_partner_manager',
                                        'base.group_sale_salesman_all_leads']}" />
                         
-                        <field name="request_id" widget="selection" colspan="2"
-                            attrs="{'readonly': True}"
-                            domain="[('id', '=', uid)]"/>
+                        <field name="request_id" widget="selection" colspan="2" attrs="{'readonly': True}" context="{'show_email': True}" />
                         
-                        <field name="date" readonly="1" colspan="2" string="Data"/>
+                        <field name="date" attrs="{'readonly': True}" colspan="2" string="Data"/>
                         <field name="date_deadline" invisible="1" colspan="4"/>
                         <field name="email_from" invisible="1" />
                         <!--  Partner_id is required for annoying checking rules -->
                         <field name="partner_id" invisible="1"/>
                         
                         <group colspan="2">
-                            <field name="project_id" widget="selection" colspan="2"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            <field name="project_id" widget="selection" colspan="2" attrs="{'readonly': [('state', '!=', 'draft')]}" />
                             
                             <field name="channel_id" invisible="1"/>
-                            <field name="source" groups="enhanced_helpdesk.ticketing_support"/>
+                            <field name="source" groups="enhanced_helpdesk.ticketing_support" attrs="{'readonly': [('id', '!=', False)]}"/>
 
                             <field name="task_id" attrs="{'readonly': True, 'invisible': ['|', '|', ('state', '=', 'draft'),('task_id', '=', False),('task_points', '=', 0)]}" action="action_view_portal_task"  />
                             <field name="task_points" string="Punti stimati" attrs="{'readonly': True, 'invisible': ['|',('state', '=', 'draft'),('task_id', '=', False)]}" />
@@ -262,6 +259,24 @@
                     </header>
                     
                 </xpath>
+                
+                <xpath expr="//field[@name='project_id']" position="attributes">
+                    <attribute name="widget">many2one</attribute>
+                    <!-- temporaneo: da rendere dipendente da request_id -->
+                    <attribute name="domain">[
+                     ('privacy_visibility', 'in', ['portal'])
+                    ]
+                    </attribute>
+                </xpath>
+                
+                <xpath expr="//field[@name='date']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('id', '!=', False)]}</attribute>
+                </xpath>
+                
+                <xpath expr="//field[@name='request_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('id', '!=', False)]}</attribute>
+                </xpath>
+                
             
         </field>
     </record>

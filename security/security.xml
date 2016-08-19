@@ -10,6 +10,8 @@
             <field name="name">Ticketing Support</field>
         </record>
         
+        <!-- regole per il pubblico -->
+        
         <record id="see_portal_projects" model="ir.rule">
             <field name="name">See Portal own projects</field>
             <field name="model_id" ref="project.model_project_project"/>
@@ -41,13 +43,36 @@
             <field name="perm_write" eval="False"/>
        </record>
 
-        
         <record id="see_company_ticket" model="ir.rule">
            <field name="name">See Company Ticket</field>
            <field name="model_id" ref="model_crm_helpdesk"/>
            <field name="groups" eval="[(4, ref('ticketing_external_user'))]"/>
            <field name="domain_force">[('partner_id','child_of',[user.partner_id.parent_id.id])]</field>
         </record>
+        
+        <!-- fine regole per il pubblico -->
+        
+        <!-- regole per il supporto -->
+        
+        <record id="see_support_portal_projects" model="ir.rule">
+            <field name="name">See Support Portal projects</field>
+            <field name="model_id" ref="project.model_project_project"/>
+            <field name="groups" eval="[(4,ref('ticketing_support'))]"/>
+            <field name="domain_force">[
+                ('privacy_visibility', 'in', ['portal'])
+            ]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="perm_write" eval="False"/>
+       </record>
+        
+        <!-- fine regole per il supporto -->
+        
+        
+        
+        
+        
         
         
         <!-- Contrast base.res_partner_portal_public_rule permissions -->

@@ -32,15 +32,47 @@ class CrmHelpdesk(models.Model):
     _inherit = "crm.helpdesk"
     _rec_name = 'display_name'
 
+    # selezione del richiedente
+    #
+    @api.model
+    def _get_request_allowed_ids(self):
+        
+        request_allowed_ids = []
+        
+        _logger.info("_get_request_allowed_ids")
+        
+        # se sono un utente esterno
+        if self.env.user.has_group('enhanced_helpdesk.ticketing_external_user'):
+            request_allowed_ids.append(self.env.user.id)
+        else:
+            # altrimenti prendo solo quelli che sono esterni
+            all_users = self.env['res.users'].search([('active', '=', True)])
+            
+            for u in all_users:
+                if u.has_group('enhanced_helpdesk.ticketing_external_user'):
+                    request_allowed_ids.append(u.id)
+                
+        return [('id', 'in', request_allowed_ids)]
+    
+    def _get_request_user_default(self):
+        if self.env.user.has_group('enhanced_helpdesk.ticketing_external_user'):
+            return self.env.user
+        else:
+            return None
+    #
+    # fine selezione richiedente
+    
     # ---- Fields
     source = fields.Selection(
         [('portal', 'Portal'), ('phone', 'Phone'), ('mail', 'Mail')],
         string='Source', default='portal')
+       
         
     request_id = fields.Many2one('res.users',
                                  required=True,
                                  string='Richiedente',
-                                 default=lambda self: self.env.user)
+                                 default=_get_request_user_default,
+                                 domain=_get_request_allowed_ids)
 
     external_ticket_url = fields.Char(compute='_get_external_ticket_url')
     helpdesk_qa_ids = fields.One2many('helpdesk.qa', 'helpdesk_id')

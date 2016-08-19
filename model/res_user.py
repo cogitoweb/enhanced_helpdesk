@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2014 Apulia Software S.r.l. (<info@apuliasoftware.it>)
+#    Copyright (C) 2014 Andre@ (<a.gallina@cgsoftware.it>)
 #    All Rights Reserved
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,15 +19,25 @@
 #
 ##############################################################################
 
+from openerp import models, fields, api
 
-from . import ir_attachment
-from . import wizard_change_user
-from . import crm_helpdesk
-from . import project
-from . import helpdesk_qa
-from . import res_partner
-from . import res_user
-from . import wizard_reply
-from . import wizard_merge_ticket
-from . import res_company
-from . import guide
+
+class User(models.Model):
+
+    _inherit = 'res.users'
+
+    def name_get(self,cr,uid,ids,context=None):
+        if context is None:
+            context ={}
+        res=[]
+        record_name=self.browse(cr,uid,ids,context)
+        for object in record_name:
+
+            if object.name:
+                if context.get('show_email',False):
+
+                    res.append((object.id,object.name + ' - ' + object.email))
+                else:
+
+                    res.append((object.id,object.name))
+        return res
