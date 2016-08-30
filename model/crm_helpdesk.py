@@ -153,10 +153,6 @@ class CrmHelpdesk(models.Model):
             self.partner_id = self.request_id.partner_id.parent_id.id
             self.email_from = self.request_id.email
 
-    @api.onchange('description')
-    def onchange_description(self):
-        self.related_ticket = ''
-
     def send_notification_mail(self, template_xml_id=None,
                                object_class=None, object_id=False,
                                expande=None):
