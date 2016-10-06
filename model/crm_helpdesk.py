@@ -21,9 +21,9 @@
 
 
 from openerp import models, fields, api, SUPERUSER_ID
+#Import logger
 import logging
-
-
+#Get the logger
 _logger = logging.getLogger(__name__)
 
 
@@ -31,6 +31,17 @@ class CrmHelpdesk(models.Model):
 
     _inherit = "crm.helpdesk"
     _rec_name = 'display_name'
+
+
+
+    # Functiont to populate fields.Select()
+    # with ticket status coming from database
+    @api.model
+    def _get_ticket_status(self):
+        lst=[]
+        for status in self.env['helpdesk.ticket.status'].search([]):
+            lst.append((status.id, status.status_name))
+        return lst 
 
     # selezione del richiedente
     #
@@ -92,30 +103,43 @@ class CrmHelpdesk(models.Model):
     
     task_points = fields.Integer(string='Punti stimati', related='task_id.points')
     task_deadline = fields.Date(string='Deadline', related='task_id.date_deadline')
-    
-        # override
-    state = fields.Selection(
-                [('draft', 'New'),
-                 ('pending', 'Pending'),
-                 ('open', 'In Progress'),
-                 ('done', 'Closed'),
-                 ('cancel', 'Cancelled')], 'Status', readonly=True, track_visibility='onchange',
-                                  help='The status is set to \'Draft\', when a case is created.\
-                                  \nIf the case is in progress the status is set to \'Open\'.\
-                                  \nWhen the case is over, the status is set to \'Done\'.\
-                                  \nIf the case needs to be reviewed then the status is set to \'Pending\'.')
-    
+
+
+    ticket_status_id = fields.Many2one('helpdesk.ticket.status', default=1 ,string="Ticket Status", track_visibility='onchange');
+
+  
+
+    defaults = {
+    'ticket_status_id': lambda *a: 1
+    }
+
+    # New ticket status are:
+    # 1 = Nuovo
+    # 2 = Preso in carico
+    # 3 = In approvazione
+    # 4 = In lavorazione
+    # 5 = Consegna
+    # 6 = Completato
+    # 7 = Anullato
+
 
     _track = {
-        'state': {
+
+        'ticket_staus_id':{
+            'enhanced_helpdesk.new':
+            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '1', 
             'enhanced_helpdesk.pending':
-            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'pending',
-            'enhanced_helpdesk.open':
-            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'open',
+            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '3',
+            'enhanced_helpdesk.working':
+            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '4', 
+            'enhanced_helpdesk.delivered':
+            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '4',  
             'enhanced_helpdesk.done':
-            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'done',
+            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '6',
             'enhanced_helpdesk.cancel':
-            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
+            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '7',  
+            'enhanced_helpdesk.anulled':
+            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '7',  
         },
         'merge_ticket_id': {
             'enhanced_helpdesk.merged':
@@ -200,9 +224,9 @@ class CrmHelpdesk(models.Model):
             'name': values['name'],
             'description': values['description'],
             'ticket_id': res.id,
+
             }
         task_id = self.env['project.task'].sudo().create(task_value)
-        
         # ---- register self task
         res.task_id = task_id
         
@@ -213,16 +237,21 @@ class CrmHelpdesk(models.Model):
             object_id=res.id,
             expande={'after_body': res.description}
             )
+
+    
+
         return res
 
     @api.multi
     def close_ticket(self):
-        self.write({'state': 'done'})
+        #self.write({'state': 'done'})
+        self.write({'ticket_status_id':6}) # Completato
 
     @api.multi
     def cancel_ticket(self):
-        self.write({'state': 'cancel'})
-        
+        #self.write({'state': 'cancel'})
+        self.write({'ticket_status_id':7})
+
         task = self.task_id
         task.sudo().write({'stage_id': 8})
         
@@ -235,7 +264,8 @@ class CrmHelpdesk(models.Model):
             
     @api.multi
     def refuse_ticket(self):
-        self.write({'state': 'cancel'})
+        #self.write({'state': 'cancel'})
+        self.write({'ticket_status_id':7})
         
         task = self.task_id
         task.sudo().write({'stage_id': 8})
@@ -247,14 +277,16 @@ class CrmHelpdesk(models.Model):
             expande={'after_body': 'stima rifiutata'}
             )
 
-    @api.multi
-    def reopen_ticket(self):
-        self.write({'state': 'draft'})
+    #@api.multi
+    #def reopen_ticket(self):
+        #self.write({'state': 'draft'})
+        #self.write.({'ticket_status_id':  })
 
     @api.multi
     def working_ticket(self):
-        self.write({'state': 'open'})
-
+        #self.write({'state': 'open'})
+        self.write({'ticket_status_id': 4})
     @api.multi
     def pending_ticket(self):
-        self.write({'state': 'pending'})
+        #self.write({'state': 'pending'})
+        self.write({'ticket_status_id': 3})

@@ -15,16 +15,17 @@
             <field name="name">CRM - Helpdesk Support Tree</field>
             <field name="model">crm.helpdesk</field>
             <field name="arch" type="xml">
+
                     <tree string="Helpdesk Support Tree"
-                        colors="black:state=='open';blue:state=='pending';gray:state in ('cancel','done')">
+                        colors="black:ticket_status_id=='2';blue:ticket_status_id=='3';gray:ticket_status_id in ('7','6')">
                         <field name="id" string="ID" />
                         <field name="name" string="Oggetto" />
                         <field name="project_id" />
                         <field name="categ_id" />
                         <field name="priority"/>
                         <field name="state"/>
-                        <field name="task_points" attrs="{'invisible': [('state', '=', 'draft')]}" sum="Punti stimati" />
-                        <field name="task_deadline" attrs="{'invisible': [('state', '=', 'draft')]}" />
+                        <field name="task_points" attrs="{'invisible': [('ticket_status_id', '=', '1')]}" sum="Punti stimati" />
+                        <field name="task_deadline" attrs="{'invisible': [('ticket_status_id', '=', '1')]}" />
                     </tree>
             </field>
    </record>
@@ -34,7 +35,7 @@
         <field name="name">Enhanced HelpDesk Kanban</field>
         <field name="model">crm.helpdesk</field>
         <field name="arch" type="xml">
-            <kanban default_order="priority desc" default_group_by="state" quick_create="false" edit="false">
+            <kanban default_order="priority desc" default_group_by="ticket_status_id" quick_create="false" edit="false">
                 <field name="name" />
                 <field name="project_id" />
                 <field name="task_id" />
@@ -59,7 +60,7 @@
                                
                                 <p class="ticket_title"><field name="display_name"/></p>
                                 
-                                 <p class="task_info" t-if="(record.state.raw_value != 'draft')">
+                                 <p class="task_info" t-if="(record.ticket_status_id.raw_value != '1')">
                                     punti stimati: <strong><field name="task_points" /></strong><br />
                                     consegna entro il <strong><field name="task_deadline" /></strong><br />
                                 </p>
@@ -83,18 +84,21 @@
         <field name="arch" type="xml">
             <form string="Helpdesk Support">
                 <header>
-                    <field name="state" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;pending&quot;:&quot;blue&quot;}" />
+             
+
+               <field name="ticket_status_id" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;1&quot;:&quot;blue&quot;}" /> 
+
+           <field name="state" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;1&quot;:&quot;blue&quot;}" invisible="1" />  
+
+                     
                     
-                    <button name="ticket_cancel" class="oe_read_only" string="Annulla richiesta" attrs="{'invisible': ['|',('id', '=', False),('state', '!=', 'draft')]}" />
+                    <button name="ticket_cancel" class="oe_read_only" string="Annulla richiesta" attrs="{'invisible': ['|',('id', '=', False),('ticket_status_id', '!=', '1')]}" />
                     
-                    <button name="ticket_pending_open" class="oe_read_only" states="pending" string="Approva stima" /> 
+                    <button name="ticket_pending_open" class="oe_read_only" states="3" string="Approva stima" /> 
                     
-                    <button name="ticket_refuse" class="oe_read_only" states="pending" string="Rifiuta stima" /> 
+                    <button name="ticket_refuse" class="oe_read_only" states="3" string="Rifiuta stima" /> 
                     
-                    <!--<button name="%(action_change_ticket_user)d" states="draft"
-                            string="Change User" type="action" groups="enhanced_helpdesk.ticketing_support"/> 
-                    <button name="%(action_merge_ticket)d" states="draft"
-                            string="Merge Tickets" type="action" groups="enhanced_helpdesk.ticketing_support"/>-->
+                    
                 </header>
                 <sheet string="Helpdesk Support">
                     <group col="4" class="oe_header">
@@ -116,15 +120,14 @@
                         <field name="email_from" invisible="1" />
                         <!--  Partner_id is required for annoying checking rules -->
                         <field name="partner_id" invisible="1"/>
-                        
                         <group colspan="2">
-                            <field name="project_id" widget="selection" colspan="2" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            <field name="project_id" widget="selection" colspan="2" attrs="{'readonly': [('ticket_status_id', '!=', '1')]}" />
                             
                             <field name="channel_id" invisible="1"/>
                             <field name="source" groups="enhanced_helpdesk.ticketing_support" attrs="{'readonly': [('id', '!=', False)]}"/>
 
-                            <field name="task_id" attrs="{'readonly': True, 'invisible': ['|', '|', ('state', '=', 'draft'),('task_id', '=', False),('task_points', '=', 0)]}" action="action_view_portal_task"  />
-                            <field name="task_points" string="Punti stimati" attrs="{'readonly': True, 'invisible': ['|',('state', '=', 'draft'),('task_id', '=', False)]}" />
+                            <field name="task_id" attrs="{'readonly': True}" action="action_view_portal_task"  />
+                            <field name="task_points" string="Punti stimati" attrs="{'readonly': True, 'invisible': ['|',('ticket_status_id', '=', '1'),('task_id', '=', False)]}" />
                         </group>
                         
                         <group colspan="2">
@@ -132,24 +135,25 @@
                                 domain="[('object_id.model', '=', 'crm.helpdesk')]"
                                 context="{'object_name': 'crm.helpdesk'}"
                                 widget="selection"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                attrs="{'readonly': [('ticket_status_id', '!=', '1')]}"/>
 
                             <field name="priority" widget="priority" colspan="1"
-                                attrs="{'readonly': [('state', 'in', ('cancel','done'))]}"/>
+                                attrs="{'readonly': [('ticket_status_id', 'in', ('7','6'))]}"/>
+                                 
                         </group>
                         
                         <separator string="Oggetto" colspan="4"/>
                         
                         <group colspan="4">
                             <field name="name" nolabel="1" colspan="4"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                attrs="{'readonly': [('ticket_status_id', '!=', '1')]}"/>
                         </group>
                         
                         <separator string="Descrizione" colspan="4"/>
                         
                         <group colspan="4">
                             <field name="description" widget="html" nolabel="1" colspan="4"
-                                attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                attrs="{'readonly': [('ticket_status_id', '!=', '1')]}"/>
                             <field name="related_ticket" nolabel="1" colspan="4" readonly="1"
                                     attrs="{'invisible': [('related_ticket', '=', False)]}"/>
                         </group>
@@ -159,7 +163,7 @@
                         <field name="attachment_ids" colspan="4" mode="kanban"
                                 context="{'default_res_id':uid, 'default_res_model':'res.users'}"
                                 nolabel="1"
-                                attrs="{'readonly': [('state', 'in', ('cancel','done'))]}">
+                                attrs="{'readonly': [('ticket_status_id', 'in', ('7','6'))]}">
                             <form>
                                 <label for="name" colspan="4"/>
                                 <field name="name" colspan="4"/>
@@ -167,13 +171,14 @@
                                 <field name="datas" colspan="4"/>
                                 <field name="res_id" colspan="4" readonly="False" invisible="True"/>
                                 <field name="res_model" colspan="4" readonly="False" invisible="True"/>
+
                             </form>
                         </field>
                         
                         <separator string="Messaggi" colspan="4" attrs="{'invisible': [('id', '=', False)]}" />
 
                         <field name="helpdesk_qa_ids" nolabel="1" class="ticket_messages" colspan="4"
-                            attrs="{'readonly': [('state', 'in', ('cancel','done'))], 'invisible': [('id', '=', False)]}">
+                            attrs="{'readonly': [('ticket_status_id', 'in', ('7','6'))], 'invisible': [('id', '=', False)]}">
 
                             <tree string="Messagges List">
                                 <field name="complete_message" string=""/>
@@ -246,14 +251,18 @@
         
                     <header>
                     
-                        <field name="state" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;pending&quot;:&quot;blue&quot;}" />
+
+
+                        <field name="ticket_status_id" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;5&quot;:&quot;blue&quot;}" /> 
+
+                        <field name="state" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;1&quot;:&quot;blue&quot;}" invisible="1" />  
                         
                         <button name="ticket_cancel" class="oe_read_only" string="Annulla richiesta" attrs="{'invisible': [('id', '=', False)]}" />
       
-                        <button name="%(action_change_ticket_user)d" class="oe_read_only" states="draft"
+                        <button name="%(action_change_ticket_user)d" class="oe_read_only" states="pending"
                                 string="Change User" type="action" groups="enhanced_helpdesk.ticketing_support"/> 
                                 
-                        <button name="%(action_merge_ticket)d" class="oe_read_only" states="draft"
+                        <button name="%(action_merge_ticket)d" class="oe_read_only" states="pending"
                                 string="Merge Tickets" type="action" groups="enhanced_helpdesk.ticketing_support"/>
                             
                     </header>
@@ -293,11 +302,11 @@
                 <field name="categ_id" />
                 <field name="description" />
                 <field name="date" />
-                <filter name="filter_draft" domain="[('state', '=', 'draft')]" string="Draft"/>
-                <filter name="filter_done" domain="[('state', '=', 'done')]" string="Close"/>
-                <filter name="filter_cancel" domain="[('state', '=', 'cancel')]" string="Cancel"/>
-                <filter name="filter_pending" domain="[('state', '=', 'pending')]" string="Pending"/>
-                <filter name="filter_open" domain="[('state', '=', 'open')]" string="Working"/>
+                <filter name="filter_draft" domain="[('ticket_status_id', '=', '1')]" string="Draft"/>
+                <filter name="filter_done" domain="[('ticket_status_id', '=', '6')]" string="Close"/>
+                <filter name="filter_cancel" domain="[('ticket_status_id', '=', '7')]" string="Cancel"/>
+                <filter name="filter_pending" domain="[('ticket_status_id', '=', '5')]" string="Pending"/>
+                <filter name="filter_open" domain="[('ticket_status_id', '=', '4')]" string="Working"/>
             </search>
         </field>
     </record>
@@ -309,8 +318,7 @@
         <field name="view_mode">kanban,tree,form</field>
         <field name="view_id" ref="enhanced_helpdesk_kanban"/>
         <field name="search_view_id" ref="search_enhanced_helpdesk"/>
-        <field name="context">{'needaction_menu_ref':1,'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form',
-        'search_default_filter_draft':1,'search_default_filter_pending':1,'search_default_filter_open':1}</field>
+        <field name="context">{'needaction_menu_ref':1,'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form','search_default_filter_draft':1,'search_default_filter_pending':1,'search_default_filter_open':1, }</field>
         
         
     </record>
@@ -365,6 +373,7 @@
         <field name="name">Support Enhanced HelpDesk Tree</field>
         <field name="model">crm.helpdesk</field>
         <field name="arch" type="xml">
+            
             <tree string="Helpdesk Support Tree"
                     colors="black:state=='open';blue:state=='pending';gray:state in ('cancel','done')">
                 <field name="id" string="#" />
@@ -373,6 +382,8 @@
                 <field name="date" string="Date"/>
                 <field name="user_id"/>
                 <field name="state"/>
+                <field name="ticket_status_id"/>
+
             </tree>
         </field>
     </record>
@@ -387,22 +398,13 @@
         <field name="context">{'needaction_menu_ref':1,'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form','search_default_filter_draft':1,'search_default_filter_pending':1,'search_default_filter_open':1, }</field>
     </record>
 
+
     <!-- ordinamento menu e azione di default -->
-    <menuitem name="Helpdesk and Support" id="crm_helpdesk.menu_help_support_main" action="action_enhanced_helpdesk_support" sequence="15"/>     
+    <menuitem name="Helpdesk and Support" id="crm_helpdesk.menu_help_support_main" action="action_enhanced_helpdesk_support" />     
      
           
-    <!-- submenu items -->
-    <menuitem name="Richieste / Ticket"
-          action=""
-          parent="crm_helpdesk.menu_help_support_main"
-          id="menu_help_support_ticket_title"
-          groups="enhanced_helpdesk.ticketing_support"/>
-          
-    <menuitem name="Ticket"
-          action="action_enhanced_helpdesk_support"
-          parent="menu_help_support_ticket_title"
-          id="menu_help_support_ticket_action"
-          groups="enhanced_helpdesk.ticketing_support"/>
+
+
           
 
 </data>

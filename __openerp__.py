@@ -44,6 +44,8 @@ Enhanced Openerp Helpdesk and Ticketing support
         'view/company_view.xml',
         #'view/account_invoice_view.xml',
         'view/guide_view.xml',
+        'view/res_config_view.xml',
+        'view/helpdesk_status.xml',
         'workflow/helpdesk_workflow.xml',
         ],
     "update_xml": [],

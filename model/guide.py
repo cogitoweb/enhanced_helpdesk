@@ -32,10 +32,20 @@ class CrmHelpdeskGuide(models.Model):
     title = fields.Char(required=True)
     description = fields.Text(required=True)
     url = fields.Char(required=True)
-    state = fields.Selection(
-        [('draft', 'Draft'), ('need_review', 'Need Review'),
-         ('published', 'Published')], default='draft', readonly=False)
-    #category_id = fields.Many2one('crm.helpdesk.guide.category')
+    #state = fields.Selection(
+        #[('draft', 'Draft'), ('need_review', 'Need Review'),
+         #('published', 'Published')], default='draft', readonly=False)
+
+        # Functiont to populate fields.Select()
+    # with ticket status coming from database
+    @api.model
+    def _get_ticket_status(self):
+        lst=[]
+        for status in self.env['helpdesk.ticket.status'].search([]):
+            lst.append((status.id, status.status_name))
+        return lst      
+    
+    state = fields.Selection(_get_ticket_status, default=1 ,readonly=False)
 
     @api.multi
     def open_url(self):

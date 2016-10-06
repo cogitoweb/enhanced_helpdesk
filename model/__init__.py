@@ -31,3 +31,5 @@ from . import wizard_reply
 from . import wizard_merge_ticket
 from . import res_company
 from . import guide
+from . import res_config
+from . import helpdesk_status

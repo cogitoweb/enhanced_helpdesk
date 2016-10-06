@@ -49,7 +49,7 @@
            <field name="groups" eval="[(4, ref('ticketing_external_user'))]"/>
            <field name="domain_force">[('partner_id','child_of',[user.partner_id.parent_id.id])]</field>
         </record>
-        
+
         <!-- fine regole per il pubblico -->
         
         <!-- regole per il supporto -->

@@ -21,6 +21,9 @@
 
 from openerp import models, fields, api
 from openerp import netsvc
+import logging
+#Get the logger
+_logger = logging.getLogger(__name__)
 
 
 class wizard_ticket_reply(models.TransientModel):
@@ -35,6 +38,9 @@ class wizard_ticket_reply(models.TransientModel):
     attachment_name = fields.Char(size=64)
     flag_name = fields.Boolean()
     new_state = fields.Selection(related='ticket_id.state')
+ 
+
+    #_logger.error('FAKE ERROR ONLY 4 DEBUG %s', new_state )
 
     @api.multi
     def reply(self, context=None, wkf_trigger=''):

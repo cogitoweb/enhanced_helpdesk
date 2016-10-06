@@ -20,11 +20,35 @@
 ##############################################################################
 
 from openerp import models, fields, api
+import logging
+_logger = logging.getLogger(__name__)
+
+###############################################################################
+#
+#
+#
+#
+#
+#
+#
+
+
 
 
 class Task(models.Model):
 
     _inherit = 'project.task'
+    #_inherit = 'helpdesk.ticket.status' # Eredito il model degli stati altrimenti genera un errore
+
+
+    # Functiont to populate fields.Select()
+    # with ticket status coming from database
+    @api.model
+    def _get_ticket_status(self):
+        lst=[]
+        for status in self.env['helpdesk.ticket.status'].search([]):
+            lst.append((status.id, status.status_name))
+        return lst 
 
     # ----- Fields
     ticket_id = fields.Many2one('crm.helpdesk')
@@ -45,6 +69,20 @@ class Task(models.Model):
                                      ('cancel', 'Cancelled')],
                                     related='ticket_id.state',
                                     string='Ticket State')
+
+    # New ticket status are:
+    # 1 = Nuovo
+    # 2 = Preso in carico
+    # 3 = In approvazione
+    # 4 = In lavorazione
+    # 5 = Consegna
+    # 6 = Completato
+    # 7 = Anullato
+    #ticket_state = fields.Integer(selection=_get_ticket_status, related='ticket_id.ticket_status_id', string='Ticket State')                                
+
+
+
+                               
                             
     points = fields.Integer(string='Points')                        
 
