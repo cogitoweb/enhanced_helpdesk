@@ -28,7 +28,8 @@
                         <field name="project_id" />
                         <field name="categ_id" />
                         <field name="priority"/>
-                        <field name="state"/>
+                       <!-- <field name="state"/> -->
+                         <field name="ticket_status_id" />
                         <field name="task_points" attrs="{'invisible': [('ticket_status_id', '=', '1')]}" sum="Punti stimati" />
                         <field name="task_deadline" attrs="{'invisible': [('ticket_status_id', '=', '1')]}" />
                     </tree>
@@ -81,7 +82,7 @@
         </field>
     </record>
 
-    <!-- dichiaro form per utenti helpdesk -->
+    <!-- dichiaro form per utenti helpdesk Supporto omnis -->
     <record id="enhanced_helpdesk_form" model="ir.ui.view">
         <field name="name">Enhanced HelpDesk Form</field>
         <field name="model">crm.helpdesk</field>
@@ -95,9 +96,10 @@
 
            <field name="state" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;1&quot;:&quot;blue&quot;}" invisible="1" />  
 
+           
                      
                     
-                    <button name="ticket_cancel" class="oe_read_only" string="Annulla richiesta" attrs="{'invisible': ['|',('id', '=', False),('ticket_status_id', '!=', '1')]}" />
+                    <button name="ticket_cancel" class="oe_read_only" string="Annulla richiesta" attrs="{'invisible': ['|',('id', '=', False),('ticket_status_id', '!=', 1)]}" />
                     
                     <button name="ticket_pending_open" class="oe_read_only" states="3" string="Approva stima" /> 
                     
@@ -307,8 +309,8 @@
                 <field name="categ_id" />
                 <field name="description" />
                 <field name="date" />
-                <filter name="filter_draft" domain="[('ticket_status_id', '=', '1')]" string="Draft"/>
-                <filter name="filter_done" domain="[('ticket_status_id', '=', '6')]" string="Close"/>
+                <filter name="filter_new" domain="[('ticket_status_id', '=', '1')]" string="New"/>
+                <filter name="filter_done" domain="[('ticket_status_id', '=', '6')]" string="Done"/>
                 <filter name="filter_cancel" domain="[('ticket_status_id', '=', '7')]" string="Cancel"/>
                 <filter name="filter_pending" domain="[('ticket_status_id', '=', '5')]" string="Pending"/>
                 <filter name="filter_open" domain="[('ticket_status_id', '=', '4')]" string="Working"/>
@@ -323,7 +325,7 @@
         <field name="view_mode">kanban,tree,form</field>
         <field name="view_id" ref="enhanced_helpdesk_kanban"/>
         <field name="search_view_id" ref="search_enhanced_helpdesk"/>
-        <field name="context">{'needaction_menu_ref':1,'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form','search_default_filter_draft':1,'search_default_filter_pending':1,'search_default_filter_open':1, }</field>
+        <field name="context">{'needaction_menu_ref':1,'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form','search_default_filter_new':1,'search_default_filter_pending':1,'search_default_filter_open':1, }</field>
         
         
     </record>
@@ -380,13 +382,13 @@
         <field name="arch" type="xml">
             
             <tree string="Helpdesk Support Tree"
-                    colors="black:state=='open';blue:state=='pending';gray:state in ('cancel','done')">
+                    colors="black:state=='open';blue:ticket_status_id=='pending';gray:state in ('cancel','done')">
                 <field name="id" string="#" />
                 <field name="request_id" />
                 <field name="name" string="Titolo" />
                 <field name="date" string="Date"/>
                 <field name="user_id"/>
-                <field name="state"/>
+                <field name="state" invisible="1" />
                 <field name="ticket_status_id"/>
 
             </tree>
