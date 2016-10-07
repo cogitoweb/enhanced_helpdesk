@@ -33,3 +33,4 @@ from . import res_company
 from . import guide
 from . import res_config
 from . import helpdesk_status
+from . import migrations

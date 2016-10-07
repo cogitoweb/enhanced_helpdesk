@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
+  <data>
+    <!-- Migration  -->
+    <function model="crm_helpdesk_migrate" name="_migrate_from_old_satus_to_new"/>
+  </data>
+
 <data>
 
     <!-- Load css super mega wow! -->
