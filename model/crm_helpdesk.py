@@ -133,7 +133,7 @@ class CrmHelpdesk(models.Model):
             'enhanced_helpdesk.working':
             lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '4', 
             'enhanced_helpdesk.delivered':
-            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '4',  
+            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '5',  
             'enhanced_helpdesk.done':
             lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '6',
             'enhanced_helpdesk.cancel':
