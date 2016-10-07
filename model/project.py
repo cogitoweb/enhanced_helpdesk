@@ -52,6 +52,9 @@ class Task(models.Model):
 
     # ----- Fields
     ticket_id = fields.Many2one('crm.helpdesk')
+    #ticket_status = fields.Many2one('helpdesk.ticket.status') 
+
+
     ticket_display_id = fields.Char(string='Ticket ID', related='ticket_id.display_id')
     rel_helpdesk_qa_ids = fields.One2many(string='Messages',
                                           related='ticket_id.helpdesk_qa_ids',
@@ -78,7 +81,7 @@ class Task(models.Model):
     # 5 = Consegna
     # 6 = Completato
     # 7 = Anullato
-    #ticket_state = fields.Integer(selection=_get_ticket_status, related='ticket_id.ticket_status_id', string='Ticket State')                                
+    #ticket_state = fields.Selection(selection=_get_ticket_status, related='ticket_status.id', string='Ticket State')                                
 
 
 
