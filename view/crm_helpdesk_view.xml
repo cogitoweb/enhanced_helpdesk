@@ -3,6 +3,7 @@
   <data>
     <!-- Migration  -->
     <function model="crm_helpdesk_migrate" name="_migrate_from_old_satus_to_new"/>
+
   </data>
 
 <data>

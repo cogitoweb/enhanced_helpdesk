@@ -9,4 +9,5 @@ class crm_ticket_status(osv.osv):
         cr.execute(""" UPDATE crm_helpdesk SET ticket_status_id = 6 WHERE state = 'done' """)
         cr.execute(""" UPDATE crm_helpdesk SET ticket_status_id = 7 WHERE state = 'cancel' """)
 
+
         
