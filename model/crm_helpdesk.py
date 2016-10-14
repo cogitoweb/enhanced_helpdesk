@@ -246,12 +246,12 @@ class CrmHelpdesk(models.Model):
     @api.multi
     def close_ticket(self):
         #self.write({'state': 'done'})
-        self.write({'ticket_status_id':6}) # Completato
+        self.write({'state':6}) # Completato
 
     @api.multi
     def cancel_ticket(self):
         #self.write({'state': 'cancel'})
-        self.write({'ticket_status_id':7})
+        self.write({'state':7})
 
         task = self.task_id
         task.sudo().write({'stage_id': 8})
@@ -266,7 +266,7 @@ class CrmHelpdesk(models.Model):
     @api.multi
     def refuse_ticket(self):
         #self.write({'state': 'cancel'})
-        self.write({'ticket_status_id':7})
+        self.write({'state':7})
         
         task = self.task_id
         task.sudo().write({'stage_id': 8})
@@ -286,8 +286,8 @@ class CrmHelpdesk(models.Model):
     @api.multi
     def working_ticket(self):
         #self.write({'state': 'open'})
-        self.write({'ticket_status_id': 4})
+        self.write({'state': 4})
     @api.multi
     def pending_ticket(self):
         #self.write({'state': 'pending'})
-        self.write({'ticket_status_id': 3})
+        self.write({'state': 3})

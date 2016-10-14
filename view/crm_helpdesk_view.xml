@@ -52,6 +52,7 @@
                 <field name="ticket_status_id" />
                 <field name="description" />
                 <field name="request_id" />
+                <field name="state" invisible="1" />
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_card oe_kanban_global_click">
@@ -96,7 +97,7 @@
 
                <field name="ticket_status_id" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;1&quot;:&quot;blue&quot;}" /> 
 
-        <!--   <field name="state" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;1&quot;:&quot;blue&quot;}" invisible="1" />   -->
+           <field name="state" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;1&quot;:&quot;blue&quot;}" invisible="1" />   
 
            
                      
