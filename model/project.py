@@ -65,13 +65,13 @@ class Task(models.Model):
     ticket_last_answer_date = fields.Datetime(
         compute='compute_ticket_last_answer',
         string="Last Answer Date")
-    ticket_state = fields.Selection([('draft', 'New'),
-                                     ('pending', 'Pending'),
-                                     ('open', 'In Progress'),
-                                     ('done', 'Closed'),
-                                     ('cancel', 'Cancelled')],
-                                    related='ticket_id.state',
-                                    string='Ticket State')
+    #ticket_state = fields.Selection([('draft', 'New'),
+    #                                 ('pending', 'Pending'),
+    #                                 ('open', 'In Progress'),
+    #                                 ('done', 'Closed'),
+    #                                 ('cancel', 'Cancelled')],
+    #                                related='ticket_id.state',
+    #                                string='Ticket State')
 
     # New ticket status are:
     # 1 = Nuovo
@@ -81,7 +81,8 @@ class Task(models.Model):
     # 5 = Consegna
     # 6 = Completato
     # 7 = Anullato
-    #ticket_state = fields.Selection(selection=_get_ticket_status, related='ticket_status.id', string='Ticket State')                                
+    ticket_state = fields.Selection(selection=_get_ticket_status, related='ticket_id.state', string='Ticket State')  
+    #                                                            
 
 
 

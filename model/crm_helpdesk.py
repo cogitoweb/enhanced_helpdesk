@@ -107,10 +107,11 @@ class CrmHelpdesk(models.Model):
 
     ticket_status_id = fields.Many2one('helpdesk.ticket.status', default=1 ,string="Ticket Status", track_visibility='onchange');
 
-  
+    state = fields.Selection(_get_ticket_status , default=1) 
 
     defaults = {
-    'ticket_status_id': lambda *a: 1
+    #'ticket_status_id': lambda *a: 1
+    'state':  lambda *a: 1
     }
 
     # New ticket status are:
@@ -125,21 +126,21 @@ class CrmHelpdesk(models.Model):
 
     _track = {
 
-        'ticket_staus_id':{
+        'state':{
             'enhanced_helpdesk.new':
-            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '1', 
+            lambda self, cr, uid, obj, ctx=None: obj['state'] == '1', 
             'enhanced_helpdesk.pending':
-            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '3',
+            lambda self, cr, uid, obj, ctx=None: obj['state'] == '3',
             'enhanced_helpdesk.working':
-            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '4', 
+            lambda self, cr, uid, obj, ctx=None: obj['state'] == '4', 
             'enhanced_helpdesk.delivered':
-            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '5',  
+            lambda self, cr, uid, obj, ctx=None: obj['state'] == '5',  
             'enhanced_helpdesk.done':
-            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '6',
+            lambda self, cr, uid, obj, ctx=None: obj['state'] == '6',
             'enhanced_helpdesk.cancel':
-            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '7',  
+            lambda self, cr, uid, obj, ctx=None: obj['state'] == '7',  
             'enhanced_helpdesk.anulled':
-            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '7',  
+            lambda self, cr, uid, obj, ctx=None: obj['state'] == '7',  
         },
         'merge_ticket_id': {
             'enhanced_helpdesk.merged':
