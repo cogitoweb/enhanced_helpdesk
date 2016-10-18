@@ -21,7 +21,7 @@
 
 {
     'name': "Enhanced Helpdesk",
-    'version': '0.1',
+    'version': '0.2',
     'category': 'CRM',
     'description': """
 Enhanced Openerp Helpdesk and Ticketing support

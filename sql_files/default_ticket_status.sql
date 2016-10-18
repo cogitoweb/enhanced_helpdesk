@@ -1,4 +1,4 @@
-INSERT INTO  helpdesk_ticket_status(id,status_name)
+/*INSERT INTO  helpdesk_ticket_status(id,status_name)
 VALUES ('1',  'Nuovo')
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO  helpdesk_ticket_status(id,status_name)
@@ -18,4 +18,4 @@ VALUES ('6', 'Completato')
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO  helpdesk_ticket_status(id,status_name) 
 VALUES ('7', 'Anullato')
-ON CONFLICT (id) DO NOTHING;  
+ON CONFLICT (id) DO NOTHING;  */
