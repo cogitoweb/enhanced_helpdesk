@@ -11,7 +11,7 @@
             <field name="description">Ticket Aperto</field>
         </record>
 
-        <record id="pending" model="mail.message.subtype">
+        <record id="awaiting" model="mail.message.subtype">
             <field name="name">Ticket in Sospeso</field>
             <field name="res_model">crm.helpdesk</field>
             <field name="default" eval="False"/>

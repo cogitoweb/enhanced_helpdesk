@@ -34,6 +34,7 @@ Enhanced Openerp Helpdesk and Ticketing support
     "data": [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'data/ticket_status_data.xml',
         'data/helpdesk_data.xml',
         'view/wizard_change_user.xml',
         'view/wizard_merge_ticket.xml',

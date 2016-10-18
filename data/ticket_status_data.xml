@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <!--data noupdate="1"-->
+    <data>
+	 	<record id="new" model="helpdesk.ticket.status">
+    		<field name="status_name">New</field>
+   			<field name="status_code">nw</field>
+   			<field name="status_order">1</field>
+		</record>
+		<record id="handled" model="helpdesk.ticket.status">
+    		<field name="status_name">Handled</field>
+   			<field name="status_code">ha</field>
+   			<field name="status_order">2</field>
+		</record>
+		<record id="pending" model="helpdesk.ticket.status">
+    		<field name="status_name">Pending</field>
+   			<field name="status_code">pe</field>
+   			<field name="status_order">3</field>
+		</record>
+		<record id="working" model="helpdesk.ticket.status">
+    		<field name="status_name">Working</field>
+   			<field name="status_code">wk</field>
+   			<field name="status_order">4</field>
+		</record>
+		<record id="delivered" model="helpdesk.ticket.status">
+    		<field name="status_name">Delivered</field>
+   			<field name="status_code">de</field>
+   			<field name="status_order">5</field>
+		</record>
+		<record id="completed" model="helpdesk.ticket.status">
+    		<field name="status_name">Completed</field>
+   			<field name="status_code">co</field>
+   			<field name="status_order">6</field>
+		</record>
+		<record id="deleted" model="helpdesk.ticket.status">
+    		<field name="status_name">Deleted</field>
+   			<field name="status_code">deleted</field>
+   			<field name="status_order">7</field>
+		</record>
+	</data>
+</openerp>	        
