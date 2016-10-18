@@ -2,6 +2,9 @@ def migrate(cr, version):
     if not version:
         return
 
+### da eseguire tramite load dati xml vedi
+# http://www.odoo.yenthevg.com/installing-default-data-in-odoo-module/ 
+# + etichette stati in inglese
     
 #    cr.execute("""INSERT INTO  helpdesk_ticket_status(id,status_name) VALUES ('1', 'Nuovo')  """)
 #    cr.execute("""INSERT INTO  helpdesk_ticket_status(id,status_name) VALUES ('2', 'Presa in carico') """)           

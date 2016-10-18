@@ -90,14 +90,20 @@
         <field name="name">Enhanced HelpDesk Form</field>
         <field name="model">crm.helpdesk</field>
         <field name="groups_id" eval="[(4, [ref('enhanced_helpdesk.ticketing_external_user') ])]" /> 
+        
+       
+        
         <field name="arch" type="xml">
+            
+             <field name="proxy_status_id" />
+            
             <form string="Helpdesk Support">
                 <header>
              
 
                <field name="ticket_status_id" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;1&quot;:&quot;blue&quot;}" /> 
                                
-                <button name="ticket_cancel" class="oe_read_only" string="Annulla richiesta" attrs="{'invisible': ['|',('id', '=', False),('ticket_status_id', '!=', 1)]}" />
+                <button name="ticket_cancel" class="oe_read_only" string="Annulla richiesta" attrs="{'invisible': ['|',('id', '=', False),('proxy_status_id', '!=', 1)]}" />
 
                 <button name="ticket_pending_open" class="oe_read_only" ticket_status_id="3" string="Approva stima" /> 
 
@@ -126,13 +132,13 @@
                         <!--  Partner_id is required for annoying checking rules -->
                         <field name="partner_id" invisible="1"/>
                         <group colspan="2">
-                            <field name="project_id" widget="selection" colspan="2" />
+                            <field name="project_id" widget="selection" colspan="2" attrs="{'readonly': [('proxy_status_id', '!=', '1')]}" />
                             
                             <field name="channel_id" invisible="1"/>
                             <field name="source" groups="enhanced_helpdesk.ticketing_support" attrs="{'readonly': [('id', '!=', False)]}"/>
 
                             <field name="task_id" attrs="{'readonly': True}" action="action_view_portal_task"  />
-                            <field name="task_points" string="Punti stimati" attrs="{'readonly': True, 'invisible': ['|',('ticket_status_id', '=', '1'),('task_id', '=', False)]}" />
+                            <field name="task_points" string="Punti stimati" attrs="{'readonly': True, 'invisible': ['|',('proxy_status_id', '=', '1'),('task_id', '=', False)]}" />
                         </group>
                         
                         <group colspan="2">
@@ -140,10 +146,10 @@
                                 domain="[('object_id.model', '=', 'crm.helpdesk')]"
                                 context="{'object_name': 'crm.helpdesk'}"
                                 widget="selection"
-                                attrs="{'readonly': [('ticket_status_id', '!=', '1')]}"/>
+                                attrs="{'readonly': [('proxy_status_id', '!=', '1')]}"/>
 
                             <field name="priority" widget="priority" colspan="1"
-                                attrs="{'readonly': [('ticket_status_id', 'in', ('7','6'))]}"/>
+                                attrs="{'readonly': [('proxy_status_id', 'in', ('7','6'))]}"/>
                                  
                         </group>
                         
@@ -151,14 +157,14 @@
                         
                         <group colspan="4">
                             <field name="name" nolabel="1" colspan="4"
-                                attrs="{'readonly': [('ticket_status_id', '!=', '1')]}"/>
+                                attrs="{'readonly': [('proxy_status_id', '!=', '1')]}"/>
                         </group>
                         
                         <separator string="Descrizione" colspan="4"/>
                         
                         <group colspan="4">
                             <field name="description" widget="html" nolabel="1" colspan="4"
-                                attrs="{'readonly': [('ticket_status_id', '!=', '1')]}"/>
+                                attrs="{'readonly': [('proxy_status_id', '!=', '1')]}"/>
                             <field name="related_ticket" nolabel="1" colspan="4" readonly="1"
                                     attrs="{'invisible': [('related_ticket', '=', False)]}"/>
                         </group>
@@ -168,7 +174,7 @@
                         <field name="attachment_ids" colspan="4" mode="kanban"
                                 context="{'default_res_id':uid, 'default_res_model':'res.users'}"
                                 nolabel="1"
-                                attrs="{'readonly': [('ticket_status_id', 'in', ('7','6'))]}">
+                                attrs="{'readonly': [('proxy_status_id', 'in', ('7','6'))]}">
                             <form>
                                 <label for="name" colspan="4"/>
                                 <field name="name" colspan="4"/>
@@ -183,7 +189,7 @@
                         <separator string="Messaggi" colspan="4" attrs="{'invisible': [('id', '=', False)]}" />
 
                         <field name="helpdesk_qa_ids" nolabel="1" class="ticket_messages" colspan="4"
-                            attrs="{'readonly': [('ticket_status_id', 'in', ('7','6'))], 'invisible': [('id', '=', False)]}">
+                            attrs="{'readonly': [('proxy_status_id', 'in', ('7','6'))], 'invisible': [('id', '=', False)]}">
 
                             <tree string="Messagges List">
                                 <field name="complete_message" string=""/>

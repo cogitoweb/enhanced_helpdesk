@@ -106,6 +106,9 @@ class CrmHelpdesk(models.Model):
 
 
     ticket_status_id = fields.Many2one('helpdesk.ticket.status', default=1 ,string="Ticket Status", track_visibility='onchange');
+    
+    proxy_status_id = fields.Char(related='ticket_status_id.status_code')
+    
 
     # New ticket status are:
     # 1 = Nuovo
@@ -268,9 +271,10 @@ class CrmHelpdesk(models.Model):
             expande={'after_body': 'stima rifiutata'}
             )
 
-    #@api.multi
-    #def reopen_ticket(self):
-        #self.write.({'ticket_status_id':  })
+    @api.multi
+    def reopen_ticket(self):
+        _logger.info("call to reopen")
+        #self.write.({'ticket_status_id':  1})
 
     @api.multi
     def working_ticket(self):
