@@ -65,17 +65,8 @@
         </record>
 
    
-
-
-              <menuitem id="menu_helpdesk_configuration_task" name="Help Desk Configuration type" parent="menu_helpdesk_configuration"
-            sequence="2" action="open_task_type_form"/>
-
-
-
-
-
-                
-
+      <menuitem id="menu_helpdesk_configuration_task" name="Ticket status" parent="menu_helpdesk_configuration"
+    sequence="2" action="open_task_type_form"/>
 
 
     </data>

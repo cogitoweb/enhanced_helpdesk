@@ -95,7 +95,7 @@
         
         <field name="arch" type="xml">
             
-             <field name="proxy_status_id" invisible="1" />
+            <field name="proxy_status_code" invisible="1" />
             
             <form string="Helpdesk Support">
                 <header>
@@ -103,7 +103,7 @@
 
                <field name="ticket_status_id" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;1&quot;:&quot;blue&quot;}" /> 
                                
-                <button name="ticket_cancel" class="oe_read_only" string="Annulla richiesta" attrs="{'invisible': ['|',('id', '=', False),('proxy_status_id', '!=', 'new')]}" />
+                <button name="ticket_cancel" class="oe_read_only" string="Annulla richiesta" attrs="{'invisible': ['|',('id', '=', False),('proxy_status_code', '!=', 'new')]}" />
 
                 <button name="ticket_pending_open" class="oe_read_only" ticket_status_id="3" string="Approva stima" /> 
 
@@ -132,13 +132,13 @@
                         <!--  Partner_id is required for annoying checking rules -->
                         <field name="partner_id" invisible="1"/>
                         <group colspan="2">
-                            <field name="project_id" widget="selection" colspan="2" attrs="{'readonly': [('proxy_status_id', '!=', 'new')]}" />
+                            <field name="project_id" widget="selection" colspan="2" attrs="{'readonly': [('proxy_status_code', '!=', 'new')]}" />
                             
                             <field name="channel_id" invisible="1"/>
                             <field name="source" groups="enhanced_helpdesk.ticketing_support" attrs="{'readonly': [('id', '!=', False)]}"/>
 
                             <field name="task_id" attrs="{'readonly': True}" action="action_view_portal_task"  />
-                            <field name="task_points" string="Punti stimati" attrs="{'readonly': True, 'invisible': ['|',('proxy_status_id', '=', 'new'),('task_id', '=', False)]}" />
+                            <field name="task_points" string="Punti stimati" attrs="{'readonly': True, 'invisible': ['|',('proxy_status_code', '=', 'new'),('task_id', '=', False)]}" />
                         </group>
                         
                         <group colspan="2">
@@ -146,10 +146,10 @@
                                 domain="[('object_id.model', '=', 'crm.helpdesk')]"
                                 context="{'object_name': 'crm.helpdesk'}"
                                 widget="selection"
-                                attrs="{'readonly': [('proxy_status_id', '!=', 'new')]}"/>
+                                attrs="{'readonly': [('proxy_status_code', '!=', 'new')]}"/>
 
                             <field name="priority" widget="priority" colspan="1"
-                                attrs="{'readonly': [('proxy_status_id', 'in', ('xx','ok'))]}"/>
+                                attrs="{'readonly': [('proxy_status_code', 'in', ('xx','ok'))]}"/>
                                  
                         </group>
                         
@@ -157,24 +157,24 @@
                         
                         <group colspan="4">
                             <field name="name" nolabel="1" colspan="4"
-                                attrs="{'readonly': [('proxy_status_id', '!=', 'new')]}"/>
+                                attrs="{'readonly': [('proxy_status_code', '!=', 'new')]}"/>
                         </group>
                         
                         <separator string="Descrizione" colspan="4"/>
                         
                         <group colspan="4">
                             <field name="description" widget="html" nolabel="1" colspan="4"
-                                attrs="{'readonly': [('proxy_status_id', '!=', 'new')]}"/>
+                                attrs="{'readonly': [('proxy_status_code', '!=', 'new')]}"/>
                             <field name="related_ticket" nolabel="1" colspan="4" readonly="1"
                                     attrs="{'invisible': [('related_ticket', '=', False)]}"/>
                         </group>
 
-                        <separator string="Allegati" colspan="4"/>
+                        <separator string="Attachment" colspan="4"/>
                         
                         <field name="attachment_ids" colspan="4" mode="kanban"
                                 context="{'default_res_id':uid, 'default_res_model':'res.users'}"
                                 nolabel="1"
-                                attrs="{'readonly': [('proxy_status_id', 'in', ('xx','ok'))]}">
+                                attrs="{'readonly': [('proxy_status_code', 'in', ('xx','ok'))]}">
                             <form>
                                 <label for="name" colspan="4"/>
                                 <field name="name" colspan="4"/>
@@ -189,7 +189,7 @@
                         <separator string="Messaggi" colspan="4" attrs="{'invisible': [('id', '=', False)]}" />
 
                         <field name="helpdesk_qa_ids" nolabel="1" class="ticket_messages" colspan="4"
-                            attrs="{'readonly': [('proxy_status_id', 'in', ('xx','ok'))], 'invisible': [('id', '=', False)]}">
+                            attrs="{'readonly': [('proxy_status_code', 'in', ('xx','ok'))], 'invisible': [('id', '=', False)]}">
 
                             <tree string="Messagges List">
                                 <field name="complete_message" string=""/>
@@ -294,11 +294,11 @@
                 <field name="categ_id" />
                 <field name="description" />
                 <field name="date" />
-                <filter name="filter_new" domain="[('proxy_status_id', '=', 'new')]" string="New"/>
-                <filter name="filter_done" domain="[('proxy_status_id', '=', 'ok')]" string="Done"/>
-                <filter name="filter_cancel" domain="[('proxy_status_id', '=', 'xx')]" string="Cancel"/>
-                <filter name="filter_pending" domain="[('proxy_status_id', '=', 'app')]" string="Pending"/>
-                <filter name="filter_open" domain="[('proxy_status_id', '=', 'wrk')]" string="Working"/>
+                <filter name="filter_new" domain="[('proxy_status_code', '=', 'new')]" string="New"/>
+                <filter name="filter_done" domain="[('proxy_status_code', '=', 'ok')]" string="Done"/>
+                <filter name="filter_cancel" domain="[('proxy_status_code', '=', 'xx')]" string="Cancel"/>
+                <filter name="filter_pending" domain="[('proxy_status_code', '=', 'app')]" string="Pending"/>
+                <filter name="filter_open" domain="[('proxy_status_code', '=', 'wrk')]" string="Working"/>
             </search>
         </field>
     </record>
@@ -310,9 +310,7 @@
         <field name="view_mode">kanban,tree,form</field>
         <field name="view_id" ref="enhanced_helpdesk_kanban"/>
         <field name="search_view_id" ref="search_enhanced_helpdesk"/>
-        <field name="context">{'needaction_menu_ref':1,'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form','search_default_filter_new':1,'search_default_filter_pending':1,'search_default_filter_open':1, }</field>
-        
-        
+        <field name="context">{'needaction_menu_ref':1,'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form','search_default_filter_new':1,'search_default_filter_pending':1,'search_default_filter_open':1, }</field>  
     </record>
 
     <menuitem name="Supporto e Ticket"
@@ -366,14 +364,19 @@
         <field name="model">crm.helpdesk</field>
         <field name="arch" type="xml">
             
+            
+            
             <tree string="Helpdesk Support Tree"
-                    colors="black:ticket_status_id=='1';blue:ticket_status_id=='3';grey:ticket_status_id in ('6','7')">
+                    colors="red:proxy_status_code in ('new','ass');black:proxy_status_code in ('wrk','dlv');blue:proxy_status_code=='app';grey:proxy_status_code in ('ok','xx')">
                 <field name="id" string="#" />
                 <field name="request_id" />
-                <field name="name" string="Titolo" />
+                <field name="name" string="Title" />
                 <field name="date" string="Date"/>
                 <field name="user_id"/>
                 <field name="ticket_status_id"/>
+                <field name="priority"/> 
+                
+                <field name="proxy_status_code" invisible="1" />
 
             </tree>
         </field>

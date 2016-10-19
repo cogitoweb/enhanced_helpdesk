@@ -45,6 +45,10 @@
     height: 0;
 }
 
+.openerp .oe_form .oe_form_field {
+    padding-top:0;
+}
+
 /* KANBAN SECTION */
 
 .openerp .oe_kanban_view .oe_kanban_content.enhanced_helpdesk_project_kanban  h4 {

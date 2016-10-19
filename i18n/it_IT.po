@@ -120,7 +120,7 @@ msgid "Allocati:"
 msgstr ""
 
 #. module: enhanced_helpdesk
-#: view:cogito.helpdesk.config.settings:enhanced_helpdesk.view_helpdesk_configuration
+#: view:helpdesk.config.settings:enhanced_helpdesk.view_helpdesk_configuration
 msgid "Amazon Integration Configuration"
 msgstr "Configurazione Supporto"
 
@@ -146,7 +146,7 @@ msgid "Append this project to another one using analytic accounts hierarchy"
 msgstr ""
 
 #. module: enhanced_helpdesk
-#: view:cogito.helpdesk.config.settings:enhanced_helpdesk.view_helpdesk_configuration
+#: view:helpdesk.config.settings:enhanced_helpdesk.view_helpdesk_configuration
 #: view:wizard.change.ticket.user:enhanced_helpdesk.wizard_change_ticket_user_view
 msgid "Apply"
 msgstr "Crea"
@@ -219,7 +219,7 @@ msgid "Can not delete messages with an answer"
 msgstr "Impossibile eliminare un messaggio con una risposta"
 
 #. module: enhanced_helpdesk
-#: view:cogito.helpdesk.config.settings:enhanced_helpdesk.view_helpdesk_configuration
+#: view:helpdesk.config.settings:enhanced_helpdesk.view_helpdesk_configuration
 #: view:crm.helpdesk:enhanced_helpdesk.search_enhanced_helpdesk
 #: view:wizard.change.ticket.user:enhanced_helpdesk.wizard_change_ticket_user_view
 #: view:wizard.merge.ticket:enhanced_helpdesk.wizard_merge_ticket_view
@@ -280,7 +280,7 @@ msgid "Consumati:"
 msgstr ""
 
 #. module: enhanced_helpdesk
-#: field:cogito.helpdesk.config.settings,create_uid:0
+#: field:helpdesk.config.settings,create_uid:0
 #: field:crm.helpdesk.guide,create_uid:0 field:helpdesk.qa,create_uid:0
 #: field:helpdesk.ticket.status,create_uid:0
 #: field:wizard.change.ticket.user,create_uid:0
@@ -290,7 +290,7 @@ msgid "Created by"
 msgstr ""
 
 #. module: enhanced_helpdesk
-#: field:cogito.helpdesk.config.settings,create_date:0
+#: field:helpdesk.config.settings,create_date:0
 #: field:crm.helpdesk.guide,create_date:0 field:helpdesk.qa,create_date:0
 #: field:helpdesk.ticket.status,create_date:0
 #: field:wizard.change.ticket.user,create_date:0
@@ -367,7 +367,7 @@ msgid "Destination ticket id"
 msgstr ""
 
 #. module: enhanced_helpdesk
-#: field:cogito.helpdesk.config.settings,display_name:0
+#: field:helpdesk.config.settings,display_name:0
 #: field:crm.helpdesk.guide,display_name:0 field:helpdesk.qa,display_name:0
 #: field:helpdesk.ticket.status,display_name:0
 #: field:wizard.change.ticket.user,display_name:0
@@ -398,7 +398,7 @@ msgid "Durata"
 msgstr ""
 
 #. module: enhanced_helpdesk
-#: help:cogito.helpdesk.config.settings,default_helpdesk_email:0
+#: help:helpdesk.config.settings,default_helpdesk_email:0
 msgid "E-mail di servizio"
 msgstr ""
 
@@ -474,7 +474,7 @@ msgid "Help Desk Configuration"
 msgstr "Configurazione Supporto"
 
 #. module: enhanced_helpdesk
-#: view:cogito.helpdesk.config.settings:enhanced_helpdesk.view_helpdesk_configuration
+#: view:helpdesk.config.settings:enhanced_helpdesk.view_helpdesk_configuration
 msgid "Help Desk Settings"
 msgstr "Configurazione Supporto"
 
@@ -485,7 +485,7 @@ msgid "Helpdesk"
 msgstr "Supporto"
 
 #. module: enhanced_helpdesk
-#: field:cogito.helpdesk.config.settings,default_helpdesk_email:0
+#: field:helpdesk.config.settings,default_helpdesk_email:0
 msgid "Helpdesk E-mail"
 msgstr "E-mail alias del supporto"
 
@@ -515,7 +515,7 @@ msgid "Helpdesk qa ids"
 msgstr ""
 
 #. module: enhanced_helpdesk
-#: field:cogito.helpdesk.config.settings,id:0 field:crm.helpdesk.guide,id:0
+#: field:helpdesk.config.settings,id:0 field:crm.helpdesk.guide,id:0
 #: field:helpdesk.qa,id:0 field:helpdesk.ticket.status,id:0
 #: field:wizard.change.ticket.user,id:0 field:wizard.merge.ticket,id:0
 #: field:wizard.ticket.reply,id:0
@@ -568,7 +568,7 @@ msgid "Last Answer User"
 msgstr ""
 
 #. module: enhanced_helpdesk
-#: field:cogito.helpdesk.config.settings,__last_update:0
+#: field:helpdesk.config.settings,__last_update:0
 #: field:crm.helpdesk.guide,__last_update:0 field:helpdesk.qa,__last_update:0
 #: field:helpdesk.ticket.status,__last_update:0
 #: field:wizard.change.ticket.user,__last_update:0
@@ -578,7 +578,7 @@ msgid "Last Modified on"
 msgstr ""
 
 #. module: enhanced_helpdesk
-#: field:cogito.helpdesk.config.settings,write_uid:0
+#: field:helpdesk.config.settings,write_uid:0
 #: field:crm.helpdesk.guide,write_uid:0 field:helpdesk.qa,write_uid:0
 #: field:helpdesk.ticket.status,write_uid:0
 #: field:wizard.change.ticket.user,write_uid:0
@@ -587,7 +587,7 @@ msgid "Last Updated by"
 msgstr ""
 
 #. module: enhanced_helpdesk
-#: field:cogito.helpdesk.config.settings,write_date:0
+#: field:helpdesk.config.settings,write_date:0
 #: field:crm.helpdesk.guide,write_date:0 field:helpdesk.qa,write_date:0
 #: field:helpdesk.ticket.status,write_date:0
 #: field:wizard.change.ticket.user,write_date:0
@@ -1405,7 +1405,7 @@ msgid "many2one"
 msgstr ""
 
 #. module: enhanced_helpdesk
-#: view:cogito.helpdesk.config.settings:enhanced_helpdesk.view_helpdesk_configuration
+#: view:helpdesk.config.settings:enhanced_helpdesk.view_helpdesk_configuration
 msgid "or"
 msgstr ""
 

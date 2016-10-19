@@ -27,18 +27,15 @@ from openerp.tools.translate import _
 _logger = logging.getLogger(__name__)
 
 
-class hd_config_settings(models.TransientModel):
-    _name = 'cogito.helpdesk.config.settings'
+class helpdesk_config_settings(models.TransientModel):
+    _name = 'helpdesk.config.settings'
     _inherit = 'res.config.settings'
 
-    
-
-    
     default_helpdesk_email = fields.Char(
         string='Helpdesk E-mail',
         required=True,
         help="E-mail di servizio",
-        default_model='cogito.helpdesk.config.settings',
+        default_model='helpdesk.config.settings',
         translate=True,
     )
 

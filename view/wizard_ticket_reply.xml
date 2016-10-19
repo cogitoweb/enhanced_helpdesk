@@ -6,29 +6,53 @@
             <field name="name">Ticket Reply</field>
             <field name="model">wizard.ticket.reply</field>
             <field name="arch" type="xml">
+                
+              <field name="proxy_status_code" invisible="1" />
+                
               <form string="Ticket Reply">
-                  <group colspan="4">
-                      <field name="ticket_id"/>
-                      <field name="ticket_reply"/>
-                      <field name="new_state" readonly="True"/>
-                      <field name="attachment_name"
-                          attrs="{'required': [('flag_name', '=', True)]}"/>
-                      <field name="flag_name" invisible="1" />
-                      <field name="attachment"/>
-                  </group>
-                  <footer>
-                      <button name="reply" string="Reply" type="object" class="oe_highlight"/>
-                        <button name="ticket_close" string="Set Close" type="object" class="oe_highlight"
-                            attrs="{'invisible': ['!', ('new_state', 'in', ('draft', 'open', 'pending'))]}"/>
-                        <button name="ticket_working" string="Set Working" type="object" class="oe_highlight"
-                            attrs="{'invisible': ['!', ('new_state', 'in', ('draft', 'pending'))]}"/>
-                        <button name="ticket_pending" string="Set Pending" type="object" class="oe_highlight"
-                            attrs="{'invisible': ['!', ('new_state', 'in', ('draft', 'open'))]}"/>
-                        <button name="ticket_cancel" string="Set Cancel" type="object" class="oe_highlight"
-                            attrs="{'invisible': ['!', ('new_state', 'in', ('draft'))]}"/>
-                        <button string="Cancel" class="oe_link" special="cancel" />
-                  </footer>
-            </form>
+                  
+                        
+                      <group colspan="4">
+                          <field name="ticket_id" readonly="True" />
+                          <field name="ticket_status_id" readonly="True"/>
+                          
+                          <field name="task_user_id" 
+                                 attrs="{'readonly': ['!', ('proxy_status_code', 'in', ('new'))]}"/> />
+                          
+                          <field name="points" 
+                                attrs="{'invisible': [('proxy_status_code', 'in', ('new'))], 
+                                       'readonly': ['!', ('proxy_status_code', 'in', ('ass'))]}"/> />
+                          
+                          <field name="ticket_reply"/>
+                        
+                          <field name="attachment_name" attrs="{'required': [('flag_name', '=', True)]}"/>
+                          <field name="flag_name" invisible="1" />
+                          <field name="attachment"/>
+                      </group>
+                      <footer>
+                          <button name="reply" string="Reply" type="object" class="oe_highlight"/>
+                          
+                          <button name="ticket_assigned" string="Set Assigned" type="object" class="oe_highlight"
+                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('new'))]}"/>
+                          
+                          <button name="ticket_pending" string="Set Pending" type="object" class="oe_highlight"
+                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass'))]}"/>
+                          
+                          <button name="ticket_working" string="Set Working" type="object" class="oe_highlight"
+                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('app'))]}"/>
+                          
+                          <button name="ticket_delivered" string="Set Delivered" type="object" class="oe_highlight"
+                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('wrk'))]}"/>
+                          
+                          <button name="ticket_completed" string="Set Completed" type="object" class="oe_highlight"
+                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('dlv'))]}"/>
+                         
+                          <button name="ticket_deleted" string="Delete" type="object" class="oe_highlight"
+                                attrs="{'invisible': [('proxy_status_code', 'in', ('xx', 'new'))]}"/>
+                          
+                          <button string="Cancel" class="oe_link" special="cancel" />
+                      </footer>
+                </form>
             </field>
         </record>
 

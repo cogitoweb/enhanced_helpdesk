@@ -3,8 +3,8 @@
     <data>
     <record id="view_helpdesk_configuration" model="ir.ui.view">
             <field name="name">helpdesk settings</field>
-            <field name="model">cogito.helpdesk.config.settings</field>
-<field name="arch" type="xml">
+            <field name="model">helpdesk.config.settings</field>
+            <field name="arch" type="xml">
                 <form string="Amazon Integration Configuration"
                       class="oe_form_configuration">
                     <sheet>
@@ -30,7 +30,7 @@
 
         <record id="action_helpdesk_configuration" model="ir.actions.act_window">
             <field name="name">helpdesk settings</field>
-            <field name="res_model">cogito.helpdesk.config.settings</field>
+            <field name="res_model">helpdesk.config.settings</field>
             <field name="view_id" ref="view_helpdesk_configuration"/>
             <field name="view_mode">form</field>
             <field name="target">inline</field>
@@ -39,8 +39,8 @@
         <menuitem id="menu_helpdesk_configuration" name="Help Desk Configuration" parent="base.menu_config"
             sequence="15"/>
 
-            <menuitem id="menu_helpdesk_configuration_mailcfg" name="Help Desk Configuration mail" parent="menu_helpdesk_configuration"
-            sequence="1" action="action_helpdesk_configuration"/>
+        <menuitem id="menu_helpdesk_configuration_mailcfg" name="Notification Email" parent="menu_helpdesk_configuration"
+        sequence="1" action="action_helpdesk_configuration"/>
 
     </data>
 </openerp>

@@ -2,121 +2,118 @@
 <openerp>
     <data>
 
+        <!-- WORKFLOW -->
+        
         <record id="wkf" model="workflow">
             <field name="name">crm.helpdesk.enhanced</field>
             <field name="osv">crm.helpdesk</field>
             <field name="on_create">True</field>
         </record>
 
-        <record id="act_draft" model="workflow.activity">
+        <record id="act_new" model="workflow.activity">
             <field name="wkf_id" ref="wkf"/>
             <field name="flow_start">True</field>
-            <field name="name">draft</field>
-            <field name="action">reopen_ticket()</field>
+            <field name="name">new</field>
+            <field name="action">new_ticket()</field>
             <field name="kind">function</field>
         </record>
-
-        <record id="act_done" model="workflow.activity">
+        
+        <record id="act_ass" model="workflow.activity">
             <field name="wkf_id" ref="wkf"/>
-            <field name="name">done</field>
-            <field name="flow_stop">True</field>
-            <field name="action">close_ticket()</field>
+            <field name="name">assigned</field>
+            <field name="action">assigned_ticket()</field>
             <field name="kind">function</field>
         </record>
-
-        <record id="act_open" model="workflow.activity">
-            <field name="wkf_id" ref="wkf"/>
-            <field name="name">open</field>
-            <field name="action">working_ticket()</field>
-            <field name="kind">function</field>
-        </record>
-
-        <record id="act_pending" model="workflow.activity">
+        
+        <record id="act_app" model="workflow.activity">
             <field name="wkf_id" ref="wkf"/>
             <field name="name">pending</field>
             <field name="action">pending_ticket()</field>
             <field name="kind">function</field>
         </record>
-
-        <record id="act_cancel" model="workflow.activity">
+        
+        <record id="act_wrk" model="workflow.activity">
             <field name="wkf_id" ref="wkf"/>
-            <field name="name">cancelled</field>
-            <field name="flow_stop">True</field>
-            <field name="action">cancel_ticket()</field>
+            <field name="name">working</field>
+            <field name="action">working_ticket()</field>
             <field name="kind">function</field>
         </record>
-
-        <record id="act_refuse" model="workflow.activity">
+        
+        <record id="act_dlv" model="workflow.activity">
+            <field name="wkf_id" ref="wkf"/>
+            <field name="name">delivered</field>
+            <field name="action">delivered_ticket()</field>
+            <field name="kind">function</field>
+        </record>
+        
+        <record id="act_completed" model="workflow.activity">
+            <field name="wkf_id" ref="wkf"/>
+            <field name="name">completed</field>
+            <field name="flow_stop">True</field>
+            <field name="action">completed_ticket()</field>
+            <field name="kind">function</field>
+        </record>
+        
+        <record id="act_deleted" model="workflow.activity">
+            <field name="wkf_id" ref="wkf"/>
+            <field name="name">deleted</field>
+            <field name="flow_stop">True</field>
+            <field name="action">deleted_ticket()</field>
+            <field name="kind">function</field>
+        </record>
+        
+        <record id="act_refused" model="workflow.activity">
             <field name="wkf_id" ref="wkf"/>
             <field name="name">refused</field>
             <field name="flow_stop">True</field>
             <field name="action">refuse_ticket()</field>
             <field name="kind">function</field>
         </record>
-        
-        
-        
-        
+
+        <!-- TRANSITIONS -->
 
         <record id="t1" model="workflow.transition">
-            <field name="act_from" ref="act_draft"/>
-            <field name="act_to" ref="act_done"/>
-            <field name="signal">ticket_close</field>
+            <field name="act_from" ref="act_new"/>
+            <field name="act_to" ref="act_ass"/>
+            <field name="signal">ticket_assigned</field>
         </record>
 
         <record id="t2" model="workflow.transition">
-            <field name="act_from" ref="act_done"/>
-            <field name="act_to" ref="act_draft"/>
-            <field name="signal">ticket_reopen</field>
+            <field name="act_from" ref="act_ass"/>
+            <field name="act_to" ref="act_app"/>
+            <field name="signal">ticket_quoted</field>
         </record>
 
         <record id="t3" model="workflow.transition">
-            <field name="act_from" ref="act_draft"/>
-            <field name="act_to" ref="act_open"/>
-            <field name="signal">ticket_working</field>
+            <field name="act_from" ref="act_app"/>
+            <field name="act_to" ref="act_wrk"/>
+            <field name="signal">ticket_approved</field>
         </record>
 
         <record id="t4" model="workflow.transition">
-            <field name="act_from" ref="act_draft"/>
-            <field name="act_to" ref="act_pending"/>
-            <field name="signal">ticket_pending</field>
+            <field name="act_from" ref="act_wrk"/>
+            <field name="act_to" ref="act_dlv"/>
+            <field name="signal">ticket_delivered</field>
         </record>
 
         <record id="t5" model="workflow.transition">
-            <field name="act_from" ref="act_open"/>
-            <field name="act_to" ref="act_pending"/>
-            <field name="signal">ticket_working_pending</field>
+            <field name="act_from" ref="act_dlv"/>
+            <field name="act_to" ref="act_completed"/>
+            <field name="signal">ticket_completed</field>
         </record>
 
         <record id="t6" model="workflow.transition">
-            <field name="act_from" ref="act_open"/>
-            <field name="act_to" ref="act_done"/>
-            <field name="signal">ticket_working_done</field>
+            <field name="act_from" ref="act_dlv"/>
+            <field name="act_to" ref="act_wrk"/>
+            <field name="signal">ticket_issued</field>
         </record>
 
         <record id="t7" model="workflow.transition">
-            <field name="act_from" ref="act_pending"/>
-            <field name="act_to" ref="act_done"/>
-            <field name="signal">ticket_pending_done</field>
+            <field name="act_from" ref="act_app"/>
+            <field name="act_to" ref="act_deleted"/>
+            <field name="signal">ticket_quote_refused</field>
         </record>
         
-        <record id="t8" model="workflow.transition">
-            <field name="act_from" ref="act_pending"/>
-            <field name="act_to" ref="act_open"/>
-            <field name="signal">ticket_pending_open</field>
-        </record>
-
-        <record id="t20" model="workflow.transition">
-            <field name="act_from" ref="act_draft"/>
-            <field name="act_to" ref="act_cancel"/>
-            <field name="signal">ticket_cancel</field>
-        </record>
-        
-        <record id="t21" model="workflow.transition">
-            <field name="act_from" ref="act_pending"/>
-            <field name="act_to" ref="act_refuse"/>
-            <field name="signal">ticket_refuse</field>
-        </record>
 
     </data>
 </openerp>

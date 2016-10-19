@@ -9,7 +9,7 @@
 		</record>
 		<record id="handled" model="helpdesk.ticket.status">
     		<field name="status_name">Assigned</field>
-   			<field name="status_code">assigned</field>
+   			<field name="status_code">ass</field>
    			<field name="status_order">2</field>
 		</record>
 		<record id="pending" model="helpdesk.ticket.status">

@@ -107,36 +107,26 @@ class CrmHelpdesk(models.Model):
 
     ticket_status_id = fields.Many2one('helpdesk.ticket.status', default=1 ,string="Ticket Status", track_visibility='onchange');
     
-    proxy_status_id = fields.Char(related='ticket_status_id.status_code')
+    proxy_status_code = fields.Char(related='ticket_status_id.status_code')
     
-
-    # New ticket status are:
-    # 1 = Nuovo
-    # 2 = Preso in carico
-    # 3 = In approvazione
-    # 4 = In lavorazione
-    # 5 = Consegna
-    # 6 = Completato
-    # 7 = Anullato
-
 
     _track = {
 
         'ticket_status_id':{
             'enhanced_helpdesk.new':
             lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '1', 
+            'enhanced_helpdesk.assigned':
+            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '2',
             'enhanced_helpdesk.pending':
             lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '3',
             'enhanced_helpdesk.working':
             lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '4', 
             'enhanced_helpdesk.delivered':
             lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '5',  
-            'enhanced_helpdesk.done':
+            'enhanced_helpdesk.completed':
             lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '6',
-            'enhanced_helpdesk.cancel':
-            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '7',  
-            'enhanced_helpdesk.anulled':
-            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '7',  
+            'enhanced_helpdesk.deleted':
+            lambda self, cr, uid, obj, ctx=None: obj['ticket_status_id'] == '7',   
         },
         'merge_ticket_id': {
             'enhanced_helpdesk.merged':
@@ -238,48 +228,65 @@ class CrmHelpdesk(models.Model):
     
 
         return res
+    
+    
+    @api.multi
+    def new_ticket(self):
+        _logger.info("call to new")
+        #self.write({'ticket_status_id':1}) 
+    
+    @api.multi
+    def assigned_ticket(self):
+        _logger.info("call to assigned")
+        #self.write({'ticket_status_id':2}) 
 
     @api.multi
-    def close_ticket(self):
-        self.write({'ticket_status_id':6}) # Completato
-
-    @api.multi
-    def cancel_ticket(self):     
-        self.write({'ticket_status_id':7})
-
-        task = self.task_id
-        task.sudo().write({'stage_id': 8})
+    def pending_ticket(self):
+        _logger.info("call to pending")
+        #self.write({'ticket_status_id':2}) 
         
-        self.send_notification_mail(
-            template_xml_id='email_template_ticket_new',
-            object_class='crm.helpdesk',
-            object_id=self.id,
-            expande={'after_body': 'task annullato'}
-            )
+    @api.multi
+    def working_ticket(self):
+        _logger.info("call to working")
+        #self.write({'ticket_status_id': 4})
+        
+    @api.multi
+    def delivered_ticket(self):
+        _logger.info("call to deli")
+        #self.write({'ticket_status_id': 4})
+        
+    @api.multi
+    def completed_ticket(self):
+        _logger.info("call to comp")
+        #self.write({'ticket_status_id': 4})
+
+    @api.multi
+    def deleted_ticket(self):     
+        _logger.info("call to deleted")
+        #self.write({'ticket_status_id':7})
+
+#        task = self.task_id
+#        task.sudo().write({'stage_id': 8})
+        
+#        self.send_notification_mail(
+#            template_xml_id='email_template_ticket_new',
+#            object_class='crm.helpdesk',
+#            object_id=self.id,
+#            expande={'after_body': 'task annullato'}
+#            )
             
     @api.multi
     def refuse_ticket(self):
-        self.write({'ticket_status_id':7})
+        _logger.info("call to refused")
+        #self.write({'ticket_status_id':7})
         
-        task = self.task_id
-        task.sudo().write({'stage_id': 8})
+#        task = self.task_id
+#        task.sudo().write({'stage_id': 8})
         
-        self.send_notification_mail(
-            template_xml_id='email_template_ticket_new',
-            object_class='crm.helpdesk',
-            object_id=self.id,
-            expande={'after_body': 'stima rifiutata'}
-            )
+#        self.send_notification_mail(
+#            template_xml_id='email_template_ticket_new',
+#            object_class='crm.helpdesk',
+#            object_id=self.id,
+#            expande={'after_body': 'stima rifiutata'}
+#            )
 
-    @api.multi
-    def reopen_ticket(self):
-        _logger.info("call to reopen")
-        #self.write.({'ticket_status_id':  1})
-
-    @api.multi
-    def working_ticket(self):
-        self.write({'ticket_status_id': 4})
-        
-    @api.multi
-    def pending_ticket(self):
-        self.write({'ticket_status_id': 3})

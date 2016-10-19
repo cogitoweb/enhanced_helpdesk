@@ -20,7 +20,7 @@
 ##############################################################################
 
 from openerp import models, fields, api
-from openerp import netsvc
+from openerp import workflow
 import logging
 #Get the logger
 _logger = logging.getLogger(__name__)
@@ -29,18 +29,30 @@ _logger = logging.getLogger(__name__)
 class wizard_ticket_reply(models.TransientModel):
 
     _name = "wizard.ticket.reply"
+    
+    def _get_request_user_default(self):
+        
+        if(self.task_user_id):
+            return self.task_user_id
+        
+        return self.env.user
 
     # ---- Fields
 
     ticket_id = fields.Many2one('crm.helpdesk')
+    ticket_status_id = fields.Many2one('helpdesk.ticket.status', related='ticket_id.ticket_status_id',readonly=True)  
     ticket_reply = fields.Text('Reply')
     attachment = fields.Binary('Attachment')
     attachment_name = fields.Char(size=64)
     flag_name = fields.Boolean()
-    new_state = fields.Selection(related='ticket_id.state')
- 
-
-    #_logger.error('FAKE ERROR ONLY 4 DEBUG %s', new_state )
+    proxy_status_code = fields.Char(related='ticket_status_id.status_code')
+    task_id = fields.Many2one('project.task', related='ticket_id.task_id',readonly=True) 
+    points = fields.Integer(string='Points', related='task_id.points') 
+    task_user_id = fields.Many2one('res.users',
+                                 required=True,
+                                 string='Assigned to', 
+                                 default=_get_request_user_default,
+                                 related='task_id.user_id') 
 
     @api.multi
     def reply(self, context=None, wkf_trigger=''):
@@ -70,17 +82,20 @@ class wizard_ticket_reply(models.TransientModel):
         # ---- write new value on ticket
         if not self.ticket_id.user_id:
             self.ticket_id.user_id = self._uid
+            
         # ---- set new state to ticket
         if wkf_trigger:
-            wf_service = netsvc.LocalService("workflow")
-            wf_service.trg_validate(self.env.user.id, 'crm.helpdesk',
-                                    self.ticket_id.id,
-                                    wkf_trigger, self._cr)
+            workflow.trg_validate(self._uid, 'crm.helpdesk', self.ticket_id.id, 
+                                  wkf_trigger, self._cr)
+#            wf_service = netsvc.LocalService("workflow")
+#            wf_service.trg_validate(self.env.user.id, 'crm.helpdesk',
+#                                    self.ticket_id.id,
+#                                    wkf_trigger, self._cr)
+        
         # ----- close task if the ticket is closed
-        if wkf_trigger == 'ticket_close':
+        if wkf_trigger == 'ticket_completed':
             data_model = self.env['ir.model.data']
-            state = data_model.get_object('project',
-                                          'project_tt_deployment')
+            state = data_model.get_object('project', 'project_tt_deployment')
             tasks = self.env['project.task'].search(
                 [('ticket_id', '=', self.ticket_id.id)])
             if tasks:
@@ -89,34 +104,29 @@ class wizard_ticket_reply(models.TransientModel):
         return {'type': 'ir.actions.act_window_close'}
 
     @api.multi
-    def ticket_close(self):
-        if self.new_state == 'pending':
-            value = 'ticket_pending_done'
-        elif self.new_state == 'open':
-            value = 'ticket_working_done'
-        else:
-            value = 'ticket_close'
-        return self.reply(wkf_trigger=value)
-
-    @api.multi
-    def ticket_working(self):
-        if self.new_state == 'pending':
-            value = 'ticket_pending_open'
-        else:
-            value = 'ticket_working'
-        return self.reply(wkf_trigger=value)
-
+    def ticket_assigned(self):
+        return self.reply(wkf_trigger='ticket_assigned')
+    
     @api.multi
     def ticket_pending(self):
-        if self.new_state == 'draft':
-            value = 'ticket_pending'
-        elif self.new_state == 'open':
-            value = 'ticket_working_pending'
-        return self.reply(wkf_trigger=value)
-
+        return self.reply(wkf_trigger='ticket_quoted')
+    
     @api.multi
-    def ticket_cancel(self):
-        return self.reply(wkf_trigger='ticket_cancel')
+    def ticket_working(self):
+        return self.reply(wkf_trigger='ticket_approved')
+    
+    @api.multi
+    def ticket_delivered(self):
+        return self.reply(wkf_trigger='ticket_delivered')
+    
+    @api.multi
+    def ticket_completed(self):
+        return self.reply(wkf_trigger='ticket_completed')
+    
+    @api.multi
+    def ticket_deleted(self):
+        return self.reply(wkf_trigger='ticket_deleted')
+
 
     @api.onchange('attachment')
     def onchange_attachment(self):
