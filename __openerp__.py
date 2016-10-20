@@ -29,24 +29,26 @@ Enhanced Openerp Helpdesk and Ticketing support
     'author': 'Apulia Software Srl',
     'website': 'www.apuliasoftware.it',
     'license': 'AGPL-3',
-    "depends": ['base', 'web', 'crm_helpdesk', 'project', 'portal', 'base_cogitoweb'],
+    "depends": ['base', 'web', 'crm', 'crm_helpdesk', 'project', 'portal', 'base_cogitoweb'],
 
     "data": [
         'security/security.xml',
         'security/ir.model.access.csv',
         'data/ticket_status_data.xml',
         'data/helpdesk_data.xml',
+        
         'view/wizard_change_user.xml',
         'view/wizard_merge_ticket.xml',
         'view/crm_helpdesk_view.xml',
+        'view/crm_case_categ_view.xml',
         'view/wizard_ticket_reply.xml',
         'view/project_view.xml',
         'view/partner_view.xml',
         'view/company_view.xml',
         #'view/account_invoice_view.xml',
         'view/guide_view.xml',
-        'view/res_config_view.xml',
         'view/helpdesk_status.xml',
+        
         'workflow/helpdesk_workflow.xml',
         ],
     "update_xml": [],

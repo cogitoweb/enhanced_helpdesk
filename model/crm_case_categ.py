@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    OpenERP, Open Source Business Applications
-#    Copyright (C) 2004-2012 OpenERP S.A. (<http://openerp.com>).
+#    Copyright (C) 2016 Paolo Cazzitti
+#    All Rights Reserved
 #
 #    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
+#    it under the terms of the GNU Affero General Public License as published
+#    by the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
 #
 #    This program is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,29 +19,20 @@
 #
 ##############################################################################
 
-import logging
 
-from openerp import models,fields, api
+from openerp import models, fields, api
+
 from openerp.tools.translate import _
+from openerp.exceptions import Warning
 
+#Import logger
+import logging
+#Get the logger
 _logger = logging.getLogger(__name__)
 
 
-class helpdesk_config_settings(models.TransientModel):
-    _name = 'helpdesk.config.settings'
-    _inherit = 'res.config.settings'
+class CrmCaseCateg(models.Model):
 
-    default_helpdesk_email = fields.Char(
-        string='Helpdesk E-mail',
-        required=True,
-        help="E-mail di servizio",
-        default_model='helpdesk.config.settings',
-        translate=True,
-    )
-
-
-
-
-
-
-
+    _inherit = "crm.case.categ"
+    
+    emergency =  fields.Boolean('Emergency request', translate=True)

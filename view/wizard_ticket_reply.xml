@@ -17,10 +17,15 @@
                           <field name="ticket_status_id" readonly="True"/>
                           
                           <field name="task_user_id" 
-                                 attrs="{'readonly': ['!', ('proxy_status_code', 'in', ('new'))]}"/> />
+                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('new'))],
+                                        'readonly': ['!', ('proxy_status_code', 'in', ('new'))]}"/> />
+                          
+                          <field name="deadline" 
+                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass'))], 
+                                       'readonly': ['!', ('proxy_status_code', 'in', ('ass'))]}"/> />
                           
                           <field name="points" 
-                                attrs="{'invisible': [('proxy_status_code', 'in', ('new'))], 
+                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass'))], 
                                        'readonly': ['!', ('proxy_status_code', 'in', ('ass'))]}"/> />
                           
                           <field name="ticket_reply"/>
@@ -47,9 +52,6 @@
                           <button name="ticket_completed" string="Set Completed" type="object" class="oe_highlight"
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('dlv'))]}"/>
                          
-                          <button name="ticket_deleted" string="Delete" type="object" class="oe_highlight"
-                                attrs="{'invisible': [('proxy_status_code', 'in', ('xx', 'new'))]}"/>
-                          
                           <button string="Cancel" class="oe_link" special="cancel" />
                       </footer>
                 </form>

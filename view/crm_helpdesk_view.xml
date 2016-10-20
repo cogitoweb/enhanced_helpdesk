@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    
-    <!-- Migration
-  <data>
-
-    <function model="crm_helpdesk_migrate" name="_migrate_from_old_satus_to_new"/>
-
-  </data>
- -->
 
 <data>
 
@@ -24,18 +16,17 @@
             <field name="name">CRM - Helpdesk Support Tree</field>
             <field name="model">crm.helpdesk</field>
             <field name="arch" type="xml">
-
-                    <tree string="Helpdesk Support Tree"
-                        colors="black:ticket_status_id=='2';blue:ticket_status_id=='3';gray:ticket_status_id in ('7','6')">
-                        <field name="id" string="ID" />
-                        <field name="name" string="Oggetto" />
-                        <field name="project_id" />
-                        <field name="categ_id" />
-                        <field name="priority"/>
-                         <field name="ticket_status_id" />
-                        <field name="task_points" attrs="{'invisible': [('ticket_status_id', '=', '1')]}" sum="Punti stimati" />
-                        <field name="task_deadline" attrs="{'invisible': [('ticket_status_id', '=', '1')]}" />
-                    </tree>
+                <tree string="Helpdesk Support Tree"
+                    colors="black:ticket_status_id=='2';blue:ticket_status_id=='3';gray:ticket_status_id in ('7','6')">
+                    <field name="id" string="ID" />
+                    <field name="name" string="Oggetto" />
+                    <field name="project_id" />
+                    <field name="categ_id" />
+                    <field name="priority"/>
+                    <field name="ticket_status_id" />
+                    <field name="task_points" attrs="{'invisible': [('ticket_status_id', '=', '1')]}" sum="Punti stimati" />
+                    <field name="task_deadline" attrs="{'invisible': [('ticket_status_id', '=', '1')]}" />
+                </tree>
             </field>
    </record>
 
@@ -69,9 +60,9 @@
                                
                                 <p class="ticket_title"><field name="display_name"/></p>
                                 
-                                 <p class="task_info" t-if="(record.ticket_status_id.raw_value != '1')">
-                                    punti stimati: <strong><field name="task_points" /></strong><br />
-                                    consegna entro il <strong><field name="task_deadline" /></strong><br />
+                                 <p class="task_info" t-if="(record.task_points.raw_value > 0)">
+                                    estimated points: <strong><field name="task_points" /></strong><br />
+                                    deliver date: <strong><field name="task_deadline" /></strong><br />
                                 </p>
                                 
                                 <div class="ticket_message_block">
@@ -85,13 +76,11 @@
         </field>
     </record>
 
-    <!-- dichiaro form per utenti helpdesk Supporto omnis -->
+    <!-- dichiaro form per utenti helpdesk -->
     <record id="enhanced_helpdesk_form" model="ir.ui.view">
         <field name="name">Enhanced HelpDesk Form</field>
         <field name="model">crm.helpdesk</field>
         <field name="groups_id" eval="[(4, [ref('enhanced_helpdesk.ticketing_external_user') ])]" /> 
-        
-       
         
         <field name="arch" type="xml">
             
@@ -100,22 +89,30 @@
             <form string="Helpdesk Support">
                 <header>
              
-
-               <field name="ticket_status_id" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;1&quot;:&quot;blue&quot;}" /> 
-                               
-                <button name="ticket_cancel" class="oe_read_only" string="Annulla richiesta" attrs="{'invisible': ['|',('id', '=', False),('proxy_status_code', '!=', 'new')]}" />
-
-                <button name="ticket_pending_open" class="oe_read_only" ticket_status_id="3" string="Approva stima" /> 
-
-                <button name="ticket_refuse" class="oe_read_only" ticket_status_id="3" string="Rifiuta stima" /> 
+                    <field name="ticket_status_id" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;1&quot;:&quot;blue&quot;}" /> 
                     
+                    <button name="ticket_approved" class="oe_highlight_green" string="Approve"
+                            attrs="{'invisible': [('proxy_status_code', '!=', 'app')]}"  /> 
+                    
+                    <button name="ticket_quote_refused" class="oe_read_only" string="Reject" confirm="Are you sure you want to reject the quotation?"
+                            attrs="{'invisible': [('proxy_status_code', '!=', 'app')]}"  />
+                    
+                    <button name="ticket_completed" class="oe_highlight_green" string="Accept deliver"
+                            attrs="{'invisible': [('proxy_status_code', '!=', 'dlv')]}"  /> 
+                    
+                    <button name="ticket_work_refused" class="oe_read_only" string="Reject work" confirm="Are you sure you want to reject the work?"
+                            attrs="{'invisible': [('proxy_status_code', '!=', 'dlv')]}"  /> 
+                    
+                    <button name="ticket_deleted" class="" string="Cancel" confirm="Are you sure you want to cancel this ticket?"
+                            attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'in', ('wrk', 'dlv', 'ok', 'xx'))]}" />
                     
                 </header>
+                
                 <sheet string="Helpdesk Support">
                     <group col="4" class="oe_header">
                         
                         <h2 colspan="4" attrs="{'invisible': [('id', '=', False)]}">
-                            Ticket ID #<field name="id" class="oe_inline" readonly="1" colspan="1" nolabel="1"/>
+                            <span>Ticket ID</span> #<field name="id" class="oe_inline" readonly="1" colspan="1" nolabel="1"/>
                         </h2>
                         
                         <field name="user_id" invisible="1" colspan="4"
@@ -137,8 +134,8 @@
                             <field name="channel_id" invisible="1"/>
                             <field name="source" groups="enhanced_helpdesk.ticketing_support" attrs="{'readonly': [('id', '!=', False)]}"/>
 
-                            <field name="task_id" attrs="{'readonly': True}" action="action_view_portal_task"  />
-                            <field name="task_points" string="Punti stimati" attrs="{'readonly': True, 'invisible': ['|',('proxy_status_code', '=', 'new'),('task_id', '=', False)]}" />
+                            <field name="task_id" groups="enhanced_helpdesk.ticketing_support" attrs="{'readonly': True}" action="action_view_portal_task"   />
+                            <field name="task_points" string="Estimated points" attrs="{'readonly': True, 'invisible': ['|',('task_points', '=', 0),('task_id', '=', False)]}" />
                         </group>
                         
                         <group colspan="2">
@@ -153,14 +150,14 @@
                                  
                         </group>
                         
-                        <separator string="Oggetto" colspan="4"/>
+                        <separator string="Subject" colspan="4"/>
                         
                         <group colspan="4">
                             <field name="name" nolabel="1" colspan="4"
                                 attrs="{'readonly': [('proxy_status_code', '!=', 'new')]}"/>
                         </group>
                         
-                        <separator string="Descrizione" colspan="4"/>
+                        <separator string="Description" colspan="4"/>
                         
                         <group colspan="4">
                             <field name="description" widget="html" nolabel="1" colspan="4"
@@ -186,7 +183,7 @@
                             </form>
                         </field>
                         
-                        <separator string="Messaggi" colspan="4" attrs="{'invisible': [('id', '=', False)]}" />
+                        <separator string="Messages" colspan="4" attrs="{'invisible': [('id', '=', False)]}" />
 
                         <field name="helpdesk_qa_ids" nolabel="1" class="ticket_messages" colspan="4"
                             attrs="{'readonly': [('proxy_status_code', 'in', ('xx','ok'))], 'invisible': [('id', '=', False)]}">
@@ -233,6 +230,7 @@
         </field>
     </record>
 
+    <!-- form per utenti BO -->
     <record id="enhanced_helpdesk_form_support" model="ir.ui.view">
         <field name="name">Enhanced HelpDesk Form</field>
         <field name="model">crm.helpdesk</field>
@@ -245,18 +243,23 @@
         
                     <header>
                     
-
-
                         <field name="ticket_status_id" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;5&quot;:&quot;blue&quot;}" /> 
 
-                        <button name="ticket_cancel" class="oe_read_only" string="Annulla richiesta" attrs="{'invisible': [('id', '=', False)]}" />
-      
+                        <button class="oe_highlight" type="action"
+                            name="%(action_ticket_reply)d"
+                            string="Ticket Reply"
+                            context="{'default_ticket_id': id}" />
+                        
+                        <button name="ticket_deleted" class="" string="Cancel ticket" confirm="Are you sure you want to cancel this ticket?"
+                                attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'in', ('wrk', 'dlv', 'ok', 'xx'))]}" />
+
+                        <!-- disabled
                         <button name="%(action_change_ticket_user)d" class="oe_read_only" ticket_status_id="3"
                                 string="Change User" type="action" groups="enhanced_helpdesk.ticketing_support"/> 
                                 
                         <button name="%(action_merge_ticket)d" class="oe_read_only" ticket_status_id="3"
                                 string="Merge Tickets" type="action" groups="enhanced_helpdesk.ticketing_support"/>
-                            
+                        -->
                     </header>
                     
                 </xpath>
@@ -294,11 +297,13 @@
                 <field name="categ_id" />
                 <field name="description" />
                 <field name="date" />
-                <filter name="filter_new" domain="[('proxy_status_code', '=', 'new')]" string="New"/>
-                <filter name="filter_done" domain="[('proxy_status_code', '=', 'ok')]" string="Done"/>
-                <filter name="filter_cancel" domain="[('proxy_status_code', '=', 'xx')]" string="Cancel"/>
+                <filter name="filter_new" domain="[('proxy_status_code', '=', 'new')]" string="New"/> 
+                <filter name="filter_assigned" domain="[('proxy_status_code', '=', 'ass')]" string="Assigned"/>
                 <filter name="filter_pending" domain="[('proxy_status_code', '=', 'app')]" string="Pending"/>
-                <filter name="filter_open" domain="[('proxy_status_code', '=', 'wrk')]" string="Working"/>
+                <filter name="filter_working" domain="[('proxy_status_code', '=', 'wrk')]" string="Working"/>
+                <filter name="filter_delivered" domain="[('proxy_status_code', '=', 'dlv')]" string="Delivered"/>
+                <filter name="filter_done" domain="[('proxy_status_code', '=', 'ok')]" string="Completed"/>
+                <filter name="filter_cancel" domain="[('proxy_status_code', '=', 'xx')]" string="Cancel"/>
             </search>
         </field>
     </record>
@@ -307,10 +312,17 @@
         <field name="name">Ticketing / Supporto</field>
         <field name="res_model">crm.helpdesk</field>
         <field name="view_type">form</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">tree,kanban,form</field>
         <field name="view_id" ref="enhanced_helpdesk_kanban"/>
         <field name="search_view_id" ref="search_enhanced_helpdesk"/>
-        <field name="context">{'needaction_menu_ref':1,'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form','search_default_filter_new':1,'search_default_filter_pending':1,'search_default_filter_open':1, }</field>  
+        <field name="context">{'needaction_menu_ref':1,
+            'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form',
+            'search_default_filter_new':1,
+            'search_default_filter_assigned':1,
+            'search_default_filter_pending':1,
+            'search_default_filter_working':1,
+            'search_default_filter_delivered':1
+        }</field>  
     </record>
 
     <menuitem name="Supporto e Ticket"
@@ -364,10 +376,8 @@
         <field name="model">crm.helpdesk</field>
         <field name="arch" type="xml">
             
-            
-            
             <tree string="Helpdesk Support Tree"
-                    colors="red:proxy_status_code in ('new','ass');black:proxy_status_code in ('wrk','dlv');blue:proxy_status_code=='app';grey:proxy_status_code in ('ok','xx')">
+                    colors="red:proxy_status_code in ('new','ass');black:proxy_status_code in ('wrk','dlv');blue:proxy_status_code=='app';green:proxy_status_code in ('ok');grey:proxy_status_code in ('xx')">
                 <field name="id" string="#" />
                 <field name="request_id" />
                 <field name="name" string="Title" />
@@ -375,7 +385,6 @@
                 <field name="user_id"/>
                 <field name="ticket_status_id"/>
                 <field name="priority"/> 
-                
                 <field name="proxy_status_code" invisible="1" />
 
             </tree>
@@ -389,17 +398,19 @@
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="support_enhanced_helpdesk_tree"/>
         <field name="search_view_id" ref="search_enhanced_helpdesk"/>
-        <field name="context">{'needaction_menu_ref':1,'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form','search_default_filter_new':1,'search_default_filter_draft':1,'search_default_filter_pending':1,'search_default_filter_open':1, }</field>
+        <field name="context">{'needaction_menu_ref':1,
+            'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form',
+            'search_default_filter_new':1,
+            'search_default_filter_assigned':1,
+            'search_default_filter_pending':1,
+            'search_default_filter_working':1,
+            'search_default_filter_delivered':1
+        }</field> 
     </record>
 
 
     <!-- ordinamento menu e azione di default -->
     <menuitem name="Helpdesk and Support" id="crm_helpdesk.menu_help_support_main" action="action_enhanced_helpdesk_support" />     
-     
-          
-
-
-          
-
+       
 </data>
 </openerp>

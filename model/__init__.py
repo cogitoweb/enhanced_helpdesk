@@ -23,6 +23,7 @@
 from . import ir_attachment
 from . import wizard_change_user
 from . import crm_helpdesk
+from . import crm_case_categ
 from . import project
 from . import helpdesk_qa
 from . import res_partner
@@ -31,5 +32,4 @@ from . import wizard_reply
 from . import wizard_merge_ticket
 from . import res_company
 from . import guide
-from . import res_config
 from . import helpdesk_status

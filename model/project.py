@@ -23,23 +23,10 @@ from openerp import models, fields, api
 import logging
 _logger = logging.getLogger(__name__)
 
-###############################################################################
-#
-#
-#
-#
-#
-#
-#
-
-
-
 
 class Task(models.Model):
 
     _inherit = 'project.task'
-    #_inherit = 'helpdesk.ticket.status' # Eredito il model degli stati altrimenti genera un errore
-
 
     # Functiont to populate fields.Select()
     # with ticket status coming from database
@@ -52,8 +39,6 @@ class Task(models.Model):
 
     # ----- Fields
     ticket_id = fields.Many2one('crm.helpdesk')
-    #ticket_status = fields.Many2one('helpdesk.ticket.status') 
-
 
     ticket_display_id = fields.Char(string='Ticket ID', related='ticket_id.display_id')
     rel_helpdesk_qa_ids = fields.One2many(string='Messages',
@@ -62,31 +47,12 @@ class Task(models.Model):
     ticket_last_answer_user_id = fields.Many2one(
         'res.users', compute='compute_ticket_last_answer',
         string="Last Answer User")
+    
     ticket_last_answer_date = fields.Datetime(
         compute='compute_ticket_last_answer',
         string="Last Answer Date")
-    #ticket_state = fields.Selection([('draft', 'New'),
-    #                                 ('pending', 'Pending'),
-    #                                 ('open', 'In Progress'),
-    #                                 ('done', 'Closed'),
-    #                                 ('cancel', 'Cancelled')],
-    #                                related='ticket_id.state',
-    #                                string='Ticket State')
 
-    # New ticket status are:
-    # 1 = Nuovo
-    # 2 = Preso in carico
-    # 3 = In approvazione
-    # 4 = In lavorazione
-    # 5 = Consegna
-    # 6 = Completato
-    # 7 = Anullato
-    ticket_state = fields.Selection(selection=_get_ticket_status, related='ticket_id.state', string='Ticket State')  
-    #                                                            
-
-
-
-                               
+    ticket_state = fields.Many2one('helpdesk.ticket.status', related='ticket_id.ticket_status_id',readonly=True)  
                             
     points = fields.Integer(string='Points')                        
 

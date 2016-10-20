@@ -49,31 +49,31 @@
                 
                                 <div class="oe_kanban_footer_left">
                                 
-                                    <strong>Task attivi: <t t-raw="record.task_count.raw_value"/>
+                                    <strong>Active Tasks: <t t-raw="record.task_count.raw_value"/>
                                     <a type="open" style="position:absolute;width:100%;height:100%;display:block;top:0;left:0;"></a>
                                     </strong>
                                     <br />
                                 
-                                    <strong>Punti</strong><br />
+                                    <strong>Points</strong><br />
                                     
                                     <span>
                                         <span title="punti" class="oe_e">_</span>
-                                        Complessivi: <strong><field name="total_points"/> </strong>
+                                        Tolal: <strong><field name="total_points"/> </strong>
                                     </span><br />
 
                                     <span>
                                         <span title="punti" class="oe_e">_</span>
-                                        Consumati: <strong><field name="used_points"/> </strong>
+                                        Used: <strong><field name="used_points"/> </strong>
                                     </span><br />
 
                                     <span>
                                         <span title="punti" class="oe_e">_</span>
-                                        Allocati: <strong><field name="locked_points"/> </strong>
+                                        Locked: <strong><field name="locked_points"/> </strong>
                                     </span><br />
 
                                     <span>
                                         <span title="punti" class="oe_e">_</span>
-                                        Disponibili: <strong><field name="free_points"/> </strong>
+                                        Free: <strong><field name="free_points"/> </strong>
                                     </span>
 
                                 </div>
@@ -139,7 +139,6 @@
     
     
     <!-- cambio menu projects -->
-    
     <record id="action_view_portal_project" model="ir.actions.act_window">
         <field name="name">Projects</field>
         <field name="res_model">project.project</field>
@@ -156,7 +155,6 @@
         action="action_view_portal_project" sequence="10"/>
     
     <!-- cambio menu task -->
-    
     <record id="action_view_portal_task" model="ir.actions.act_window">
         <field name="name">Tasks</field>
         <field name="res_model">project.task</field>
@@ -171,7 +169,6 @@
 
     <menuitem name="Tasks" id="portal_services_tasks" parent="portal.portal_projects"
         action="action_view_portal_task" sequence="12"/>
-
 
     <record id="act_ticket_reply" model="ir.actions.act_window">
             <field name="res_model">wizard.ticket.reply</field>
@@ -195,7 +192,7 @@
         </field>
     </record>
         
-    <!-- override Project show -->
+    <!-- override Project show for ticketing_external_user -->
     <record id="enhanced_helpdesk_project_edit_project" model="ir.ui.view">
             <field name="name">project.project.form</field>
             <field name="model">project.project</field>
@@ -239,12 +236,12 @@
                         </group>
                         <notebook>
                        
-                        <page string="Bonus / Banca ore" name="bonus">
-                            <group string="Situazione disponibilità" name="disp">
-                                <field name="total_points" string="Punti complessivi" />
-                                <field name="used_points" string="Punti consumati"  />
-                                <field name="locked_points" string="Punti allocati"  />
-                                <field name="free_points" string="Punti disponibili"  />
+                        <page string="Points wallet" name="bonus">
+                            <group string="Points summary" name="disp">
+                                <field name="total_points" string="Total points" />
+                                <field name="used_points" string="Used points"  />
+                                <field name="locked_points" string="Locked points"  />
+                                <field name="free_points" string="Free points"  />
                             </group>
                         </page>
 
@@ -285,7 +282,6 @@
             </field>
         </record>
         
-        
     <!-- add for all Disponibilità su progetto -->        
     <record id="project_issue.view_project_form_inherited_banca_ore" model="ir.ui.view">
         <field name="name">project.project.form</field>
@@ -299,23 +295,19 @@
 
             <xpath expr="//form/sheet/notebook/page[@name='team']" position="before">
   
-                <page string="Bonus / Banca ore" name="bonus">
-                    <group string="Situazione disponibilità" name="disp">
-                        
-                        <field name="total_points" string="Punti complessivi" />
-                        <field name="used_points" string="Punti consumati"  />
-                        <field name="locked_points" string="Punti allocati"  />
-                        <field name="free_points" string="Punti disponibili"  />
-
+                <page string="Points wallet" name="bonus">
+                    <group string="Points summary" name="disp">
+                        <field name="total_points" string="Total points" />
+                        <field name="used_points" string="Used points"  />
+                        <field name="locked_points" string="Locked points"  />
+                        <field name="free_points" string="Free points"  />
                     </group>
                 </page>
-               
                 
             </xpath>
         </field>
     </record>
      
-  
     <!-- override task kanban -->
     <record id="view_ticket_task_kanban" model="ir.ui.view">
         <field name="name">ticket.project.task.kanban</field>
@@ -336,15 +328,12 @@
             <!-- rimuovo dati privati -->
             <xpath expr="//field[@name='remaining_hours']" position="replace"> 
             </xpath>
-            
-            <!-- rimuovo messaggi 
-            <xpath expr="//div[@class='oe_chatter']" position="replace"> 
-            </xpath>-->
-            
+
             
         </field>
     </record>
 
+    <!-- override task form to hide stuff -->
     <record id="ticket_view_task_form2" model="ir.ui.view">
         <field name="name">ticket.project.task.form</field>
         <field name="model">project.task</field>
@@ -389,12 +378,10 @@
                 <page string="Helpdesk" attrs="{'invisible': [('ticket_id', '=', False)]}">
 
                     <group string="Ticket" name="ticket">
-                    
                         <strong><field name="ticket_id" readonly="True" context="{'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form'}"/></strong>
-                        
                     </group>
                     
-                    <group string="Messaggi" name="messages">
+                    <group string="Messages" name="messages">
                     
                         <field name="rel_helpdesk_qa_ids" >
                             <tree string="Messagges List">
@@ -406,12 +393,10 @@
                 </page>
             </notebook>
             
-            
-            
-            
         </field>
     </record>
     
+    <!-- override task form for readonly only for ticketing_external_user -->
     <record id="ticket_view_task_form2_ticketuser" model="ir.ui.view">
         <field name="name">ticket.project.task.form</field>
         <field name="model">project.task</field>

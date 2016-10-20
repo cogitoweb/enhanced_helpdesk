@@ -120,11 +120,6 @@ msgid "Allocati:"
 msgstr ""
 
 #. module: enhanced_helpdesk
-#: view:helpdesk.config.settings:enhanced_helpdesk.view_helpdesk_configuration
-msgid "Amazon Integration Configuration"
-msgstr "Configurazione Supporto"
-
-#. module: enhanced_helpdesk
 #: field:res.users,payment_amount_due:0
 msgid "Amount Due"
 msgstr ""
@@ -483,11 +478,6 @@ msgstr "Configurazione Supporto"
 #: view:project.task:enhanced_helpdesk.ticket_view_task_form2
 msgid "Helpdesk"
 msgstr "Supporto"
-
-#. module: enhanced_helpdesk
-#: field:helpdesk.config.settings,default_helpdesk_email:0
-msgid "Helpdesk E-mail"
-msgstr "E-mail alias del supporto"
 
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.enhanced_helpdesk_form

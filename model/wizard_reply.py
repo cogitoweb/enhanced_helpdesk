@@ -53,6 +53,7 @@ class wizard_ticket_reply(models.TransientModel):
                                  string='Assigned to', 
                                  default=_get_request_user_default,
                                  related='task_id.user_id') 
+    deadline = fields.Date(string='Deadline', related='task_id.date_deadline')
 
     @api.multi
     def reply(self, context=None, wkf_trigger=''):
@@ -85,22 +86,11 @@ class wizard_ticket_reply(models.TransientModel):
             
         # ---- set new state to ticket
         if wkf_trigger:
-            workflow.trg_validate(self._uid, 'crm.helpdesk', self.ticket_id.id, 
+            workflow.trg_validate(self._uid, 
+                                  'crm.helpdesk', 
+                                  self.ticket_id.id, 
                                   wkf_trigger, self._cr)
-#            wf_service = netsvc.LocalService("workflow")
-#            wf_service.trg_validate(self.env.user.id, 'crm.helpdesk',
-#                                    self.ticket_id.id,
-#                                    wkf_trigger, self._cr)
-        
-        # ----- close task if the ticket is closed
-        if wkf_trigger == 'ticket_completed':
-            data_model = self.env['ir.model.data']
-            state = data_model.get_object('project', 'project_tt_deployment')
-            tasks = self.env['project.task'].search(
-                [('ticket_id', '=', self.ticket_id.id)])
-            if tasks:
-                for task in tasks:
-                    task.stage_id = state.id
+
         return {'type': 'ir.actions.act_window_close'}
 
     @api.multi
@@ -122,11 +112,6 @@ class wizard_ticket_reply(models.TransientModel):
     @api.multi
     def ticket_completed(self):
         return self.reply(wkf_trigger='ticket_completed')
-    
-    @api.multi
-    def ticket_deleted(self):
-        return self.reply(wkf_trigger='ticket_deleted')
-
 
     @api.onchange('attachment')
     def onchange_attachment(self):

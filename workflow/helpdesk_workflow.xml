@@ -114,6 +114,39 @@
             <field name="signal">ticket_quote_refused</field>
         </record>
         
+        <record id="t24" model="workflow.transition">
+            <field name="act_from" ref="act_dlv"/>
+            <field name="act_to" ref="act_wrk"/>
+            <field name="signal">ticket_work_refused</field>
+        </record>
+        
+        <!-- act deleted stuff -->
+        <!-- -->
+        <record id="t20" model="workflow.transition">
+            <field name="act_from" ref="act_new"/>
+            <field name="act_to" ref="act_deleted"/>
+            <field name="signal">ticket_deleted</field>
+        </record>
+        
+        <record id="t21" model="workflow.transition">
+            <field name="act_from" ref="act_ass"/>
+            <field name="act_to" ref="act_deleted"/>
+            <field name="signal">ticket_deleted</field>
+        </record>
+        
+        <record id="t22" model="workflow.transition">
+            <field name="act_from" ref="act_app"/>
+            <field name="act_to" ref="act_deleted"/>
+            <field name="signal">ticket_deleted</field>
+        </record>
+        
+        <!-- only admin ca do this -->
+        <record id="t23" model="workflow.transition">
+            <field name="act_from" ref="act_wrk"/>
+            <field name="act_to" ref="act_deleted"/>
+            <field name="signal">ticket_deleted</field>
+        </record>
+        
 
     </data>
 </openerp>
