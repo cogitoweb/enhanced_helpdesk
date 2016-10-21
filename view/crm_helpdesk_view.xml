@@ -136,6 +136,7 @@
 
                             <field name="task_id" groups="enhanced_helpdesk.ticketing_support" attrs="{'readonly': True}" action="action_view_portal_task"   />
                             <field name="task_points" string="Estimated points" attrs="{'readonly': True, 'invisible': ['|',('task_points', '=', 0),('task_id', '=', False)]}" />
+			    <field name="task_deadline" string="Deadline" attrs="{'readonly': True, 'invisible': ['|',('task_points', '=', 0),('task_id', '=', False)]}" />
                         </group>
                         
                         <group colspan="2">

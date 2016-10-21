@@ -351,6 +351,8 @@ class CrmHelpdesk(models.Model):
         before_body = self.set_status_email_text(prev_status)
         before_body += _('<br />il ticket è stato quotato %s punti') % self.task_points
         before_body += _('<br />consegna prevista entro il %s') % deadline
+
+	before_body += _('<br /><br />E\' necessaria la Vs. approvazione della stima per procedere.')
         
         expande = {'before_body': before_body}
         
@@ -396,9 +398,12 @@ class CrmHelpdesk(models.Model):
                     if(child.type and child.type == 'invoice' and child.id != self.request_id.partner_id.id):
                         custom_deliver.extend(['"%s" <%s>' % (child.name, child.email)])
 
-            
-        deadline_date = parser.parse(self.task_deadline)
-        deadline = deadline_date.strftime('%d/%m/%Y')
+
+	deadline_date = None
+	deadline = None
+	if(self.task_deadline):            
+        	deadline_date = parser.parse(self.task_deadline)
+        	deadline = deadline_date.strftime('%d/%m/%Y')
         
         prev_status = self.ticket_status_id.status_name
         self._change_status('wrk') 
@@ -410,7 +415,7 @@ class CrmHelpdesk(models.Model):
             before_body += _('<br />consegna prevista entro il %s') % deadline
         
         if(is_rejected):
-            before_body += _('<br />la consegna è stata rifiutata ed il ticket è ritornato in lavorazione')
+            before_body += _('<br />la consegna è stata rifiutata ed il ticket è ritornato in lavorazione. Verrete contattati da uno dei nostri esperti.')
             
         if(is_emergency):
             before_body += _('<br />le fasi di quotazione e approvazione sono state saltate a causa della categoria di intervento in emergenza')
