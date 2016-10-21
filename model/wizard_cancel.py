@@ -61,8 +61,12 @@ class wizard_ticket_cancel(models.TransientModel):
     @api.multi
     def reply(self, context=None, wkf_trigger=''):
 
+        message = dict(self.ticket_id._get_reject_reasons())[self.ticket_reject_reason]
+        if(self.ticket_reject_descr):
+            message += " / " + self.ticket_reject_descr
+        
         value = {
-            'message': self.ticket_reject_reason + ' / ' + self.ticket_reject_descr,
+            'message': message,
             'helpdesk_id': self.ticket_id.id,
             'user_id': self._uid,
             }
