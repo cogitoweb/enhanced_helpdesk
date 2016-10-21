@@ -111,8 +111,7 @@ class CrmHelpdesk(models.Model):
     task_points = fields.Integer(string='Punti stimati', related='task_id.points')
     task_deadline = fields.Date(string='Deadline', related='task_id.date_deadline')
 
-
-    ticket_status_id = fields.Many2one('helpdesk.ticket.status', default=1 ,string="Ticket Status", track_visibility='onchange'); 
+    ticket_status_id = fields.Many2one('helpdesk.ticket.status', default=None ,string="Ticket Status", track_visibility='onchange'); 
     proxy_status_code = fields.Char(related='ticket_status_id.status_code')
     
 
@@ -138,6 +137,16 @@ class CrmHelpdesk(models.Model):
     @api.model
     def create(self, values):
         res = super(CrmHelpdesk, self).create(values)
+        
+        ## default status
+        status_code = 'new'
+        pool = self.pool.get('helpdesk.ticket.status')
+        status_ids = pool.search(self._cr, self._uid, [('status_code','=',status_code)])
+        
+        if not(status_ids):
+            raise Warning(_('No status with wired code %s') % status_code)
+            
+        res.ticket_status_id = status_ids[0]
         
         # ----- Create task related with this ticket
         task_value = {
