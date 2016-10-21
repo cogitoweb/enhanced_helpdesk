@@ -44,8 +44,22 @@
             <field name="name">New Ticket Created</field>
             <field name="model_id" ref="crm_helpdesk.model_crm_helpdesk" />
             <field name="email_from"> <![CDATA[${object.company_id.email}]]></field>
-            <field name="subject"> <![CDATA[Nuovo Ticket - [#${object.id}] ${object.name}]]> </field>
-            <field name="body_html"> <![CDATA[Un nuovo ticket è stato creato ]]> </field>
+            <field name="subject"> <![CDATA[Nuovo Ticket - #${object.id}: ${object.name}]]> </field>
+            <field name="body_html"> <![CDATA[
+            <hr /><br />
+            Per ulteriori informazioni <a href="${object.external_ticket_url}">accedi al ticket</a>
+            ]]> </field>
+        </record>
+        
+        <record id="email_template_ticket_change_state" model="email.template">
+            <field name="name">Change Ticket State</field>
+            <field name="model_id" ref="crm_helpdesk.model_crm_helpdesk" />
+            <field name="email_from"> <![CDATA[${object.company_id.email}]]> </field>
+            <field name="subject"> <![CDATA[Cambio stato Ticket - #${object.id}: ${object.name}]]> </field>
+            <field name="body_html"> <![CDATA[
+            <hr /><br />
+            <a href="${object.external_ticket_url}">Accedi al ticket</a>
+            ]]> </field>
         </record>
 
         <!-- Template Email Reply Ticket -->
@@ -53,8 +67,12 @@
             <field name="name">New Ticket Reply</field>
             <field name="model_id" ref="enhanced_helpdesk.model_helpdesk_qa" />
             <field name="email_from"> <![CDATA[${object.company_id.email}]]></field>
-            <field name="subject"> <![CDATA[Nuova Risposta al Ticket - #${object.helpdesk_id.id} - ${object.helpdesk_id.name}]]> </field>
-            <field name="body_html"> <![CDATA[Nuova Risposta per il Ticket <a href="${object.helpdesk_id.external_ticket_url}">Accedi al ticket</a>]]> </field>
+            <field name="subject"> <![CDATA[Nuova Risposta al Ticket - #${object.helpdesk_id.id}: ${object.helpdesk_id.name}]]> </field>
+            <field name="body_html"> <![CDATA[ ${object.user_id.name} ha scritto
+            <br /><hr />
+            ${object.message} 
+            <hr /><br />
+            <a href="${object.helpdesk_id.external_ticket_url}">Accedi al ticket</a>]]> </field>
         </record>
     
     </data>

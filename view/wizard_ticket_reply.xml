@@ -8,6 +8,7 @@
             <field name="arch" type="xml">
                 
               <field name="proxy_status_code" invisible="1" />
+              <field name="proxy_categ_emerg" invisible="1" />
                 
               <form string="Ticket Reply">
                   
@@ -38,13 +39,16 @@
                           <button name="reply" string="Reply" type="object" class="oe_highlight"/>
                           
                           <button name="ticket_assigned" string="Set Assigned" type="object" class="oe_highlight"
-                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('new'))]}"/>
+                                attrs="{'invisible': ['|', ('proxy_status_code', 'not in', ('new')), ('proxy_categ_emerg', '=', True)]}"/>
                           
                           <button name="ticket_pending" string="Set Pending" type="object" class="oe_highlight"
-                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass'))]}"/>
+                                attrs="{'invisible': ['|', ('proxy_status_code', 'not in', ('ass')), ('proxy_categ_emerg', '=', True)]}"/>
                           
                           <button name="ticket_working" string="Set Working" type="object" class="oe_highlight"
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('app'))]}"/>
+                          
+                          <button name="ticket_emerg" string="Set Working EMERG" type="object" class="oe_highlight"
+                                attrs="{'invisible': ['|', ('proxy_categ_emerg', '=', False), ('proxy_status_code', 'not in', ('new', 'ass'))]}"/>
                           
                           <button name="ticket_delivered" string="Set Delivered" type="object" class="oe_highlight"
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('wrk'))]}"/>

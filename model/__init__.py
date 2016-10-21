@@ -25,11 +25,12 @@ from . import wizard_change_user
 from . import crm_helpdesk
 from . import crm_case_categ
 from . import project
+from . import project_task
 from . import helpdesk_qa
+from . import helpdesk_status
 from . import res_partner
 from . import res_user
 from . import wizard_reply
 from . import wizard_merge_ticket
 from . import res_company
 from . import guide
-from . import helpdesk_status

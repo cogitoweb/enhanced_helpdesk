@@ -77,6 +77,12 @@
             <field name="act_to" ref="act_ass"/>
             <field name="signal">ticket_assigned</field>
         </record>
+        
+        <record id="t8" model="workflow.transition">
+            <field name="act_from" ref="act_new"/>
+            <field name="act_to" ref="act_wrk"/>
+            <field name="signal">ticket_emerg</field>
+        </record>
 
         <record id="t2" model="workflow.transition">
             <field name="act_from" ref="act_ass"/>
@@ -140,7 +146,7 @@
             <field name="signal">ticket_deleted</field>
         </record>
         
-        <!-- only admin ca do this -->
+        <!-- only admin can do this -->
         <record id="t23" model="workflow.transition">
             <field name="act_from" ref="act_wrk"/>
             <field name="act_to" ref="act_deleted"/>

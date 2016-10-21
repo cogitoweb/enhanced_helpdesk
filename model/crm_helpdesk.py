@@ -24,6 +24,9 @@ from openerp import models, fields, api, SUPERUSER_ID
 
 from openerp.tools.translate import _
 from openerp.exceptions import Warning
+from dateutil import parser
+
+import pprint
 
 #Import logger
 import logging
@@ -151,12 +154,20 @@ class CrmHelpdesk(models.Model):
         # ---- register self task
         res.task_id = task_id
         
+        before_body = _('Project: %s') % task_id.project_id.name
+        before_body += '<br />'
+        before_body += _('Category: %s') % res.categ_id.name
+        before_body += '<br />'
+        before_body += _('Priority: %s') % res.priority
+        before_body += '<br /><hr />'
+        before_body += _('Description: %s') % res.description
+        
         # ---- send mail to support for the new ticket
         self.send_notification_mail(
             template_xml_id='email_template_ticket_new',
             object_class='crm.helpdesk',
             object_id=res.id,
-            expande={'after_body': res.description}
+            expande={'before_body': before_body}
             )
 
         return res
@@ -174,10 +185,17 @@ class CrmHelpdesk(models.Model):
         if user_logged == partner.id:
             return False
         action = 'enhanced_helpdesk.action_enhanced_helpdesk'
-        partner.signup_prepare()
+        ctx = {'signup_force_type_in_url':'login'}
+        
         val = partner._get_signup_url_for_action(
             action=action, view_type='form',
-            res_id=ticket.id)[partner.id]
+            res_id=ticket.id, context=ctx)[partner.id]
+        
+        ## infamous hack to 
+        ## redirect to login instead of signup
+        if(val):
+            val = val.replace('web/signup?', 'web/login?')
+
         return val
             
     # change status
@@ -218,7 +236,7 @@ class CrmHelpdesk(models.Model):
     #
     def send_notification_mail(self, template_xml_id=None,
                                object_class=None, object_id=False,
-                               expande=None):
+                               expande=None, custom_deliver=None):
         # ---- send mail to support for the new ticket
         company = self.env['res.users'].browse(SUPERUSER_ID).company_id
     
@@ -232,18 +250,30 @@ class CrmHelpdesk(models.Model):
             ticket_reply = self.env[object_class].browse(object_id)
             ticket = ticket_reply.helpdesk_id
         
+        #
         # reuested user
         #
         mail_to = ['"%s" <%s>' % (ticket.request_id.name, ticket.request_id.email)]
-        # default email
+        
         #
-        mail_to.extend(['"%s" <%s>' % (company.name, company.email_ticket)])
+        # default company email
+        #
+        if(company.email_ticket):
+            mail_to.extend(['"%s" <%s>' % (company.name, company.email_ticket)])
+        
+        #
         # PM email
         #
         if(ticket.sudo().task_id.project_id.user_id):
             mail_to.extend(['"%s" <%s>' % (ticket.sudo().task_id.project_id.user_id.name, 
                     ticket.sudo().task_id.project_id.user_id.email)])
-
+            
+        #
+        # Custom deliver
+        #
+        if(custom_deliver and len(custom_deliver)>0):
+            mail_to.extend(custom_deliver)
+            
         ir_model_data = self.env['ir.model.data']
         template_id = ir_model_data.get_object_reference(
             'enhanced_helpdesk', template_xml_id)[1] or False
@@ -253,88 +283,213 @@ class CrmHelpdesk(models.Model):
         subject = template.subject
         text = template_model.render_template(text, object_class, object_id)
         subject = template_model.render_template(subject, object_class, object_id)
+            
+        if(ticket.categ_id.emergency):
+            subject = '- EMERG - ' + subject
+            
+        subject = ('[%s Ticketing System] ' % company.name) + subject
         
         # ---- Adding text to mail body
-        if expande and expande.get('after_body', False):
-            text = '%s\n\n -- %s' % (text, expande['after_body'])
-        
+        if expande:
+            if expande.get('after_body', False):
+                text = '%s %s' % (text, expande['after_body'])
+            if expande.get('before_body', False):
+                text = '%s %s' % (expande['before_body'], text)
+            
         # ----- Create and send mail
         mail_value = {
             'body_html': text,
             'subject': subject,
             'email_from': company.email_ticket,
-            'email_to': mail_to
+            'email_to': ','.join(mail_to)
             }
         mail_model = self.env['mail.mail']
         msg = mail_model.sudo().create(mail_value)
         mail_model.sudo().send([msg.id])
         return msg.id
-
-    
+    #
+    #
+    def set_status_email_text(self, prev_status):
+        return _('il ticket è passato dallo stato <strong>%s</strong> allo stato <strong>%s</strong><br />') % (prev_status, self.ticket_status_id.status_name)
     
     @api.multi
     def new_ticket(self):
         _logger.info("call to new_ticket")
-        
-        self.send_notification_mail
     
     @api.multi
     def assigned_ticket(self):
         _logger.info("call to assigned_ticket")
         
+        prev_status = self.ticket_status_id.status_name
         self._change_status('ass') 
+        
+        before_body = self.set_status_email_text(prev_status)
+        before_body += _('<br />il ticket è stato assegnato a %s') % self.sudo().task_id.user_id.name
+        
+        expande = {'before_body': before_body}
+        
+        self.send_notification_mail('email_template_ticket_change_state', 
+                                    'crm.helpdesk', 
+                                    self.id,
+                                   expande)
 
     @api.multi
     def pending_ticket(self):
         _logger.info("call to pending_ticket")
         
+        prev_status = self.ticket_status_id.status_name
         self._change_status('app') 
+        
+        deadline_date = parser.parse(self.task_deadline)
+        deadline = deadline_date.strftime('%d/%m/%Y')
+        
+        before_body = self.set_status_email_text(prev_status)
+        before_body += _('<br />il ticket è stato quotato %s punti') % self.task_points
+        before_body += _('<br />consegna prevista entro il %s') % deadline
+        
+        expande = {'before_body': before_body}
+        
+        self.send_notification_mail('email_template_ticket_change_state', 
+                                    'crm.helpdesk', 
+                                    self.id,
+                                   expande)
+        
         
     @api.multi
     def working_ticket(self):
         _logger.info("call to working_ticket")
         
+        # rejected work
+        is_rejected = False
         if(self.proxy_status_code == 'dlv'):
-            # rejected work
-             _logger.info("rejected work")
+            _logger.info("rejected work")
+            is_rejected = True
+            
+        # emergency work
+        is_emergency = False
+        if(self.proxy_status_code == 'new'):
+            _logger.info("emergency work")
+            is_emergency = True
+            
+        # standard approved work
+        custom_deliver = []
+        is_approved = False
+        if(self.proxy_status_code == 'app'):
+            
+            _logger.info("approved estimation")
+            is_approved = True
+            
+            # search for notification contact on partner child_ids of type..
+            child_ids = None
+            if(self.request_id.partner_id.parent_id):
+                child_ids = self.sudo().request_id.partner_id.parent_id.child_ids
+            
+            if(child_ids):
+                for child in child_ids:
+
+                    ## right type and not myself
+                    if(child.type and child.type == 'invoice' and child.id != self.request_id.partner_id.id):
+                        custom_deliver.extend(['"%s" <%s>' % (child.name, child.email)])
+
+            
+        deadline_date = parser.parse(self.task_deadline)
+        deadline = deadline_date.strftime('%d/%m/%Y')
         
+        prev_status = self.ticket_status_id.status_name
         self._change_status('wrk') 
+        
+        before_body = self.set_status_email_text(prev_status)
+        
+        if(is_approved):
+            before_body += _('<br />è stata approvata la quotazione di %s punti da parte di %s') % (self.task_points,self.env.user.name)
+            before_body += _('<br />consegna prevista entro il %s') % deadline
+        
+        if(is_rejected):
+            before_body += _('<br />la consegna è stata rifiutata ed il ticket è ritornato in lavorazione')
+            
+        if(is_emergency):
+            before_body += _('<br />le fasi di quotazione e approvazione sono state saltate a causa della categoria di intervento in emergenza')
+            before_body += _('<br />la calendarizzazione sarà immeditata, l\'effort richiesto sarà comunicato a consuntivo')
+        
+        expande = {'before_body': before_body}
+        
+        self.send_notification_mail('email_template_ticket_change_state', 
+                                    'crm.helpdesk', 
+                                    self.id,
+                                   expande,
+                                   custom_deliver)
+        
         
     @api.multi
     def delivered_ticket(self):
         _logger.info("call to delivered_ticket")
         
+        prev_status = self.ticket_status_id.status_name
         self._change_status('dlv') 
+        
+        before_body = self.set_status_email_text(prev_status)
+        before_body += _('<br />verificare il prodotto e validare la consegna')
+        
+        expande = {'before_body': before_body}
+        
+        self.send_notification_mail('email_template_ticket_change_state', 
+                                    'crm.helpdesk', 
+                                    self.id,
+                                   expande)
+        
         
     @api.multi
     def completed_ticket(self):
         _logger.info("call to completed_ticket")
         
+        prev_status = self.ticket_status_id.status_name
         self._change_status('ok') 
+        
+        before_body = self.set_status_email_text(prev_status)
+        before_body += _('<br />la consegna del ticket è stata accettata da %s') % self.env.user.name
+        before_body += _('<br />l\'effort richiesto per il ticket è stato di %s punti') % self.task_points
 
+        expande = {'before_body': before_body}
+        
+        self.send_notification_mail('email_template_ticket_change_state', 
+                                    'crm.helpdesk', 
+                                    self.id,
+                                   expande)
+        
     @api.multi
     def deleted_ticket(self):     
         _logger.info("call to deleted_ticket")
         
+        prev_status = self.ticket_status_id.status_name
         self._change_status('xx') 
         
-#        self.send_notification_mail(
-#            template_xml_id='email_template_ticket_new',
-#            object_class='crm.helpdesk',
-#            object_id=self.id,
-#            expande={'after_body': 'task annullato'}
-#            )
+        before_body = self.set_status_email_text(prev_status)
+        before_body += _('<br />il ticket è stato annullato da %s') % self.env.user.name
+
+        expande = {'before_body': before_body}
+        
+        self.send_notification_mail('email_template_ticket_change_state', 
+                                    'crm.helpdesk', 
+                                    self.id,
+                                   expande)
+        
             
     @api.multi
     def refuse_ticket(self):
         _logger.info("call to refuse_ticket")
         
+        prev_status = self.ticket_status_id.status_name
         self._change_status('xx') 
+        
+        before_body = self.set_status_email_text(prev_status)
+        before_body += _('<br />la quotazione è stata rifiutata ed il ticket è stato annullato')
+
+        expande = {'before_body': before_body}
+        
+        self.send_notification_mail('email_template_ticket_change_state', 
+                                    'crm.helpdesk', 
+                                    self.id,
+                                   expande)
               
-#        self.send_notification_mail(
-#            template_xml_id='email_template_ticket_new',
-#            object_class='crm.helpdesk',
-#            object_id=self.id,
-#            expande={'after_body': 'stima rifiutata'}
-#            )
+
 

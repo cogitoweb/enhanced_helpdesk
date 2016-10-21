@@ -46,6 +46,7 @@ class wizard_ticket_reply(models.TransientModel):
     attachment_name = fields.Char(size=64)
     flag_name = fields.Boolean()
     proxy_status_code = fields.Char(related='ticket_status_id.status_code')
+    proxy_categ_emerg = fields.Boolean(related='ticket_id.categ_id.emergency')
     task_id = fields.Many2one('project.task', related='ticket_id.task_id',readonly=True) 
     points = fields.Integer(string='Points', related='task_id.points') 
     task_user_id = fields.Many2one('res.users',
@@ -84,6 +85,8 @@ class wizard_ticket_reply(models.TransientModel):
         if not self.ticket_id.user_id:
             self.ticket_id.user_id = self._uid
             
+        _logger.info('try validate workflow %s', wkf_trigger)
+            
         # ---- set new state to ticket
         if wkf_trigger:
             workflow.trg_validate(self._uid, 
@@ -104,6 +107,10 @@ class wizard_ticket_reply(models.TransientModel):
     @api.multi
     def ticket_working(self):
         return self.reply(wkf_trigger='ticket_approved')
+    
+    @api.multi
+    def ticket_emerg(self):
+        return self.reply(wkf_trigger='ticket_emerg')
     
     @api.multi
     def ticket_delivered(self):
