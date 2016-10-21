@@ -9,7 +9,8 @@
             <link rel="stylesheet" href="/enhanced_helpdesk/static/src/css/ticket.css"/>
             <script type="text/javascript" src="/enhanced_helpdesk/static/src/js/helpdesk.js"></script>
             
-            <link rel="stylesheet" href="/enhanced_helpdesk/static/src/css/ticket_external.css" groups="enhanced_helpdesk.ticketing_external_user"/>
+            <link rel="stylesheet" href="/enhanced_helpdesk/static/src/css/ticket_external.css" 
+                  groups="enhanced_helpdesk.ticketing_external_user"/>
         </xpath>
     </template>
     
@@ -349,21 +350,8 @@
         }</field>  
     </record>
 
-    <menuitem name="Supporto e Ticket"
-              parent="portal.portal_menu"
-              id="menu_enhanced_helpdesk"
-              sequence="1"
-              groups="enhanced_helpdesk.ticketing_external_user"/>
-              
-    <menuitem name="Ticket"
-              parent="menu_enhanced_helpdesk"
-              action="action_enhanced_helpdesk"
-              id="menu_ticket_helpdesk"
-              sequence="2"
-              groups="enhanced_helpdesk.ticketing_external_user"/>
-
+   
     <!-- INHERITH VIEW TO INSERT NEW MESSAGE FORM -->
-
     <record id="crm_case_form_view_helpdesk_question_answer" model="ir.ui.view">
         <field name="name">crm.case.form.view.qa</field>
         <field name="model">crm.helpdesk</field>
@@ -413,28 +401,7 @@
 
             </tree>
         </field>
-    </record>
-
-    <record model="ir.actions.act_window" id="action_enhanced_helpdesk_support">
-        <field name="name">Ticketing</field>
-        <field name="res_model">crm.helpdesk</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="support_enhanced_helpdesk_tree"/>
-        <field name="search_view_id" ref="search_enhanced_helpdesk"/>
-        <field name="context">{'needaction_menu_ref':1,
-            'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form',
-            'search_default_filter_new':1,
-            'search_default_filter_assigned':1,
-            'search_default_filter_pending':1,
-            'search_default_filter_working':1,
-            'search_default_filter_delivered':1
-        }</field> 
-    </record>
-
-
-    <!-- ordinamento menu e azione di default -->
-    <menuitem name="Helpdesk and Support" id="crm_helpdesk.menu_help_support_main" action="action_enhanced_helpdesk_support" />     
+    </record> 
        
 </data>
 </openerp>

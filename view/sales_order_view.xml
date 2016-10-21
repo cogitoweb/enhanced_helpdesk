@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!--  sale order inherited form -->
+
+        <record id="enhanced_helpdesk_sales_order_form" model="ir.ui.view">
+            <field name="name">enhanced_helpdesk.sale.view_order_form</field>
+            <field name="model">sale.order</field>
+            <field name="priority">999</field>
+            <field name="inherit_id" ref="sale.view_order_form" />    
+            <field name="groups_id" eval="[(4,[ref('enhanced_helpdesk.ticketing_external_user') ])]" />
+
+            <field name="arch" type="xml">
+                
+                <xpath expr="//header" position="replace">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,sent,progress,done" 
+                               statusbar_colors="{'invoice_except':'red','waiting_date':'blue'}"/>
+                    </header>
+                </xpath>
+                
+                <!-- elimino messaggi chat follower -->
+                <field name="message_follower_ids" position="replace">
+                </field>
+                <field name="message_ids" position="replace">
+                </field>
+
+            </field>
+       </record>
+     
+        
+    
+
+    </data>
+</openerp>

@@ -43,8 +43,11 @@
                 <attribute name="invisible">True</attribute>
             </xpath>
             
-            <xpath expr="//field[@name='message_follower_ids']" position="replace">
-            </xpath>
+            <!-- elimino messaggi chat follower -->
+            <field name="message_follower_ids" position="replace">
+            </field>
+            <field name="message_ids" position="replace">
+            </field>
             
         </field>
    </record>
