@@ -18,16 +18,18 @@
             <field name="name">CRM - Helpdesk Support Tree</field>
             <field name="model">crm.helpdesk</field>
             <field name="arch" type="xml">
-                <tree string="Helpdesk Support Tree"
-                    colors="black:ticket_status_id=='2';blue:ticket_status_id=='3';gray:ticket_status_id in ('7','6')">
+                <tree string="Helpdesk Support Tree" 
+                    fonts="bold:proxy_status_code in ('app','dlv')"
+                    colors="black:proxy_status_code in ('wrk');blue:proxy_status_code in ('app', 'dlv');green:proxy_status_code in ('ok');grey:proxy_status_code in ('xx')">
                     <field name="id" string="ID" />
                     <field name="name" string="Oggetto" />
                     <field name="project_id" />
                     <field name="categ_id" />
                     <field name="priority"/>
                     <field name="ticket_status_id" />
-                    <field name="task_points" attrs="{'invisible': [('ticket_status_id', '=', '1')]}" sum="Punti stimati" />
-                    <field name="task_deadline" attrs="{'invisible': [('ticket_status_id', '=', '1')]}" />
+                    <field name="task_points" attrs="{'invisible': [('task_points', '=', '0')]}" sum="Punti stimati" />
+                    <field name="task_deadline" attrs="{'invisible': [('task_points', '=', '0')]}" />
+                    <field name="proxy_status_code" invisible="1" />
                 </tree>
             </field>
    </record>
