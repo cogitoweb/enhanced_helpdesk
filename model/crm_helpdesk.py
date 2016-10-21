@@ -41,14 +41,6 @@ class CrmHelpdesk(models.Model):
 
 
 
-    # Functiont to populate fields.Select()
-    # with ticket status coming from database
-    @api.model
-    def _get_ticket_status(self):
-        lst=[]
-        for status in self.env['helpdesk.ticket.status'].search([]):
-            lst.append((status.id, status.status_name))
-        return lst 
 
     # selezione del richiedente
     #
@@ -81,6 +73,19 @@ class CrmHelpdesk(models.Model):
     #
     # fine selezione richiedente
     
+    
+    def _get_ticket_status_default(self):
+        ## default status
+        status_code = 'new'
+        pool = self.pool.get('helpdesk.ticket.status')
+        status_ids = pool.search(self._cr, self._uid, [('status_code','=',status_code)])
+        
+        if not(status_ids):
+            raise Warning(_('No status with wired code %s') % status_code)
+            
+        return status_ids[0]
+    
+    
     # ---- Fields
     source = fields.Selection(
         [('portal', 'Portal'), ('phone', 'Phone'), ('mail', 'Mail')],
@@ -111,7 +116,8 @@ class CrmHelpdesk(models.Model):
     task_points = fields.Integer(string='Punti stimati', related='task_id.points')
     task_deadline = fields.Date(string='Deadline', related='task_id.date_deadline')
 
-    ticket_status_id = fields.Many2one('helpdesk.ticket.status', default=None ,string="Ticket Status", track_visibility='onchange'); 
+    ticket_status_id = fields.Many2one('helpdesk.ticket.status', default=_get_ticket_status_default,
+                                       string="Ticket Status", track_visibility='onchange'); 
     proxy_status_code = fields.Char(related='ticket_status_id.status_code')
     
 
@@ -137,16 +143,6 @@ class CrmHelpdesk(models.Model):
     @api.model
     def create(self, values):
         res = super(CrmHelpdesk, self).create(values)
-        
-        ## default status
-        status_code = 'new'
-        pool = self.pool.get('helpdesk.ticket.status')
-        status_ids = pool.search(self._cr, self._uid, [('status_code','=',status_code)])
-        
-        if not(status_ids):
-            raise Warning(_('No status with wired code %s') % status_code)
-            
-        res.ticket_status_id = status_ids[0]
         
         # ----- Create task related with this ticket
         task_value = {
