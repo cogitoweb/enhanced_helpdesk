@@ -8,12 +8,11 @@ def migrate(cr, version):
     
     if(version == '8.0.0.1'):
         
-        cr.execute("""SELECT EXISTS (
-                       SELECT 1
+        cr.execute("""SELECT 1
                        FROM   information_schema.tables 
                        WHERE  table_schema = 'public'
                        AND    table_name = 'helpdesk_ticket_status'
-                    )""")
+                    """)
         r = cr.fetchone()
         if not r:
             cr.execute("""CREATE TABLE helpdesk_ticket_status
