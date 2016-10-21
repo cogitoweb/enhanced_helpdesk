@@ -34,11 +34,11 @@ Enhanced Openerp Helpdesk and Ticketing support
     "data": [
         'view/wizard_change_user.xml',
         'view/wizard_merge_ticket.xml',
-        
-        'view/crm_helpdesk_view.xml',
-        'view/crm_case_categ_view.xml',
+
         'view/wizard_ticket_reply.xml',
         'view/wizard_ticket_cancel.xml',
+        'view/crm_helpdesk_view.xml',
+        'view/crm_case_categ_view.xml',
         
         'view/project_view.xml',
         'view/partner_view.xml',
