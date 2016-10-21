@@ -120,6 +120,19 @@ class CrmHelpdesk(models.Model):
                                        string="Ticket Status", track_visibility='onchange'); 
     proxy_status_code = fields.Char(related='ticket_status_id.status_code')
     
+    reject_reason = fields.Selection(
+        [
+                ('wrong_effort', 'effort economico non adeguato'), 
+                ('wrong_scheduling', 'pianificazione temporale non adeguata'), 
+                ('changed_idea', 'ho cambiato idea, l\'attività non è più necessaria'), 
+                ('made_myself', 'ho risolto il mio problema da solo'), 
+                ('not_compliant', 'la consegna non corrisponde ai requisiti iniziali'), 
+                ('account_contact', 'desidero essere contattato dal mio account')
+        ],
+        string='Reject Reason')
+    
+    reject_descr = fields.Text('Reject description')
+    
 
     _track = {
         'merge_ticket_id': {

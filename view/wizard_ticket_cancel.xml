@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="wizard_ticket_cancel_view" model="ir.ui.view">
+            <field name="name">Ticket Cancel</field>
+            <field name="model">wizard.ticket.cancel</field>
+            <field name="arch" type="xml">
+                
+              <field name="proxy_status_code" invisible="1" />
+                
+              <form string="Ticket Cancel">
+                          
+                      <group colspan="4">
+                          <field name="ticket_id" readonly="True" />
+                          <field name="ticket_status_id" readonly="True"/>
+                          
+                          <field name="deadline" 
+                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass'))], 
+                                       'readonly': True}"/> />
+                          
+                          <field name="points" 
+                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass'))], 
+                                       'readonly': True}"/> />
+                          
+                          <field name="ticket_reject_reason"/>
+                          
+                          <field name="ticket_reject_descr"/>
+                        
+                          <field name="attachment_name" attrs="{'required': [('flag_name', '=', True)]}"/>
+                          <field name="flag_name" invisible="1" />
+                          <field name="attachment"/>
+                      </group>
+                      <footer>
+                          <button name="reply" string="Reply" type="object" class="oe_highlight"/>
+                         
+                          <button string="Cancel" class="oe_link" special="cancel" />
+                      </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_ticket_cancel" model="ir.actions.act_window">
+            <field name="name">Ticket Cancel</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wizard.ticket.cancel</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="wizard_ticket_cancel_view"/>
+            <field name="context">{'record_id' : active_id}</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>

@@ -94,8 +94,10 @@
                     <button name="ticket_approved" class="oe_highlight_green" string="Approve"
                             attrs="{'invisible': [('proxy_status_code', '!=', 'app')]}"  /> 
                     
+                    <!--
                     <button name="ticket_quote_refused" class="oe_read_only" string="Reject" confirm="Are you sure you want to reject the quotation?"
                             attrs="{'invisible': [('proxy_status_code', '!=', 'app')]}"  />
+                    -->
                     
                     <button name="ticket_completed" class="oe_highlight_green" string="Accept deliver"
                             attrs="{'invisible': [('proxy_status_code', '!=', 'dlv')]}"  /> 
@@ -103,8 +105,25 @@
                     <button name="ticket_work_refused" class="oe_read_only" string="Reject work" confirm="Are you sure you want to reject the work?"
                             attrs="{'invisible': [('proxy_status_code', '!=', 'dlv')]}"  /> 
                     
+                    <!--
                     <button name="ticket_deleted" class="" string="Cancel" confirm="Are you sure you want to cancel this ticket?"
                             attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'in', ('wrk', 'dlv', 'ok', 'xx'))]}" />
+                    -->
+                    <button class="oe_read_only" type="action"
+                            name="%(action_ticket_cancel)d"
+                            string="Cancel"
+                            context="{'default_ticket_id': id}" 
+                            confirm="Are you sure you want to cancel this ticket?"
+                            attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'in', ('wrk', 'dlv', 'ok', 'xx'))]}"
+                            />
+                    
+                    <button class="oe_read_only" type="action"
+                            name="%(action_ticket_cancel)d"
+                            string="Reject"
+                            context="{'default_ticket_id': id}" 
+                            confirm="Are you sure you want to reject the quotation?"
+                            attrs="{'invisible': [('proxy_status_code', '!=', 'app')]}"
+                            />
                     
                 </header>
                 
