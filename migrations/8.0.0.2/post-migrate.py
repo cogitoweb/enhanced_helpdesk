@@ -12,9 +12,7 @@ def migrate(cr, version):
         cr.execute("select max(id) from helpdesk_ticket_status where status_code = 'new'")
         r = cr.fetchone()
         if(r[0] != '1'):
-            cr.execute("""delete from helpdesk_ticket_status where id = """ + r[0])
-
-            cr.execute("SELECT setval('helpdesk_ticket_status_id_seq', (SELECT MAX(id) FROM helpdesk_ticket_status))")
+            cr.execute("""delete from helpdesk_ticket_status where id = """ + str(r[0]))
 
         cr.execute(""" UPDATE crm_helpdesk SET ticket_status_id = (select id from helpdesk_ticket_status where status_code = 'new') WHERE state = 'draft' """)
         cr.execute(""" UPDATE crm_helpdesk SET ticket_status_id = (select id from helpdesk_ticket_status where status_code = 'app') WHERE state = 'pending' """)
