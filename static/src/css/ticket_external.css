@@ -1,3 +1,6 @@
 .oe_view_manager_sidebar {
     display: none !important;
 }
+.oe_list_buttons .oe_list_button_import {
+    display: none !important;
+}
