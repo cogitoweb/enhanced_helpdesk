@@ -8,6 +8,8 @@
         <xpath expr="." position="inside">
             <link rel="stylesheet" href="/enhanced_helpdesk/static/src/css/ticket.css"/>
             <script type="text/javascript" src="/enhanced_helpdesk/static/src/js/helpdesk.js"></script>
+            
+            <link rel="stylesheet" href="/enhanced_helpdesk/static/src/css/ticket_external.css" groups="enhanced_helpdesk.ticketing_external_user"/>
         </xpath>
     </template>
     
