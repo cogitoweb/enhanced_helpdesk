@@ -116,7 +116,7 @@ class CrmHelpdesk(models.Model):
     task_points = fields.Integer(string='Punti stimati', related='task_id.points')
     task_deadline = fields.Date(string='Deadline', related='task_id.date_deadline')
 
-    ticket_status_id = fields.Many2one('helpdesk.ticket.status', default=_get_ticket_status_default,
+    ticket_status_id = fields.Many2one('helpdesk.ticket.status', default=1,
                                        string="Ticket Status", track_visibility='onchange'); 
     proxy_status_code = fields.Char(related='ticket_status_id.status_code')
     
