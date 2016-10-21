@@ -148,14 +148,14 @@
                         <!--  Partner_id is required for annoying checking rules -->
                         <field name="partner_id" invisible="1"/>
                         <group colspan="2">
-                            <field name="project_id" widget="selection" colspan="2" attrs="{'readonly': [('proxy_status_code', '!=', 'new')]}" />
+                             <field name="project_id" widget="selection" colspan="2" attrs="{'readonly': [('proxy_status_code', '!=', 'new')]}" />
                             
-                            <field name="channel_id" invisible="1"/>
-                            <field name="source" groups="enhanced_helpdesk.ticketing_support" attrs="{'readonly': [('id', '!=', False)]}"/>
+                             <field name="channel_id" invisible="1"/>
+                             <field name="source" groups="enhanced_helpdesk.ticketing_support" attrs="{'readonly': [('id', '!=', False)]}"/>
 
-                            <field name="task_id" groups="enhanced_helpdesk.ticketing_support" attrs="{'readonly': True}" action="action_view_portal_task"   />
-                            <field name="task_points" string="Estimated points" attrs="{'readonly': True, 'invisible': ['|',('task_points', '=', 0),('task_id', '=', False)]}" />
-			    <field name="task_deadline" string="Deadline" attrs="{'readonly': True, 'invisible': ['|',('task_points', '=', 0),('task_id', '=', False)]}" />
+                             <field name="task_id" groups="enhanced_helpdesk.ticketing_support" attrs="{'readonly': True}" action="action_view_portal_task"   />
+                             <field name="task_points" string="Estimated points" attrs="{'readonly': True, 'invisible': ['|',('task_points', '=', 0),('task_id', '=', False)]}" />
+			                 <field name="task_deadline" string="Deadline" attrs="{'readonly': True, 'invisible': ['|',('task_points', '=', 0),('task_id', '=', False)]}" />
                         </group>
                         
                         <group colspan="2">
@@ -166,7 +166,7 @@
                                 attrs="{'readonly': [('proxy_status_code', '!=', 'new')]}"/>
 
                             <field name="priority" widget="priority" colspan="1"
-                                attrs="{'readonly': [('proxy_status_code', 'in', ('xx','ok'))]}"/>
+                                attrs="{'readonly': [('proxy_status_code', 'in', ('xx','ok','wrk','dlv','app'))]}"/>
                                  
                         </group>
                         
