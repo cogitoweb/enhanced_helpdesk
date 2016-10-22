@@ -6,16 +6,16 @@
             <field name="name">Ticket Reply</field>
             <field name="model">wizard.ticket.reply</field>
             <field name="arch" type="xml">
-                
-              <field name="proxy_status_code" invisible="1" />
-              <field name="proxy_categ_emerg" invisible="1" />
-                
+                  
               <form string="Ticket Reply">
+                  
+                    <field name="proxy_status_code" invisible="1" />
+                    <field name="proxy_categ_emerg" invisible="1" />
                   
                         
                       <group colspan="4">
-                          <field name="ticket_id" readonly="True" />
-                          <field name="ticket_status_id" readonly="True"/>
+                          <field name="ticket_id" readonly="True" options="{'no_open': True}" />
+                          <field name="ticket_status_id" readonly="True" options="{'no_open': True}" />
                           
                           <field name="task_user_id" 
                                  attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('new'))],

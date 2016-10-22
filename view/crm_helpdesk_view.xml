@@ -88,10 +88,11 @@
         <field name="groups_id" eval="[(4, [ref('enhanced_helpdesk.ticketing_external_user') ])]" /> 
         
         <field name="arch" type="xml">
-            
-            <field name="proxy_status_code" invisible="1" />
-            
+
             <form string="Helpdesk Support">
+                
+                <field name="proxy_status_code" invisible="1" />
+                
                 <header>
              
                     <field name="ticket_status_id" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;1&quot;:&quot;blue&quot;}" /> 

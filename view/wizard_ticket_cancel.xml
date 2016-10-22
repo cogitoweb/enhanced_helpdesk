@@ -7,34 +7,34 @@
             <field name="model">wizard.ticket.cancel</field>
             <field name="arch" type="xml">
                 
-              <field name="proxy_status_code" invisible="1" />
-                
-              <form string="Ticket Cancel">
-                          
-                      <group colspan="4">
-                          <field name="ticket_id" readonly="True" />
-                          <field name="ticket_status_id" readonly="True"/>
-                          
+                <form string="Ticket Cancel">
+
+                    <field name="proxy_status_code" invisible="1" />
+
+                    <group colspan="4">
+                          <field name="ticket_id" readonly="True" options="{'no_open': True}" />
+                          <field name="ticket_status_id" readonly="True" options="{'no_open': True}" />
+
                           <field name="deadline" 
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass'))], 
                                        'readonly': True}"/> />
-                          
+
                           <field name="points" 
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass'))], 
                                        'readonly': True}"/> />
-                          
+
                           <field name="ticket_reject_reason"/>
-                          
+
                           <field name="ticket_reject_descr"/>
-                        
+
                           <field name="attachment_name" attrs="{'invisible': True}"/>
                           <field name="attachment" filename="attachment_name"/>
-                      </group>
-                      <footer>
+                    </group>
+                    <footer>
                           <button name="reply" string="Reply" type="object" class="oe_highlight"/>
-                         
+
                           <button string="Cancel" class="oe_link" special="cancel" />
-                      </footer>
+                    </footer>
                 </form>
             </field>
         </record>
