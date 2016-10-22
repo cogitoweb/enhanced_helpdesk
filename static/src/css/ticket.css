@@ -55,6 +55,13 @@
     color:#fff;
 }
 
+.openerp .oe_form table.oe_form_field_binary td {
+    width:100%;
+}
+.openerp .oe_form input.field_binary {
+    width:100%;
+}
+
 /* KANBAN SECTION */
 
 .openerp .oe_kanban_view .oe_kanban_content.enhanced_helpdesk_project_kanban  h4 {

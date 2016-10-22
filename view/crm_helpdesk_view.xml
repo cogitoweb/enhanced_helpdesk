@@ -198,10 +198,9 @@
                                 nolabel="1"
                                 attrs="{'readonly': [('proxy_status_code', 'in', ('xx','ok'))]}">
                             <form>
-                                <label for="name" colspan="4"/>
-                                <field name="name" colspan="4"/>
+                                <field name="name" colspan="4" invisible="True"/>
                                 <label for="datas" colspan="4"/>
-                                <field name="datas" colspan="4"/>
+                                <field name="datas" colspan="4" filename="name"/>
                                 <field name="res_id" colspan="4" readonly="False" invisible="True"/>
                                 <field name="res_model" colspan="4" readonly="False" invisible="True"/>
 
@@ -223,10 +222,9 @@
                                 <separator string="Attachments" colspan="4"/>
                                 <field name="attachment_ids" colspan="4" mode="kanban" context="{'default_res_id':uid, 'default_res_model':'res.users'}">
                                     <form>
-                                        <label for="name" colspan="4"/>
-                                        <field name="name" colspan="4"/>
+                                        <field name="name" colspan="4" invisible="True"/>
                                         <label for="datas" colspan="4"/>
-                                        <field name="datas" colspan="4"/>
+                                        <field name="datas" colspan="4" filename="name"/>
                                         <field name="res_id" colspan="4" readonly="False" invisible="True"/>
                                         <field name="res_model" colspan="4" readonly="False" invisible="True"/>
                                     </form>
@@ -369,10 +367,9 @@
                         <separator string="Attachments" colspan="4"/>
                         <field name="attachment_ids" colspan="4" mode="kanban">
                             <form>
-                                <label for="name" colspan="4"/>
-                                <field name="name" colspan="4"/>
+                                <field name="name" colspan="4" invisible="True"/>
                                 <label for="datas" colspan="4"/>
-                                <field name="datas" colspan="4"/>
+                                <field name="datas" colspan="4" filename="name"/>
                             </form>
                         </field>
                     </form>

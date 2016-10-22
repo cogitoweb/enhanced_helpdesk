@@ -43,7 +43,6 @@ class wizard_ticket_cancel(models.TransientModel):
     ticket_status_id = fields.Many2one('helpdesk.ticket.status', related='ticket_id.ticket_status_id',readonly=True)  
     attachment = fields.Binary('Attachment')
     attachment_name = fields.Char(size=64)
-    flag_name = fields.Boolean()
     proxy_status_code = fields.Char(related='ticket_status_id.status_code')
     task_id = fields.Many2one('project.task', related='ticket_id.task_id',readonly=True) 
     points = fields.Integer(string='Points', related='task_id.points') 
@@ -95,9 +94,3 @@ class wizard_ticket_cancel(models.TransientModel):
 
         return {'type': 'ir.actions.act_window_close'}
 
-    @api.onchange('attachment')
-    def onchange_attachment(self):
-        if self.attachment:
-            self.flag_name = True
-        else:
-            self.flag_name = False

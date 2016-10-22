@@ -12,6 +12,39 @@
         
         <field name="arch" type="xml">
 
+            <!-- nascondo fattura pa -->
+            <xpath expr="//page[@string='FatturaPA']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            
+            <xpath expr="//page[@string='FatturaPA attachments']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            
+            <xpath expr="//page[@string='Related Documents ']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            
+            <xpath expr="//page[@string='Other Info']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            
+            <!-- no link stuff -->
+            <field name="fiscal_position" position="attributes">
+                <attribute name="options">{'no_open': True}</attribute>
+            </field>
+            <field name="payment_term" position="attributes">
+                <attribute name="options">{'no_open': True}</attribute>
+            </field>
+            
+            <!-- private stuff -->
+            <xpath expr="//label[@for='comment']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <field name="comment" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </field>
+            
             <!-- elimino messaggi chat follower -->
             <field name="message_follower_ids" position="replace">
             </field>

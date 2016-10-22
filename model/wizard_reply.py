@@ -44,7 +44,6 @@ class wizard_ticket_reply(models.TransientModel):
     ticket_reply = fields.Text('Reply')
     attachment = fields.Binary('Attachment')
     attachment_name = fields.Char(size=64)
-    flag_name = fields.Boolean()
     proxy_status_code = fields.Char(related='ticket_status_id.status_code')
     proxy_categ_emerg = fields.Boolean(related='ticket_id.categ_id.emergency')
     task_id = fields.Many2one('project.task', related='ticket_id.task_id',readonly=True) 
@@ -119,10 +118,3 @@ class wizard_ticket_reply(models.TransientModel):
     @api.multi
     def ticket_completed(self):
         return self.reply(wkf_trigger='ticket_completed')
-
-    @api.onchange('attachment')
-    def onchange_attachment(self):
-        if self.attachment:
-            self.flag_name = True
-        else:
-            self.flag_name = False

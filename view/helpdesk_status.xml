@@ -11,6 +11,7 @@
                 <form string="Ticket Status">
                     <group>
                         <group>
+                            <field name="status_code"/>
                             <field name="status_name"/>
                             <field name="status_deadline"/>
                             <field name="status_order" groups="base.group_no_one"/>
@@ -40,6 +41,7 @@
             <field name="arch" type="xml">
                 <tree string="Task Stage">
                     <field name="status_order"/>
+                    <field name="status_code"/>
                     <field name="status_name"/>
                     <field name="status_deadline"/>
                     <field name="status_description"/>

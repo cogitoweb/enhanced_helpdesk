@@ -31,9 +31,8 @@
                           
                           <field name="ticket_reply"/>
                         
-                          <field name="attachment_name" attrs="{'required': [('flag_name', '=', True)]}"/>
-                          <field name="flag_name" invisible="1" />
-                          <field name="attachment"/>
+                          <field name="attachment_name" attrs="{'invisible': True}"/>
+                          <field name="attachment" filename="attachment_name"/>
                       </group>
                       <footer>
                           <button name="reply" string="Reply" type="object" class="oe_highlight"/>
