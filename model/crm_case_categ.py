@@ -35,4 +35,4 @@ class CrmCaseCateg(models.Model):
 
     _inherit = "crm.case.categ"
     
-    emergency =  fields.Boolean('Emergency request', translate=True)
+    emergency =  fields.Boolean('Emergency request', translate=False)
