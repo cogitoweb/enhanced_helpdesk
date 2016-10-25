@@ -98,23 +98,14 @@
                     <field name="ticket_status_id" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;1&quot;:&quot;blue&quot;}" /> 
                     
                     <button name="ticket_approved" class="oe_highlight_green" string="Approve"
-                            attrs="{'invisible': [('proxy_status_code', '!=', 'app')]}"  /> 
-                    
-                    <!--
-                    <button name="ticket_quote_refused" class="oe_read_only" string="Reject" confirm="Are you sure you want to reject the quotation?"
                             attrs="{'invisible': [('proxy_status_code', '!=', 'app')]}"  />
-                    -->
                     
                     <button name="ticket_completed" class="oe_highlight_green" string="Accept deliver"
                             attrs="{'invisible': [('proxy_status_code', '!=', 'dlv')]}"  /> 
                     
                     <button name="ticket_work_refused" class="oe_read_only" string="Reject work" confirm="Are you sure you want to reject the work?"
                             attrs="{'invisible': [('proxy_status_code', '!=', 'dlv')]}"  /> 
-                    
-                    <!--
-                    <button name="ticket_deleted" class="" string="Cancel" confirm="Are you sure you want to cancel this ticket?"
-                            attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'in', ('wrk', 'dlv', 'ok', 'xx'))]}" />
-                    -->
+
                     <button class="oe_read_only" type="action"
                             name="%(action_ticket_cancel)d"
                             string="Cancel"
@@ -269,7 +260,7 @@
                     
                         <field name="ticket_status_id" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;5&quot;:&quot;blue&quot;}" /> 
 
-                        <button class="oe_highlight" type="action"
+                        <button class="oe_highlight" type="action" attrs="{'invisible': [('id', '=', False)]}"
                             name="%(action_ticket_reply)d"
                             string="Ticket Reply"
                             context="{'default_ticket_id': id}" />
@@ -277,13 +268,8 @@
                         <button name="ticket_deleted" class="" string="Cancel ticket" confirm="Are you sure you want to cancel this ticket?"
                                 attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'in', ('wrk', 'dlv', 'ok', 'xx'))]}" />
 
-                        <!-- disabled
-                        <button name="%(action_change_ticket_user)d" class="oe_read_only" ticket_status_id="3"
-                                string="Change User" type="action" groups="enhanced_helpdesk.ticketing_support"/> 
-                                
-                        <button name="%(action_merge_ticket)d" class="oe_read_only" ticket_status_id="3"
-                                string="Merge Tickets" type="action" groups="enhanced_helpdesk.ticketing_support"/>
-                        -->
+                        <button name="ticket_approved" class="oe_highlight_green" string="Approve"
+                                            attrs="{'invisible': [('proxy_status_code', '!=', 'app')]}"  />
                     </header>
                     
                 </xpath>
@@ -299,6 +285,14 @@
                 
                 <xpath expr="//field[@name='date']" position="attributes">
                     <attribute name="attrs">{'readonly': [('id', '!=', False)]}</attribute>
+                </xpath>
+                
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="attrs">{'readonly': False}</attribute>
+                </xpath>
+                
+                <xpath expr="//field[@name='description']" position="attributes">
+                    <attribute name="attrs">{'readonly': False}</attribute>
                 </xpath>
                 
                 <xpath expr="//field[@name='request_id']" position="attributes">
