@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-21 11:40+0000\n"
-"PO-Revision-Date: 2016-10-21 11:40+0000\n"
+"POT-Creation-Date: 2016-11-19 18:30+0000\n"
+"PO-Revision-Date: 2016-11-19 18:30+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -68,17 +68,17 @@ msgstr " Nuovo Ticket - #${object.id}: ${object.name} "
 #. module: enhanced_helpdesk
 #: field:res.users,claim_count:0
 msgid "# Claims"
-msgstr "# Claims"
+msgstr "# Reclami"
 
 #. module: enhanced_helpdesk
 #: field:res.users,issue_count:0
 msgid "# Issues"
-msgstr "# Issues"
+msgstr "# Problematiche"
 
 #. module: enhanced_helpdesk
 #: field:res.users,supplier_invoice_count:0
 msgid "# Supplier Invoices"
-msgstr "# Supplier Invoices"
+msgstr "# Fatture Fornitori"
 
 #. module: enhanced_helpdesk
 #: field:res.users,purchase_order_count:0
@@ -91,80 +91,80 @@ msgid "# of Sales Order"
 msgstr "# of Sales Order"
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:368
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:402
 #, python-format
 msgid "<br /><br />E' necessaria la Vs. approvazione della stima per procedere."
 msgstr "<br /><br />E' necessaria la Vs. approvazione della stima per procedere."
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:366
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:428
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:401
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:461
 #, python-format
 msgid "<br />consegna prevista entro il %s"
 msgstr "<br />consegna prevista entro il %s"
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:490
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:523
 #, python-format
 msgid "<br />il ticket è stato annullato da %s"
 msgstr "<br />il ticket è stato annullato da %s"
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:345
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:380
 #, python-format
 msgid "<br />il ticket è stato assegnato a %s"
 msgstr "<br />il ticket è stato assegnato a %s"
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:365
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:400
 #, python-format
 msgid "<br />il ticket è stato quotato %s punti"
 msgstr "<br />il ticket è stato quotato %s punti"
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:473
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:506
 #, python-format
 msgid "<br />l'effort richiesto per il ticket è stato di %s punti"
 msgstr "<br />l'effort richiesto per il ticket è stato di %s punti"
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:435
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:468
 #, python-format
 msgid "<br />la calendarizzazione sarà immeditata, l'effort richiesto sarà comunicato a consuntivo"
 msgstr "<br />la calendarizzazione sarà immeditata, l'effort richiesto sarà comunicato a consuntivo"
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:472
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:505
 #, python-format
 msgid "<br />la consegna del ticket è stata accettata da %s"
 msgstr "<br />la consegna del ticket è stata accettata da %s"
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:431
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:464
 #, python-format
 msgid "<br />la consegna è stata rifiutata ed il ticket è ritornato in lavorazione. Verrete contattati da uno dei nostri esperti."
 msgstr "<br />la consegna è stata rifiutata ed il ticket è ritornato in lavorazione. Verrete contattati da uno dei nostri esperti."
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:508
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:541
 #, python-format
 msgid "<br />la quotazione è stata rifiutata ed il ticket è stato annullato"
 msgstr "<br />la quotazione è stata rifiutata ed il ticket è stato annullato"
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:434
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:467
 #, python-format
 msgid "<br />le fasi di quotazione e approvazione sono state saltate a causa della categoria di intervento in emergenza"
 msgstr "<br />le fasi di quotazione e approvazione sono state saltate a causa della categoria di intervento in emergenza"
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:454
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:487
 #, python-format
 msgid "<br />verificare il prodotto e validare la consegna"
 msgstr "<br />verificare il prodotto e validare la consegna"
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:427
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:460
 #, python-format
 msgid "<br />è stata approvata la quotazione di %s punti da parte di %s"
 msgstr "<br />è stata approvata la quotazione di %s punti da parte di %s"
@@ -235,12 +235,12 @@ msgstr "Allocati"
 #. module: enhanced_helpdesk
 #: field:res.users,payment_amount_due:0
 msgid "Amount Due"
-msgstr "Amount Due"
+msgstr "Importo dovuto"
 
 #. module: enhanced_helpdesk
 #: field:res.users,payment_amount_overdue:0
 msgid "Amount Overdue"
-msgstr "Amount Overdue"
+msgstr "Importo non dovuto"
 
 #. module: enhanced_helpdesk
 #: view:project.project:enhanced_helpdesk.enhanced_helpdesk_project_edit_project
@@ -254,6 +254,7 @@ msgstr "Applica"
 
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.enhanced_helpdesk_form
+#: view:crm.helpdesk:enhanced_helpdesk.enhanced_helpdesk_form_support
 msgid "Approve"
 msgstr "Approva"
 
@@ -281,10 +282,16 @@ msgstr "Area"
 #. module: enhanced_helpdesk
 #: field:res.users,area_ids:0
 msgid "Areas"
-msgstr "Areas"
+msgstr "Aree"
+
+#. module: enhanced_helpdesk
+#: model:helpdesk.ticket.status,status_description:enhanced_helpdesk.handled
+msgid "Assegnato"
+msgstr "Assegnato"
 
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.search_enhanced_helpdesk
+#: model:helpdesk.ticket.status,status_name:enhanced_helpdesk.handled
 msgid "Assigned"
 msgstr "Assegnato"
 
@@ -334,20 +341,19 @@ msgid "Bozza"
 msgstr "Bozza"
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/helpdesk_qa.py:67
+#: code:addons/enhanced_helpdesk/model/helpdesk_qa.py:63
 #, python-format
 msgid "Can not delete messages posted from other users"
-msgstr "Can not delete messages posted from other users"
+msgstr "Non puoi cancellare messaggi scritti da altri utenti"
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/helpdesk_qa.py:72
+#: code:addons/enhanced_helpdesk/model/helpdesk_qa.py:68
 #, python-format
 msgid "Can not delete messages with an answer"
-msgstr "Can not delete messages with an answer"
+msgstr "Non puoi cancellare messaggi con risposta"
 
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.enhanced_helpdesk_form
-#: view:crm.helpdesk:enhanced_helpdesk.search_enhanced_helpdesk
 #: view:wizard.change.ticket.user:enhanced_helpdesk.wizard_change_ticket_user_view
 #: view:wizard.merge.ticket:enhanced_helpdesk.wizard_merge_ticket_view
 #: view:wizard.ticket.cancel:enhanced_helpdesk.wizard_ticket_cancel_view
@@ -359,6 +365,11 @@ msgstr "Cancella"
 #: view:crm.helpdesk:enhanced_helpdesk.enhanced_helpdesk_form_support
 msgid "Cancel ticket"
 msgstr "Cancella ticket"
+
+#. module: enhanced_helpdesk
+#: view:crm.helpdesk:enhanced_helpdesk.search_enhanced_helpdesk
+msgid "Cancelled"
+msgstr "Annullati"
 
 #. module: enhanced_helpdesk
 #: field:res.users,rea_capital:0
@@ -376,16 +387,16 @@ msgid "Category of Case"
 msgstr "Categoria del caso"
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:177
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:202
 #, python-format
 msgid "Category: %s"
-msgstr "Category: %s"
+msgstr "Categoria: %s"
 
 #. module: enhanced_helpdesk
 #: model:ir.actions.act_window,name:enhanced_helpdesk.action_change_ticket_user
 #: view:wizard.change.ticket.user:enhanced_helpdesk.wizard_change_ticket_user_view
 msgid "Change User"
-msgstr "Change User"
+msgstr "Cambia Utente"
 
 #. module: enhanced_helpdesk
 #: field:crm.helpdesk,proxy_status_code:0
@@ -403,7 +414,7 @@ msgstr "Aziende"
 #. module: enhanced_helpdesk
 #: field:helpdesk.qa,complete_message:0
 msgid "Complete message"
-msgstr "Complete message"
+msgstr "Messaggio completo"
 
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.search_enhanced_helpdesk
@@ -430,7 +441,7 @@ msgstr "Consumati"
 #: field:wizard.ticket.cancel,create_uid:0
 #: field:wizard.ticket.reply,create_uid:0
 msgid "Created by"
-msgstr "Created by"
+msgstr "Creato da"
 
 #. module: enhanced_helpdesk
 #: field:crm.helpdesk.guide,create_date:0
@@ -441,7 +452,12 @@ msgstr "Created by"
 #: field:wizard.ticket.cancel,create_date:0
 #: field:wizard.ticket.reply,create_date:0
 msgid "Created on"
-msgstr "Created on"
+msgstr "Creato il"
+
+#. module: enhanced_helpdesk
+#: view:crm.helpdesk:enhanced_helpdesk.support_enhanced_helpdesk_tree
+msgid "Creation Date"
+msgstr "Data creazione"
 
 #. module: enhanced_helpdesk
 #: field:ir.attachment,crm_helpdesk_id:0
@@ -456,7 +472,7 @@ msgstr "Cliente"
 #. module: enhanced_helpdesk
 #: field:res.users,property_stock_customer:0
 msgid "Customer Location"
-msgstr "Customer Location"
+msgstr "Posizione Cliente"
 
 #. module: enhanced_helpdesk
 #: field:res.users,payment_note:0
@@ -470,7 +486,6 @@ msgstr "Data"
 
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.enhanced_helpdesk_form
-#: view:crm.helpdesk:enhanced_helpdesk.support_enhanced_helpdesk_tree
 msgid "Date"
 msgstr "Data"
 
@@ -485,7 +500,7 @@ msgstr "Scadenza"
 #. module: enhanced_helpdesk
 #: help:helpdesk.ticket.status,status_deadline:0
 msgid "Deadline in Minutes"
-msgstr "Deadline in Minutes"
+msgstr "Scadenza in minuti"
 
 #. module: enhanced_helpdesk
 #: model:helpdesk.ticket.status,status_name:enhanced_helpdesk.deleted
@@ -501,7 +516,7 @@ msgstr "Consegnato"
 #. module: enhanced_helpdesk
 #: field:res.users,property_delivery_carrier:0
 msgid "Delivery Method"
-msgstr "Delivery Method"
+msgstr "Metodo di consegna"
 
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.enhanced_helpdesk_form
@@ -513,13 +528,13 @@ msgstr "Descrizione"
 #. module: enhanced_helpdesk
 #: field:res.users,goods_description_id:0
 msgid "Description of Goods"
-msgstr "Description of Goods"
+msgstr "Descrizione dei beni"
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:181
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:206
 #, python-format
 msgid "Description: %s"
-msgstr "Description: %s"
+msgstr "Descrizione: %s"
 
 #. module: enhanced_helpdesk
 #: field:helpdesk.ticket.status,status_description:0
@@ -529,7 +544,7 @@ msgstr "Descrizione"
 #. module: enhanced_helpdesk
 #: field:wizard.merge.ticket,destination_ticket_id:0
 msgid "Destination ticket id"
-msgstr "Destination ticket id"
+msgstr "Ticket id di destinazione"
 
 #. module: enhanced_helpdesk
 #: field:crm.helpdesk.guide,display_name:0
@@ -540,7 +555,7 @@ msgstr "Destination ticket id"
 #: field:wizard.ticket.cancel,display_name:0
 #: field:wizard.ticket.reply,display_name:0
 msgid "Display Name"
-msgstr "Display Name"
+msgstr "Nome"
 
 #. module: enhanced_helpdesk
 #: view:project.project:enhanced_helpdesk.view_project
@@ -580,13 +595,14 @@ msgstr "Escludi"
 
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.enhanced_helpdesk_form
+#: field:crm.helpdesk,task_points:0
 msgid "Estimated points"
 msgstr "Punti stimati"
 
 #. module: enhanced_helpdesk
 #: field:crm.helpdesk,external_ticket_url:0
 msgid "External ticket url"
-msgstr "External ticket url"
+msgstr "URL esterno ticket"
 
 #. module: enhanced_helpdesk
 #: field:res.users,fiscalcode:0
@@ -594,26 +610,20 @@ msgid "Fiscal Code"
 msgstr "Fiscal Code"
 
 #. module: enhanced_helpdesk
-#: field:wizard.ticket.cancel,flag_name:0
-#: field:wizard.ticket.reply,flag_name:0
-msgid "Flag name"
-msgstr "Flag name"
-
-#. module: enhanced_helpdesk
 #: field:res.users,payment_responsible_id:0
 msgid "Follow-up Responsible"
-msgstr "Follow-up Responsible"
+msgstr "Responsabile Follow-up"
 
 #. module: enhanced_helpdesk
 #: view:project.project:enhanced_helpdesk.enhanced_helpdesk_project_edit_project
 #: field:project.project,free_points:0
 msgid "Free points"
-msgstr "Free points"
+msgstr "Punti disponibili"
 
 #. module: enhanced_helpdesk
 #: view:project.project:enhanced_helpdesk.enhanced_helpdesk_project_kanban
 msgid "Free:"
-msgstr "Free:"
+msgstr "Disponibili:"
 
 #. module: enhanced_helpdesk
 #: view:project.task:enhanced_helpdesk.view_ticket_task_search_form
@@ -689,6 +699,11 @@ msgid "If checked the C.F. is referred to a Individual Person"
 msgstr "If checked the C.F. is referred to a Individual Person"
 
 #. module: enhanced_helpdesk
+#: model:helpdesk.ticket.status,status_description:enhanced_helpdesk.working
+msgid "In Lavorazione"
+msgstr "In lavorazione"
+
+#. module: enhanced_helpdesk
 #: field:res.users,individual:0
 msgid "Individual"
 msgstr "Individual"
@@ -701,12 +716,12 @@ msgstr "Internal Code"
 #. module: enhanced_helpdesk
 #: field:res.users,invoice_warn:0
 msgid "Invoice"
-msgstr "Invoice"
+msgstr "Fattura"
 
 #. module: enhanced_helpdesk
 #: field:res.users,property_invoice_type:0
 msgid "Invoicing Type"
-msgstr "Invoicing Type"
+msgstr "Tipo di fatturazione"
 
 #. module: enhanced_helpdesk
 #: help:res.users,fiscalcode:0
@@ -714,14 +729,16 @@ msgid "Italian Fiscal Code"
 msgstr "Italian Fiscal Code"
 
 #. module: enhanced_helpdesk
+#: field:crm.helpdesk,last_answer_date:0
 #: field:project.task,ticket_last_answer_date:0
 msgid "Last Answer Date"
-msgstr "Last Answer Date"
+msgstr "Data ultima risposta"
 
 #. module: enhanced_helpdesk
+#: field:crm.helpdesk,last_answer_user_id:0
 #: field:project.task,ticket_last_answer_user_id:0
 msgid "Last Answer User"
-msgstr "Last Answer User"
+msgstr "Utente ultima risposta"
 
 #. module: enhanced_helpdesk
 #: field:crm.helpdesk.guide,__last_update:0
@@ -732,7 +749,7 @@ msgstr "Last Answer User"
 #: field:wizard.ticket.cancel,__last_update:0
 #: field:wizard.ticket.reply,__last_update:0
 msgid "Last Modified on"
-msgstr "Last Modified on"
+msgstr "Data ultima modifica"
 
 #. module: enhanced_helpdesk
 #: field:crm.helpdesk.guide,write_uid:0
@@ -743,7 +760,7 @@ msgstr "Last Modified on"
 #: field:wizard.ticket.cancel,write_uid:0
 #: field:wizard.ticket.reply,write_uid:0
 msgid "Last Updated by"
-msgstr "Last Updated by"
+msgstr "Ultimo aggiornamento da"
 
 #. module: enhanced_helpdesk
 #: field:crm.helpdesk.guide,write_date:0
@@ -754,7 +771,12 @@ msgstr "Last Updated by"
 #: field:wizard.ticket.cancel,write_date:0
 #: field:wizard.ticket.reply,write_date:0
 msgid "Last Updated on"
-msgstr "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: enhanced_helpdesk
+#: view:crm.helpdesk:enhanced_helpdesk.support_enhanced_helpdesk_tree
+msgid "Last answer date"
+msgstr "Data ultima risposta"
 
 #. module: enhanced_helpdesk
 #: field:res.users,latest_followup_date:0
@@ -795,12 +817,12 @@ msgstr "Liquidation State"
 #: view:project.project:enhanced_helpdesk.enhanced_helpdesk_project_edit_project
 #: field:project.project,locked_points:0
 msgid "Locked points"
-msgstr "Locked points"
+msgstr "Punti allocati"
 
 #. module: enhanced_helpdesk
 #: view:project.project:enhanced_helpdesk.enhanced_helpdesk_project_kanban
 msgid "Locked:"
-msgstr "Locked:"
+msgstr "Allocati:"
 
 #. module: enhanced_helpdesk
 #: selection:crm.helpdesk,source:0
@@ -842,7 +864,7 @@ msgstr "Messaggio"
 #. module: enhanced_helpdesk
 #: field:helpdesk.qa,date:0
 msgid "Message Date"
-msgstr "Message Date"
+msgstr "Data messaggio"
 
 #. module: enhanced_helpdesk
 #: field:res.users,invoice_warn_msg:0
@@ -869,14 +891,14 @@ msgstr "Message for Stock Picking"
 #: view:project.task:enhanced_helpdesk.ticket_view_task_form2
 #: field:project.task,rel_helpdesk_qa_ids:0
 msgid "Messages"
-msgstr "Messages"
+msgstr "Messaggi"
 
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.crm_case_form_view_helpdesk_question_answer
 #: view:crm.helpdesk:enhanced_helpdesk.enhanced_helpdesk_form
 #: view:project.task:enhanced_helpdesk.ticket_view_task_form2
 msgid "Messagges List"
-msgstr "Messagges List"
+msgstr "Elenco messaggi"
 
 #. module: enhanced_helpdesk
 #: field:res.users,transportation_method_id:0
@@ -897,7 +919,7 @@ msgstr "Nuovo"
 #: view:crm.helpdesk:enhanced_helpdesk.crm_case_form_view_helpdesk_question_answer
 #: view:crm.helpdesk:enhanced_helpdesk.enhanced_helpdesk_form
 msgid "New Message"
-msgstr "New Message"
+msgstr "Nuovo Messaggio"
 
 #. module: enhanced_helpdesk
 #: field:res.users,payment_next_action:0
@@ -911,13 +933,13 @@ msgstr "Next Action Date"
 
 #. module: enhanced_helpdesk
 #: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:84
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:227
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:252
 #, python-format
 msgid "No status with wired code %s"
 msgstr "No status with wired code %s"
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:241
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:266
 #, python-format
 msgid "No task stage with wired name %s"
 msgstr "No task stage with wired name %s"
@@ -984,7 +1006,6 @@ msgstr "Payment Note"
 
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.search_enhanced_helpdesk
-#: model:helpdesk.ticket.status,status_name:enhanced_helpdesk.handled
 msgid "Pending"
 msgstr "In sospeso"
 
@@ -994,6 +1015,7 @@ msgid "Phone"
 msgstr "Phone"
 
 #. module: enhanced_helpdesk
+#: view:crm.helpdesk:enhanced_helpdesk.support_enhanced_helpdesk_tree
 #: view:project.project:enhanced_helpdesk.enhanced_helpdesk_project_kanban
 #: field:project.task,points:0
 #: field:wizard.ticket.cancel,points:0
@@ -1004,12 +1026,12 @@ msgstr "Punti"
 #. module: enhanced_helpdesk
 #: view:project.project:enhanced_helpdesk.enhanced_helpdesk_project_edit_project
 msgid "Points summary"
-msgstr "Points summary"
+msgstr "Sommario punti"
 
 #. module: enhanced_helpdesk
 #: view:project.project:enhanced_helpdesk.enhanced_helpdesk_project_edit_project
 msgid "Points wallet"
-msgstr "Points wallet"
+msgstr "Portafoglio punti"
 
 #. module: enhanced_helpdesk
 #: selection:crm.helpdesk,source:0
@@ -1017,10 +1039,15 @@ msgid "Portal"
 msgstr "Portal"
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:179
+#: view:crm.helpdesk:enhanced_helpdesk.support_enhanced_helpdesk_tree
+msgid "Priority"
+msgstr "Priorità"
+
+#. module: enhanced_helpdesk
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:204
 #, python-format
 msgid "Priority: %s"
-msgstr "Priority: %s"
+msgstr "Priorità: %s"
 
 #. module: enhanced_helpdesk
 #: field:res.users,register:0
@@ -1051,10 +1078,10 @@ msgid "Project Name"
 msgstr "Nome Progetto"
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:175
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:200
 #, python-format
 msgid "Project: %s"
-msgstr "Project: %s"
+msgstr "Progetto: %s"
 
 #. module: enhanced_helpdesk
 #: model:ir.actions.act_window,name:enhanced_helpdesk.action_view_portal_project
@@ -1091,11 +1118,6 @@ msgstr "Punti consumati"
 #: view:project.project:enhanced_helpdesk.view_project
 msgid "Punti disponibili"
 msgstr "Punti disponibili"
-
-#. module: enhanced_helpdesk
-#: field:crm.helpdesk,task_points:0
-msgid "Punti stimati"
-msgstr "Punti stimati"
 
 #. module: enhanced_helpdesk
 #: field:res.users,purchase_warn:0
@@ -1161,7 +1183,7 @@ msgstr "Rifiuta il lavoro"
 #. module: enhanced_helpdesk
 #: field:crm.helpdesk,related_ticket:0
 msgid "Related ticket"
-msgstr "Related ticket"
+msgstr "Ticket collegato"
 
 #. module: enhanced_helpdesk
 #: view:wizard.ticket.cancel:enhanced_helpdesk.wizard_ticket_cancel_view
@@ -1169,6 +1191,11 @@ msgstr "Related ticket"
 #: field:wizard.ticket.reply,ticket_reply:0
 msgid "Reply"
 msgstr "Rispondi"
+
+#. module: enhanced_helpdesk
+#: view:crm.helpdesk:enhanced_helpdesk.support_enhanced_helpdesk_tree
+msgid "Responsible"
+msgstr "Responsabile"
 
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk.guide:enhanced_helpdesk.crm_helpdesk_guide_form
@@ -1184,7 +1211,7 @@ msgstr "Richiedente"
 #: field:res.users,sale_order_ids:0
 #: field:res.users,sale_warn:0
 msgid "Sales Order"
-msgstr "Sales Order"
+msgstr "Ordine di vendita"
 
 #. module: enhanced_helpdesk
 #: help:res.users,invoice_warn:0
@@ -1197,37 +1224,37 @@ msgstr "Selecting the \"Warning\" option will notify user with the message, Sele
 #. module: enhanced_helpdesk
 #: view:wizard.ticket.reply:enhanced_helpdesk.wizard_ticket_replay_view
 msgid "Set Assigned"
-msgstr "Set Assigned"
+msgstr "Passa a Assegnato"
 
 #. module: enhanced_helpdesk
 #: view:wizard.ticket.reply:enhanced_helpdesk.wizard_ticket_replay_view
 msgid "Set Completed"
-msgstr "Set Completed"
+msgstr "Passa a Completato"
 
 #. module: enhanced_helpdesk
 #: view:wizard.ticket.reply:enhanced_helpdesk.wizard_ticket_replay_view
 msgid "Set Delivered"
-msgstr "Set Delivered"
+msgstr "Passa a Consegnato"
 
 #. module: enhanced_helpdesk
 #: view:wizard.ticket.reply:enhanced_helpdesk.wizard_ticket_replay_view
 msgid "Set Pending"
-msgstr "Set Pending"
+msgstr "Passa a In approvazione"
 
 #. module: enhanced_helpdesk
 #: view:wizard.ticket.reply:enhanced_helpdesk.wizard_ticket_replay_view
 msgid "Set Working"
-msgstr "Set Working"
+msgstr "Passa a In lavorazione"
 
 #. module: enhanced_helpdesk
 #: view:wizard.ticket.reply:enhanced_helpdesk.wizard_ticket_replay_view
 msgid "Set Working EMERG"
-msgstr "Set Working EMERG"
+msgstr "Pass a In lavorazione EMERG"
 
 #. module: enhanced_helpdesk
 #: field:crm.helpdesk,source:0
 msgid "Source"
-msgstr "Source"
+msgstr "Sorgente"
 
 #. module: enhanced_helpdesk
 #: help:res.users,spesometro_tipo_servizio:0
@@ -1252,7 +1279,12 @@ msgstr "Data inizio"
 #. module: enhanced_helpdesk
 #: field:crm.helpdesk.guide,state:0
 msgid "State"
-msgstr "State"
+msgstr "Stato"
+
+#. module: enhanced_helpdesk
+#: view:crm.helpdesk:enhanced_helpdesk.support_enhanced_helpdesk_tree
+msgid "Status"
+msgstr "Stato"
 
 #. module: enhanced_helpdesk
 #: sql_constraint:helpdesk.ticket.status:0
@@ -1272,7 +1304,7 @@ msgstr "Oggetto"
 #. module: enhanced_helpdesk
 #: field:res.users,property_stock_supplier:0
 msgid "Supplier Location"
-msgstr "Supplier Location"
+msgstr "Posizione fornitore"
 
 #. module: enhanced_helpdesk
 #: model:ir.ui.menu,name:enhanced_helpdesk.menu_enhanced_helpdesk
@@ -1286,6 +1318,11 @@ msgstr "Supporto e Ticket"
 #: field:wizard.ticket.reply,task_id:0
 msgid "Task"
 msgstr "Attività"
+
+#. module: enhanced_helpdesk
+#: view:crm.helpdesk:enhanced_helpdesk.support_enhanced_helpdesk_tree
+msgid "Task ID"
+msgstr "Task ID"
 
 #. module: enhanced_helpdesk
 #: view:helpdesk.ticket.status:enhanced_helpdesk.task_type_tree
@@ -1375,11 +1412,12 @@ msgstr "Ticket Aperto"
 #: model:ir.actions.act_window,name:enhanced_helpdesk.action_ticket_cancel
 #: view:wizard.ticket.cancel:enhanced_helpdesk.wizard_ticket_cancel_view
 msgid "Ticket Cancel"
-msgstr "Ticket Cancel"
+msgstr "Annulla Ticket"
 
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.enhanced_helpdesk_form
 #: field:crm.helpdesk,display_id:0
+#: field:crm.helpdesk,task_id_id:0
 #: field:project.task,ticket_display_id:0
 msgid "Ticket ID"
 msgstr "Ticket ID"
@@ -1391,7 +1429,7 @@ msgstr "Ticket ID"
 #: view:project.task:enhanced_helpdesk.ticket_view_task_form2
 #: view:wizard.ticket.reply:enhanced_helpdesk.wizard_ticket_replay_view
 msgid "Ticket Reply"
-msgstr "Ticket Reply"
+msgstr "Rispondi al Ticket"
 
 #. module: enhanced_helpdesk
 #: model:mail.message.subtype,description:enhanced_helpdesk.done
@@ -1406,13 +1444,13 @@ msgstr "Ticket Risolto"
 #: field:wizard.ticket.cancel,ticket_status_id:0
 #: field:wizard.ticket.reply,ticket_status_id:0
 msgid "Ticket Status"
-msgstr "Ticket Status"
+msgstr "Stato Ticket"
 
 #. module: enhanced_helpdesk
 #: field:res.partner,ticket_count:0
 #: field:res.users,ticket_count:0
 msgid "Ticket count"
-msgstr "Ticket count"
+msgstr "Numero Ticket"
 
 #. module: enhanced_helpdesk
 #: field:project.task,ticket_id:0
@@ -1427,12 +1465,12 @@ msgstr "Ticket id"
 #: model:mail.message.subtype,name:enhanced_helpdesk.awaiting
 #: model:mail.message.subtype,name:enhanced_helpdesk.pending
 msgid "Ticket in Sospeso"
-msgstr "Ticket in Sospeso"
+msgstr "Ticket In approvazione"
 
 #. module: enhanced_helpdesk
 #: model:ir.ui.menu,name:enhanced_helpdesk.menu_helpdesk_configuration_task
 msgid "Ticket status"
-msgstr "Ticket status"
+msgstr "Stato Ticket"
 
 #. module: enhanced_helpdesk
 #: model:mail.message.subtype,description:enhanced_helpdesk.merged
@@ -1482,14 +1520,10 @@ msgid "Tipo servizio"
 msgstr "Tipo servizio"
 
 #. module: enhanced_helpdesk
+#: view:crm.helpdesk:enhanced_helpdesk.enhanced_helpdesk_form
 #: view:crm.helpdesk:enhanced_helpdesk.support_enhanced_helpdesk_tree
 #: field:crm.helpdesk.guide,title:0
 msgid "Title"
-msgstr "Title"
-
-#. module: enhanced_helpdesk
-#: view:crm.helpdesk:enhanced_helpdesk.enhanced_helpdesk_form
-msgid "Titolo"
 msgstr "Titolo"
 
 #. module: enhanced_helpdesk
@@ -1510,6 +1544,7 @@ msgid "Totali"
 msgstr "Totali"
 
 #. module: enhanced_helpdesk
+#: view:account.invoice:enhanced_helpdesk.enhanced_helpdesk_invoice_form
 #: view:project.task:enhanced_helpdesk.ticket_view_task_form2_ticketuser
 #: view:res.partner:enhanced_helpdesk.view_open_ticket_partner_info_form_ticket_user
 msgid "True"
@@ -1524,18 +1559,18 @@ msgstr "Url"
 #: view:project.project:enhanced_helpdesk.enhanced_helpdesk_project_edit_project
 #: field:project.project,used_points:0
 msgid "Used points"
-msgstr "Used points"
+msgstr "Punti utilizzati"
 
 #. module: enhanced_helpdesk
 #: view:project.project:enhanced_helpdesk.enhanced_helpdesk_project_kanban
 msgid "Used:"
-msgstr "Used:"
+msgstr "Utilizzato:"
 
 #. module: enhanced_helpdesk
 #: field:helpdesk.qa,user_id:0
 #: field:wizard.change.ticket.user,user_id:0
 msgid "User id"
-msgstr "User id"
+msgstr "Id Utente"
 
 #. module: enhanced_helpdesk
 #: model:ir.model,name:enhanced_helpdesk.model_res_users
@@ -1552,7 +1587,7 @@ msgstr "Visualizza Guida"
 #: view:crm.helpdesk:enhanced_helpdesk.search_enhanced_helpdesk
 #: model:helpdesk.ticket.status,status_name:enhanced_helpdesk.working
 msgid "Working"
-msgstr "Working"
+msgstr "In lavorazione"
 
 #. module: enhanced_helpdesk
 #: field:res.users,payment_earliest_due_date:0
@@ -1575,28 +1610,18 @@ msgstr "[\n"
 
 #. module: enhanced_helpdesk
 #: model:helpdesk.ticket.status,status_code:enhanced_helpdesk.handled
-msgid "app"
-msgstr "app"
+msgid "ass"
+msgstr "ass"
 
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.enhanced_helpdesk_kanban
 msgid "deliver date:"
-msgstr "deliver date:"
-
-#. module: enhanced_helpdesk
-#: selection:crm.helpdesk,reject_reason:0
-msgid "desidero essere contattato dal mio account"
-msgstr "desidero essere contattato dal mio account"
+msgstr "Data consegna:"
 
 #. module: enhanced_helpdesk
 #: model:helpdesk.ticket.status,status_code:enhanced_helpdesk.delivered
 msgid "dlv"
 msgstr "dlv"
-
-#. module: enhanced_helpdesk
-#: selection:crm.helpdesk,reject_reason:0
-msgid "effort economico non adeguato"
-msgstr "effort economico non adeguato"
 
 #. module: enhanced_helpdesk
 #: view:project.task:enhanced_helpdesk.ticket_view_task_form2
@@ -1606,7 +1631,7 @@ msgstr "enhanced_helpdesk.ticketing_support"
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.enhanced_helpdesk_kanban
 msgid "estimated points:"
-msgstr "estimated points:"
+msgstr "stima punti:"
 
 #. module: enhanced_helpdesk
 #: view:res.partner:enhanced_helpdesk.view_open_ticket_partner_info_form_ticket_user
@@ -1614,30 +1639,15 @@ msgid "false"
 msgstr "false"
 
 #. module: enhanced_helpdesk
-#: selection:crm.helpdesk,reject_reason:0
-msgid "ho cambiato idea, l'attività non è più necessaria"
-msgstr "ho cambiato idea, l'attività non è più necessaria"
-
-#. module: enhanced_helpdesk
-#: selection:crm.helpdesk,reject_reason:0
-msgid "ho risolto il mio problema da solo"
-msgstr "ho risolto il mio problema da solo"
-
-#. module: enhanced_helpdesk
 #: view:project.task:enhanced_helpdesk.ticket_view_task_form2
 msgid "html"
 msgstr "html"
 
 #. module: enhanced_helpdesk
-#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:331
+#: code:addons/enhanced_helpdesk/model/crm_helpdesk.py:366
 #, python-format
 msgid "il ticket è passato dallo stato <strong>%s</strong> allo stato <strong>%s</strong><br />"
 msgstr "il ticket è passato dallo stato <strong>%s</strong> allo stato <strong>%s</strong><br />"
-
-#. module: enhanced_helpdesk
-#: selection:crm.helpdesk,reject_reason:0
-msgid "la consegna non corrisponde ai requisiti iniziali"
-msgstr "la consegna non corrisponde ai requisiti iniziali"
 
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.enhanced_helpdesk_form_support
@@ -1648,11 +1658,6 @@ msgstr "many2one"
 #: model:helpdesk.ticket.status,status_code:enhanced_helpdesk.completed
 msgid "ok"
 msgstr "ok"
-
-#. module: enhanced_helpdesk
-#: selection:crm.helpdesk,reject_reason:0
-msgid "pianificazione temporale non adeguata"
-msgstr "pianificazione temporale non adeguata"
 
 #. module: enhanced_helpdesk
 #: field:res.users,unreconciled_aml_ids:0
@@ -1668,6 +1673,16 @@ msgstr "wrk"
 #: model:helpdesk.ticket.status,status_code:enhanced_helpdesk.deleted
 msgid "xx"
 msgstr "xx"
+
+#. module: enhanced_helpdesk
+#: view:account.invoice:enhanced_helpdesk.enhanced_helpdesk_invoice_form
+msgid "{'no_open': True}"
+msgstr "{'no_open': True}"
+
+#. module: enhanced_helpdesk
+#: view:crm.helpdesk:enhanced_helpdesk.enhanced_helpdesk_form_support
+msgid "{'readonly': False}"
+msgstr "{'readonly': False}"
 
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.enhanced_helpdesk_form_support

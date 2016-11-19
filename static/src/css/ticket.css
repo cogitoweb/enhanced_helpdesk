@@ -90,3 +90,14 @@
     font-size: 18px;
     font-weight: bold;
 }
+
+/* fix tree th */
+
+.openerp .oe_list_content th.oe_sortable div:after {
+    display: none;
+}
+.openerp .oe_list_content th.sortup div:after,
+.openerp .oe_list_content th.sortdown div:after {
+    display: block;
+}
+    

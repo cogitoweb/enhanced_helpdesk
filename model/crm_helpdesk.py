@@ -122,18 +122,26 @@ class CrmHelpdesk(models.Model):
 
     project_id = fields.Many2one('project.project', required=True, string='Progetto')
     task_id = fields.Many2one('project.task', required=False, string='Task')
+    task_id_id = fields.Char(string='Ticket ID',
+                               compute='_compute_display_name',)
     
-    task_points = fields.Integer(string='Punti stimati', related='task_id.points')
+    task_points = fields.Integer(string='Estimated points', related='task_id.points')
     task_deadline = fields.Date(string='Deadline', related='task_id.date_deadline')
 
     ticket_status_id = fields.Many2one('helpdesk.ticket.status', default=1,
                                        string="Ticket Status", track_visibility='onchange'); 
     proxy_status_code = fields.Char(related='ticket_status_id.status_code')
     
-    reject_reason = fields.Selection(_get_reject_reasons,
-        string='Reject Reason')
-    
+    reject_reason = fields.Selection(_get_reject_reasons, string='Reject Reason')
     reject_descr = fields.Text('Reject description')
+    
+    last_answer_user_id = fields.Many2one(
+        'res.users', compute='compute_ticket_last_answer',
+        string="Last Answer User")
+    
+    last_answer_date = fields.Datetime(
+        compute='compute_ticket_last_answer',
+        string="Last Answer Date")
     
 
     _track = {
@@ -142,12 +150,27 @@ class CrmHelpdesk(models.Model):
             lambda self, cr, uid, o, c=None: o['merge_ticket_id'] is not False,
         },
     }
+    
+    @api.multi
+    def compute_ticket_last_answer(self):
+        for t in self:
+            user_id = False
+            date = False
+            # ----- Keep the user from the last answer
+            if t.helpdesk_qa_ids:
+                answer = t.helpdesk_qa_ids[-1]
+                user_id = answer.user_id.id
+                date = answer.date
+            t.last_answer_user_id = user_id
+            t.last_answer_date = date
 
     @api.one
     @api.depends('name')
     def _compute_display_name(self):
         self.display_name = '#%s - %s' % (self.id, self.name)
         self.display_id = '#%s' % (self.id)
+        self.task_id_id = '%s' % (self.task_id.id)
+        
 
     @api.multi
     def _get_external_ticket_url(self):
@@ -326,6 +349,16 @@ class CrmHelpdesk(models.Model):
         mail_model = self.env['mail.mail']
         msg = mail_model.sudo().create(mail_value)
         mail_model.sudo().send([msg.id])
+        
+        # ----- Create a message in thread for log purposes
+        if(template_xml_id == 'email_template_ticket_change_state' and expande.get('before_body', False)):
+            thread_message_value = {
+                'message': expande.get('before_body', False),
+                'helpdesk_id': ticket.id,
+                'user_id': self._uid,
+                }
+            reply_id = self.env['helpdesk.qa'].create(thread_message_value)
+        
         return msg.id
     #
     #
@@ -366,8 +399,7 @@ class CrmHelpdesk(models.Model):
         before_body = self.set_status_email_text(prev_status)
         before_body += _('<br />il ticket è stato quotato %s punti') % self.task_points
         before_body += _('<br />consegna prevista entro il %s') % deadline
-
-	before_body += _('<br /><br />E\' necessaria la Vs. approvazione della stima per procedere.')
+        before_body += _('<br /><br />E\' necessaria la Vs. approvazione della stima per procedere.')
         
         expande = {'before_body': before_body}
         
@@ -413,10 +445,9 @@ class CrmHelpdesk(models.Model):
                     if(child.type and child.type == 'invoice' and child.id != self.request_id.partner_id.id):
                         custom_deliver.extend(['"%s" <%s>' % (child.name, child.email)])
 
-
-	deadline_date = None
-	deadline = None
-	if(self.task_deadline):            
+        deadline_date = None
+        deadline = None
+        if(self.task_deadline):            
         	deadline_date = parser.parse(self.task_deadline)
         	deadline = deadline_date.strftime('%d/%m/%Y')
         
