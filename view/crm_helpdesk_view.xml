@@ -51,7 +51,7 @@
                 <field name="request_id" />
                 <templates>
                     <t t-name="kanban-box">
-                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click oe_kanban_card_helpdesk">
                             <div class="oe_kanban_content">
                                 <p class="ticket_state">
                                     <field name="ticket_status_id"/>
@@ -59,8 +59,9 @@
                                 </p>
                                 <p class="ticket_info" t-if="(record.request_id != undefined)" >
                                     <img t-att-src="kanban_image('res.users', 'image_small', record.request_id.raw_value)" t-att-title="record.request_id.value" width="24" height="24" class="oe_kanban_avatar"/>
-                                    <field name="project_id"/>
-                                    <field name="date" />
+                                    <field name="date" widget="date" />
+                                    <br />
+                                    <field name="project_id"/>   
                                 </p>
                                
                                 <p class="ticket_title"><field name="display_name"/></p>

@@ -18,6 +18,27 @@
     padding: 5px 18px;
 }
 
+.openerp .oe_kanban_card_helpdesk {
+    width:330px;
+}
+.openerp .oe_kanban_card_helpdesk .ticket_state {
+    margin:0;
+    background-color: #eee;
+    border-radius: 8px;
+    padding: 4px 4px 0 4px;
+}
+.openerp .oe_kanban_card_helpdesk .ticket_state ul {
+    display: block !important;
+}
+.openerp .oe_kanban_card_helpdesk .ticket_info img {
+    vertical-align: bottom;
+}
+.openerp .oe_kanban_card_helpdesk .ticket_info {
+    font-size: 0.9em;
+    line-height: 20px;
+}
+
+
 .ticket_messages th.oe_list_record_delete {
     background: #FFF;
     border-left: 0px solid #FFF !important;
@@ -82,8 +103,10 @@
 }
 
 .task_info {
-    border: 1px dotted #aaa;
-    padding: 8px;
+    border: 2px dotted #bbb;
+    padding: 6px;
+    background-color: #eee;
+    border-radius: 6px;
 }
 
 .ticket_title {
@@ -99,5 +122,9 @@
 .openerp .oe_list_content th.sortup div:after,
 .openerp .oe_list_content th.sortdown div:after {
     display: block;
+}
+
+.openerp .oe_form .oe_form_field {
+    vertical-align: middle;
 }
     

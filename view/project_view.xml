@@ -54,11 +54,11 @@
                                     </strong>
                                     <br />
                                 
-                                    <strong>Points</strong><br />
+                                    <strong>Portafoglio punti</strong><br />
                                     
                                     <span>
                                         <span title="punti" class="oe_e">_</span>
-                                        Tolal: <strong><field name="total_points"/> </strong>
+                                        Totali: <strong><field name="total_points"/> </strong>
                                     </span><br />
 
                                     <span>

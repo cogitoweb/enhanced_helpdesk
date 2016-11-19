@@ -294,22 +294,32 @@ class CrmHelpdesk(models.Model):
             ticket = ticket_reply.helpdesk_id
         
         #
-        # reuested user
+        # user
         #
         mail_to = ['"%s" <%s>' % (ticket.request_id.name, ticket.request_id.email)]
+        mail_to_internal = []
         
         #
         # default company email
         #
         if(company.email_ticket):
-            mail_to.extend(['"%s" <%s>' % (company.name, company.email_ticket)])
+            mail_to_internal.extend(['"%s" <%s>' % (company.name, company.email_ticket)])
         
         #
         # PM email
         #
         if(ticket.sudo().task_id.project_id.user_id):
-            mail_to.extend(['"%s" <%s>' % (ticket.sudo().task_id.project_id.user_id.name, 
+            mail_to_internal.extend(['"%s" <%s>' % (ticket.sudo().task_id.project_id.user_id.name, 
                     ticket.sudo().task_id.project_id.user_id.email)])
+            
+        #
+        # Project TEAM emails only for first email
+        #
+        if(template_xml_id == 'email_template_ticket_new'):
+            for member in ticket.sudo().task_id.project_id.members:
+                dest = '"%s" <%s>' % (member.name, member.email)
+                if((dest in mail_to_internal) == False):
+                    mail_to_internal.extend([dest])
             
         #
         # Custom deliver
@@ -340,16 +350,25 @@ class CrmHelpdesk(models.Model):
                 text = '%s %s' % (expande['before_body'], text)
             
         # ----- Create and send mail
+        # -----
+        mail_model = self.env['mail.mail']
         mail_value = {
             'body_html': text,
             'subject': subject,
             'email_from': company.email_ticket,
-            'email_to': ','.join(mail_to)
+            'email_to': ''
             }
-        mail_model = self.env['mail.mail']
-        msg = mail_model.sudo().create(mail_value)
-        mail_model.sudo().send([msg.id])
-        
+        # ----- external
+        if(len(mail_to) > 0):
+            mail_value['email_to'] = ','.join(mail_to)
+            msg_internal = mail_model.sudo().create(mail_value)
+            mail_model.sudo().send([msg_internal.id])
+        # ----- internal
+        if(len(mail_to_internal) > 0):
+            mail_value['email_to'] = ','.join(mail_to_internal)
+            msg_external = mail_model.sudo().create(mail_value)
+            mail_model.sudo().send([msg_external.id])
+
         # ----- Create a message in thread for log purposes
         if(template_xml_id == 'email_template_ticket_change_state' and expande.get('before_body', False)):
             thread_message_value = {
@@ -359,7 +378,7 @@ class CrmHelpdesk(models.Model):
                 }
             reply_id = self.env['helpdesk.qa'].create(thread_message_value)
         
-        return msg.id
+        return True
     #
     #
     def set_status_email_text(self, prev_status):
@@ -407,7 +426,6 @@ class CrmHelpdesk(models.Model):
                                     'crm.helpdesk', 
                                     self.id,
                                    expande)
-        
         
     @api.multi
     def working_ticket(self):
