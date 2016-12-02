@@ -44,6 +44,4 @@ class Task(models.Model):
         related='ticket_id.last_answer_date',
         string="Last Answer Date", readonly=True)
 
-    ticket_state = fields.Many2one('helpdesk.ticket.status', related='ticket_id.ticket_status_id',readonly=True)  
-                            
-    points = fields.Integer(string='Points')                        
+    ticket_state = fields.Many2one('helpdesk.ticket.status', related='ticket_id.ticket_status_id',readonly=True)                          
