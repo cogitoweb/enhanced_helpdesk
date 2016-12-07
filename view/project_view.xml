@@ -132,6 +132,15 @@
                     <field name="points" string="Punti" sum="Totali" />
                     <field name="user_id" />
                     <field name="date_deadline" />
+                    
+                    <!-- only for support -->
+                    <field name="total_hours" groups="enhanced_helpdesk.ticketing_support"/>
+                    <field name="planned_hours" groups="enhanced_helpdesk.ticketing_support"/>
+                    <field name="effective_hours" widget="float_time" sum="Spent Hours" groups="enhanced_helpdesk.ticketing_support"/>
+                    <field name="remaining_hours" widget="float_time" sum="Remaining Hours" on_change="onchange_remaining(remaining_hours,planned_hours)" groups="enhanced_helpdesk.ticketing_support"/>
+                    <field name="date_start" groups="enhanced_helpdesk.ticketing_support"/>
+                    <field name="date_end" groups="enhanced_helpdesk.ticketing_support"/>
+                    <field name="progress" widget="progressbar" groups="enhanced_helpdesk.ticketing_support"/>
 
                 </tree>
             </field>
