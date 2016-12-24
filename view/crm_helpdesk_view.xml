@@ -332,7 +332,7 @@
         <field name="res_model">crm.helpdesk</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
-        <field name="view_id" ref="enhanced_helpdesk_kanban"/>
+        <field name="view_id" ref="search_enhanced_helpdesk"/> <!-- default tree -->
         <field name="search_view_id" ref="search_enhanced_helpdesk"/>
         <field name="context">{'needaction_menu_ref':1,
             'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form',

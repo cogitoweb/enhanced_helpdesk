@@ -28,9 +28,11 @@
 
             </field>
        </record>
-     
         
-    
+        <!-- nascondo le voci di menu -->
+        <menuitem name="Quotations" id="portal_sale.portal_quotations"  groups="base.group_no_one" />
+        <menuitem name="Sales Order" id="portal_sale.portal_sales_orders"  groups="base.group_no_one" />
+        
 
     </data>
 </openerp>

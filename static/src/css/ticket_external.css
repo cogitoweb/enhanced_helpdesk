@@ -4,3 +4,6 @@
 .oe_list_buttons .oe_list_button_import {
     display: none !important;
 }
+.oe_view_manager_header .oe_view_manager_buttons .oe_fade {
+    display: none !important;
+}
