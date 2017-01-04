@@ -382,6 +382,11 @@
                     context="{'default_ticket_id': ticket_id}" groups="enhanced_helpdesk.ticketing_support" />
             </field>
             
+            <!-- nascondo la status bar se non ho project_id -->
+            <field name="stage_id" position="attributes">
+                <attribute name="attrs">{'invisible': [('project_id', '=', False)]}</attribute>
+            </field>
+            
             <notebook position="inside">
                 <page string="Helpdesk" attrs="{'invisible': [('ticket_id', '=', False)]}">
 
