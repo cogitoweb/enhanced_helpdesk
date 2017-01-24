@@ -387,7 +387,7 @@
                 <field name="request_id" />
                 <field name="name" string="Title" />
                 <field name="date" string="Creation Date" widget="date" />
-                <field name="user_id" string="Responsible"/>
+                <field name="proxy_user_id" string="Responsible"/>
                 <field name="ticket_status_id" string="Status"/>
                 <field name="last_answer_date" string="Last answer date" widget="date"/>
                 <field name="priority" string="Priority"/> 
