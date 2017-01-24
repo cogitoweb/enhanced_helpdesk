@@ -131,6 +131,7 @@ class CrmHelpdesk(models.Model):
     ticket_status_id = fields.Many2one('helpdesk.ticket.status', default=1,
                                        string="Ticket Status", track_visibility='onchange'); 
     proxy_status_code = fields.Char(related='ticket_status_id.status_code')
+    proxy_user_id = fields.Many2one(related='ticket_status_id.user_id')
     
     reject_reason = fields.Selection(_get_reject_reasons, string='Reject Reason')
     reject_descr = fields.Text('Reject description')
