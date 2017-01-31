@@ -88,7 +88,7 @@
         </field>
     </record>
     
-    <!-- override tree project -->
+    <!-- override tree project for external user -->
     <record id="view_project" model="ir.ui.view">
         <field name="name">project.project.tree</field>
         <field name="model">project.project</field>
@@ -110,6 +110,28 @@
                 <field name="state"/>
 
             </tree>
+
+        </field>
+    </record>
+    
+    <!-- override tree project for support user -->
+    <record id="view_project_support" model="ir.ui.view">
+        <field name="name">project.project.tree</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project"/>
+        <field name="priority">30</field>
+
+        <field name="groups_id" eval="[(4,[ref('enhanced_helpdesk.ticketing_support') ])]" />  
+
+        <field name="arch" type="xml">
+
+
+                <field name="planned_hours" position="before">
+                    <field name="total_points" string="Punti complessivi" sum="Totali" />
+                    <field name="used_points" string="Punti consumati" sum="Consumati" />
+                    <field name="locked_points" string="Punti allocati" sum="Allocati" />
+                    <field name="free_points" string="Punti disponibili" sum="Disponibili" />
+                </field>
 
         </field>
     </record>
