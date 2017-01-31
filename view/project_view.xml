@@ -151,6 +151,8 @@
                     <field name="name"/>
                     <field name="stage_id"/>
                     <field name="project_id"/>
+                    <field name="project_ref_id" groups="enhanced_helpdesk.ticketing_support"/>
+                    
                     <field name="points" string="Punti" sum="Totali" />
                     <field name="user_id" />
                     <field name="date_deadline" />
