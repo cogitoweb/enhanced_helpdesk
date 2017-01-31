@@ -49,14 +49,16 @@ class Project(models.Model):
             for task in record.tasks:
                 
                 if task.points > 0:
-                    if task.stage_id.name in ['Analysis', 'Specification', 'Design', 'Development', 'Testing', 'Merge',
-                        'Waiting Response', 'Waiting Instructions', 'Suspended']:
+                    if task.stage_id.id not in [7,8]: #not done or cancelled
                         locked = locked + task.points
-                    elif task.stage_id.name in ['Done']:
+                    elif task.stage_id.id in [7]: #only done
                         used = used + task.points
                 elif task.points < 0:
-                    if task.stage_id.name in ['Done']:
+                    if task.stage_id.id in [7]: #only done
                             tot = tot - task.points
+
+                #_logger.info('task id')
+                #_logger.info(task.id)
 
             free = tot - (used + locked)
             
