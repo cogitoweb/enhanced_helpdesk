@@ -23,7 +23,8 @@
                           
                           <field name="deadline" 
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass'))], 
-                                       'readonly': ['!', ('proxy_status_code', 'in', ('ass'))]}"/> />
+                                       'readonly': ['!', ('proxy_status_code', 'in', ('ass'))],
+                                       'required': [('proxy_status_code', 'in', ('ass'))]}"/> />
                           
                           <field name="points" 
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass'))], 

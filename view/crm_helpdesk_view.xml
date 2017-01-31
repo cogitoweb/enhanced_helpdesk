@@ -146,7 +146,8 @@
                         <!--  Partner_id is required for annoying checking rules -->
                         <field name="partner_id" invisible="1"/>
                         <group colspan="2">
-                             <field name="project_id" widget="selection" colspan="2" attrs="{'readonly': [('proxy_status_code', '!=', 'new')]}" />
+                             <field name="project_id" widget="selection" colspan="2" 
+                                    attrs="{'readonly': [('proxy_status_code', '!=', 'new')]}" />
                             
                              <field name="channel_id" invisible="1"/>
                              <field name="source" groups="enhanced_helpdesk.ticketing_support" attrs="{'readonly': [('id', '!=', False)]}"/>
@@ -161,7 +162,7 @@
                                 domain="[('object_id.model', '=', 'crm.helpdesk')]"
                                 context="{'object_name': 'crm.helpdesk'}"
                                 widget="selection"
-                                attrs="{'readonly': [('proxy_status_code', '!=', 'new')]}"/>
+                                attrs="{'readonly': [('proxy_status_code', '!=', 'new')], 'required': True}"/>
 
                             <field name="priority" widget="priority" colspan="1"
                                 attrs="{'readonly': [('proxy_status_code', 'in', ('xx','ok','wrk','dlv','app'))]}"/>

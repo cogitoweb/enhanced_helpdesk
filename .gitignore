@@ -55,3 +55,6 @@ target/
 
 .idea/\
 sftp-config.json
+
+#custom
+.DS_Store
