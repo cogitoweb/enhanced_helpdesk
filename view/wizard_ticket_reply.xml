@@ -44,7 +44,9 @@
                           <button name="ticket_pending" string="Set Pending" type="object" class="oe_highlight"
                                 attrs="{'invisible': ['|', ('proxy_status_code', 'not in', ('ass')), ('proxy_categ_emerg', '=', True)]}"/>
                           
-                          <button name="ticket_working" string="Set Working" type="object" class="oe_highlight"
+                          <!-- only for support / not for suppliers -->
+                          <button name="ticket_working" string="Set Working" type="object" 
+                                  class="oe_highlight" groups="enhanced_helpdesk.ticketing_support"
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('app'))]}"/>
                           
                           <button name="ticket_emerg" string="Set Working EMERG" type="object" class="oe_highlight"
@@ -53,7 +55,9 @@
                           <button name="ticket_delivered" string="Set Delivered" type="object" class="oe_highlight"
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('wrk'))]}"/>
                           
-                          <button name="ticket_completed" string="Set Completed" type="object" class="oe_highlight"
+                          <!-- only for support / not for suppliers -->
+                          <button name="ticket_completed" string="Set Completed" type="object" 
+                                  class="oe_highlight" groups="enhanced_helpdesk.ticketing_support"
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('dlv'))]}"/>
                          
                           <button string="Cancel" class="oe_link" special="cancel" />

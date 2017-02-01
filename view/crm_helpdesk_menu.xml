@@ -3,18 +3,11 @@
 
     <data>
     
-         <menuitem name="Supporto e Ticket"
-              parent="portal.portal_menu"
-              id="menu_enhanced_helpdesk"
-              sequence="1"
-              groups="enhanced_helpdesk.ticketing_external_user"/>
-              
-        <menuitem name="Ticket"
-              parent="menu_enhanced_helpdesk"
-              action="action_enhanced_helpdesk"
-              id="menu_ticket_helpdesk"
-              sequence="2"
-              groups="enhanced_helpdesk.ticketing_external_user"/>
+        <!--
+
+        customers
+
+        -->
         
         <record model="ir.actions.act_window" id="action_enhanced_helpdesk_support">
             <field name="name">Ticketing</field>
@@ -32,10 +25,65 @@
                 'search_default_filter_delivered':1
             }</field> 
         </record>
-
-
+        
+         <menuitem name="Supporto e Ticket"
+              parent="portal.portal_menu"
+              id="menu_enhanced_helpdesk"
+              sequence="1"
+              groups="enhanced_helpdesk.ticketing_external_user"/>
+              
+        <menuitem name="Ticket"
+              parent="menu_enhanced_helpdesk"
+              action="action_enhanced_helpdesk"
+              id="menu_ticket_helpdesk"
+              sequence="2"
+              groups="enhanced_helpdesk.ticketing_external_user"/>
+        
+        
+        
         <!-- ordinamento menu e azione di default -->
-        <menuitem name="Helpdesk and Support" id="crm_helpdesk.menu_help_support_main" action="action_enhanced_helpdesk_support" />    
+        <menuitem name="Helpdesk and Support" id="crm_helpdesk.menu_help_support_main" action="action_enhanced_helpdesk_support" />  
+        
+        <!--
+
+        suppliers
+
+        -->
+        
+        <record model="ir.actions.act_window" id="action_enhanced_helpdesk_supplier">
+            <field name="name">Ticketing</field>
+            <field name="res_model">crm.helpdesk</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="support_enhanced_helpdesk_tree"/>
+            <field name="search_view_id" ref="search_enhanced_helpdesk"/>
+            <field name="groups_id" eval="[(4,ref('enhanced_helpdesk.ticketing_supplier_support'))]"/>
+            <field name="context">{'needaction_menu_ref':1,
+                'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form',
+                'search_default_filter_assigned':1,
+                'search_default_filter_pending':1,
+                'search_default_filter_working':1,
+                'search_default_filter_delivered':1
+            }</field> 
+        </record>
+        
+        <menuitem name="Supporto e Ticket"
+              action="action_enhanced_helpdesk_supplier"
+              id="menu_enhanced_helpdesk_supplier"
+              sequence="1"
+              groups="enhanced_helpdesk.ticketing_supplier_support"/>
+              
+        <menuitem name="Ticket"
+              parent="menu_enhanced_helpdesk_supplier"
+              action="action_enhanced_helpdesk_supplier"
+              id="menu_ticket_helpdesk_supplier"
+              sequence="2"
+              groups="enhanced_helpdesk.ticketing_supplier_support"/>
+        
+        <!-- hide empolyee menus for external suppliers -->
+        <record id="mail.mail_feeds_main" model="ir.ui.menu">
+            <field name="groups_id" eval="[(3,ref('enhanced_helpdesk.ticketing_supplier_support'))]"/>
+        </record>
         
     </data>
     

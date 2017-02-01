@@ -267,7 +267,8 @@
                             string="Ticket Reply"
                             context="{'default_ticket_id': id}" />
                         
-                        <button name="ticket_deleted" class="" string="Cancel ticket" confirm="Are you sure you want to cancel this ticket?"
+                        <button name="ticket_deleted" class="" string="Cancel ticket"
+                                confirm="Are you sure you want to cancel this ticket?"
                                 attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'in', ('wrk', 'dlv', 'ok', 'xx'))]}" />
 
                         <button name="ticket_approved" class="oe_highlight_green" string="Approve"
@@ -305,6 +306,39 @@
                     <attribute name="attrs">{'readonly': [('id', '!=', False)]}</attribute>
                 </xpath>
                 
+            
+        </field>
+    </record>
+    
+    <!-- form per utenti External supplier -->
+    <record id="enhanced_helpdesk_form_supplier" model="ir.ui.view">
+        <field name="name">Enhanced HelpDesk Form</field>
+        <field name="model">crm.helpdesk</field>
+        <field name="inherit_id" ref="enhanced_helpdesk_form" />    
+        <field name="groups_id" eval="[(4, [ref('enhanced_helpdesk.ticketing_supplier_support') ])]" /> 
+
+        <field name="arch" type="xml">
+            
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">false</attribute>
+                    <attribute name="edit">false</attribute>
+                </xpath>
+        
+                <xpath expr="//header" position="replace">
+        
+                    <header>
+                    
+                        <field name="ticket_status_id" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;5&quot;:&quot;blue&quot;}" /> 
+
+                        <button class="oe_highlight" type="action" attrs="{'invisible': [('id', '=', False)]}"
+                            name="%(action_ticket_reply)d"
+                            string="Ticket Reply"
+                            context="{'default_ticket_id': id}" />
+                        
+                    </header>
+                    
+                </xpath>
+                                
             
         </field>
     </record>
@@ -396,9 +430,9 @@
                 <field name="ticket_status_id" string="Status"/>
                 <field name="last_answer_date" string="Last answer date" widget="date"/>
                 <field name="priority" string="Priority"/> 
-                <field name="task_id_id" string="Task ID"/> 
+                <field name="task_id_id" string="Task ID" groups="enhanced_helpdesk.ticketing_support" /> 
                 <field name="task_points" string="Points" sum="Points"/> 
-                <field name="invoiced" />
+                <field name="invoiced" groups="enhanced_helpdesk.ticketing_support" />
                 <field name="proxy_status_code" invisible="1" />
 
             </tree>
