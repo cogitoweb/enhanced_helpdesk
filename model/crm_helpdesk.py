@@ -136,6 +136,8 @@ class CrmHelpdesk(models.Model):
     reject_reason = fields.Selection(_get_reject_reasons, string='Reject Reason')
     reject_descr = fields.Text('Reject description')
     
+    invoiced = fields.Boolean(default=False)
+    
     last_answer_user_id = fields.Many2one(
         'res.users', compute='compute_ticket_last_answer',
         string="Last Answer User")

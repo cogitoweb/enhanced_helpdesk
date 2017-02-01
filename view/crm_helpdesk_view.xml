@@ -285,6 +285,10 @@
                     </attribute>
                 </xpath>
                 
+                <xpath expr="//field[@name='priority']" position="after">
+                    <field name="invoiced" attrs="{'readonly': ['!', ('proxy_status_code', '=', ('ok'))]}" />
+                </xpath>
+            
                 <xpath expr="//field[@name='date']" position="attributes">
                     <attribute name="attrs">{'readonly': [('id', '!=', False)]}</attribute>
                 </xpath>
@@ -393,7 +397,8 @@
                 <field name="last_answer_date" string="Last answer date" widget="date"/>
                 <field name="priority" string="Priority"/> 
                 <field name="task_id_id" string="Task ID"/> 
-                <field name="task_points" string="Points"/> 
+                <field name="task_points" string="Points" sum="Points"/> 
+                <field name="invoiced" />
                 <field name="proxy_status_code" invisible="1" />
 
             </tree>
