@@ -73,7 +73,7 @@
         
         <!-- fine regole per il supporto -->
         
-        <!-- fine regole per i fornitori esterni -->
+        <!-- regole per i fornitori esterni -->
         
         <record id="see_assigned_tickets" model="ir.rule">
             <field name="name">See Portal assigned tickets</field>
@@ -88,7 +88,7 @@
             <field name="perm_write" eval="False"/>
        </record>
 
-	<!-- TODO check REAL ticket relation -->
+	       <!-- TODO check REAL ticket relation -->
        <record id="see_projects_assigned_tickets" model="ir.rule">
             <field name="name">See Portal projects of assigned tickets</field>
             <field name="model_id" ref="project.model_project_project"/>
