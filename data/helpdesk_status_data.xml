@@ -12,7 +12,7 @@
    			<field name="status_code">ass</field>
    			<field name="status_order">2</field>
 		</record>
-		<record id="pending" model="helpdesk.ticket.status">
+		<record id="pendings" model="helpdesk.ticket.status">
     		<field name="status_name">Pending</field>
    			<field name="status_code">app</field>
    			<field name="status_order">3</field>

@@ -1006,8 +1006,9 @@ msgstr "Payment Note"
 
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.search_enhanced_helpdesk
+#: model:helpdesk.ticket.status,status_name:enhanced_helpdesk.pendings
 msgid "Pending"
-msgstr "In sospeso"
+msgstr "In approvazione"
 
 #. module: enhanced_helpdesk
 #: selection:crm.helpdesk,source:0
@@ -1249,7 +1250,7 @@ msgstr "Passa a In lavorazione"
 #. module: enhanced_helpdesk
 #: view:wizard.ticket.reply:enhanced_helpdesk.wizard_ticket_replay_view
 msgid "Set Working EMERG"
-msgstr "Pass a In lavorazione EMERG"
+msgstr "Passa a In lavorazione EMERG"
 
 #. module: enhanced_helpdesk
 #: field:crm.helpdesk,source:0
