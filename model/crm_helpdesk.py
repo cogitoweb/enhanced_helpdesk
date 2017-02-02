@@ -39,17 +39,12 @@ class CrmHelpdesk(models.Model):
     _inherit = "crm.helpdesk"
     _rec_name = 'display_name'
 
-
-
-
     # selezione del richiedente
     #
     @api.model
     def _get_request_allowed_ids(self):
         
         request_allowed_ids = []
-        
-        _logger.info("_get_request_allowed_ids")
         
         # se sono un utente esterno
         if self.env.user.has_group('enhanced_helpdesk.ticketing_external_user'):
