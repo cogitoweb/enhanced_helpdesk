@@ -87,8 +87,22 @@
             <field name="perm_unlink" eval="False"/>
             <field name="perm_write" eval="False"/>
        </record>
+
+	<!-- TODO check REAL ticket relation -->
+       <record id="see_projects_assigned_tickets" model="ir.rule">
+            <field name="name">See Portal projects of assigned tickets</field>
+            <field name="model_id" ref="project.model_project_project"/>
+            <field name="groups" eval="[(4,ref('ticketing_supplier_support'))]"/>
+            <field name="domain_force">[
+             ('privacy_visibility', 'in', ['portal']), ('state', '=', 'open')
+            ]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="perm_write" eval="False"/>
+       </record>
         
-        <record id="hide_employee_menus" model="ir.rule">
+       <record id="hide_employee_menus" model="ir.rule">
             <field name="name">Hide employee menus</field>
             <field name="model_id" ref="base.model_ir_ui_menu"/>
             <field name="groups" eval="[(4,ref('ticketing_supplier_support'))]"/>
@@ -103,6 +117,5 @@
         
         <!-- fine regole per i fornitori esterni -->
         
-
     </data>
 </openerp>

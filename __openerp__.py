@@ -21,7 +21,7 @@
 
 {
     'name': "Enhanced Helpdesk",
-    'version': '0.2',
+    'version': '0.3',
     'category': 'CRM',
     'description': """
 Enhanced Openerp Helpdesk and Ticketing support
@@ -32,6 +32,9 @@ Enhanced Openerp Helpdesk and Ticketing support
     "depends": ['base', 'web', 'crm_helpdesk', 'project', 'portal', 'base_cogitoweb', 'project_task_projectref_cogitoweb'],
 
     "data": [
+        'security/security.xml',
+        'security/ir.model.access.csv',
+
         'view/wizard_change_user.xml',
         'view/wizard_merge_ticket.xml',
 
@@ -49,8 +52,6 @@ Enhanced Openerp Helpdesk and Ticketing support
         
         'data/helpdesk_status_data.xml',
         'data/helpdesk_data.xml',
-        'security/security.xml',
-        'security/ir.model.access.csv',
         
         'workflow/helpdesk_workflow.xml',
         
