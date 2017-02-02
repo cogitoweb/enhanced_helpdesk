@@ -338,6 +338,16 @@
                     </header>
                     
                 </xpath>
+            
+                <xpath expr="//field[@name='project_id']" position="attributes">
+                    <attribute name="widget">many2one</attribute>
+                    <attribute name="domain">[
+                     ('privacy_visibility', 'in', ['portal'])
+                    ]
+                    </attribute>
+                    <attribute name="options">{'no_open': True}</attribute>
+                    <attribute name="attrs">{'readonly': True}</attribute>
+                </xpath>
                                 
             
         </field>

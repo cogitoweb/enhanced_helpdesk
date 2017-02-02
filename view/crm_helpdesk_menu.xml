@@ -80,6 +80,14 @@
               sequence="2"
               groups="enhanced_helpdesk.ticketing_supplier_support"/>
         
+        <!-- needed a subvoice -->
+        <menuitem name="Gestione richieste"
+              parent="menu_ticket_helpdesk_supplier"
+              action="action_enhanced_helpdesk_supplier"
+              id="menu_ticket_helpdesk_supplier_detail"
+              sequence="3"
+              groups="enhanced_helpdesk.ticketing_supplier_support"/>
+        
         <!-- hide empolyee menus for external suppliers -->
         <record id="mail.mail_feeds_main" model="ir.ui.menu">
             <field name="groups_id" eval="[(3,ref('enhanced_helpdesk.ticketing_supplier_support'))]"/>
