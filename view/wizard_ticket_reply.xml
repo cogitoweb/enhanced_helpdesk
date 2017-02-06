@@ -23,10 +23,13 @@
                           
                           <field name="deadline" 
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass'))], 
-                                       'readonly': ['!', ('proxy_status_code', 'in', ('ass'))],
-                                       'required': [('proxy_status_code', 'in', ('ass'))]}"/> />
+                                       'readonly': ['!', ('proxy_status_code', 'in', ('ass'))]}"/> />
                           
-                          <field name="points" 
+                          <field name="points" groups="enhanced_helpdesk.ticketing_support"
+                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass'))], 
+                                       'readonly': ['!', ('proxy_status_code', 'in', ('ass'))]}"/> />
+                          
+                          <field string="Time effort (hours)" name="effort" groups="enhanced_helpdesk.ticketing_supplier_support"
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass'))], 
                                        'readonly': ['!', ('proxy_status_code', 'in', ('ass'))]}"/> />
                           
@@ -36,7 +39,7 @@
                           <field name="attachment" filename="attachment_name"/>
                       </group>
                       <footer>
-                          <button name="reply" string="Reply" type="object" class="oe_highlight"/>
+                          <button name="reply" string="Reply" type="object" class="oe_highlight" />
                           
                           <button name="ticket_assigned" string="Set Assigned" type="object" class="oe_highlight"
                                 attrs="{'invisible': ['|', ('proxy_status_code', 'not in', ('new')), ('proxy_categ_emerg', '=', True)]}"/>

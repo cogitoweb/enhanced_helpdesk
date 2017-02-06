@@ -20,7 +20,10 @@
 ##############################################################################
 
 from openerp import models, fields, api
+from openerp.tools.translate import _
 from openerp import workflow
+from openerp.exceptions import Warning
+import math
 import logging
 #Get the logger
 _logger = logging.getLogger(__name__)
@@ -48,12 +51,14 @@ class wizard_ticket_reply(models.TransientModel):
     proxy_categ_emerg = fields.Boolean(related='ticket_id.categ_id.emergency')
     task_id = fields.Many2one('project.task', related='ticket_id.task_id',readonly=True) 
     points = fields.Integer(string='Points', related='task_id.points') 
+    effort = fields.Float(string='Time effort (hours)') 
     task_user_id = fields.Many2one('res.users',
                                  required=True,
                                  string='Assigned to', 
                                  default=_get_request_user_default,
                                  related='task_id.user_id') 
     deadline = fields.Date(string='Deadline', related='task_id.date_deadline')
+            
 
     @api.multi
     def reply(self, context=None, wkf_trigger=''):
@@ -101,6 +106,37 @@ class wizard_ticket_reply(models.TransientModel):
     
     @api.multi
     def ticket_pending(self):
+        
+        _logger.info('try pending with deadline %s', self.deadline)
+        
+        # validation
+        if not self.deadline:
+            
+            raise Warning(
+                    _('Deadline date is mandatory'))
+            
+        # supplier effort instead of points
+        if self.effort:
+            
+            # default 6 point * hour
+            default_multiplier = 6
+            
+            #search active contract for user employee
+            self._cr.execute("""select coalesce(points_per_hour,0) from hr_contract hrc
+                        inner join hr_employee hre on hre.id = hrc.employee_id
+                        inner join resource_resource rr on rr.id = hre.resource_id and rr.active = true 
+                        inner join res_users u on u.id = rr.user_id 
+                        where hrc.date_start <= now() and coalesce(hrc.date_end, now()) >= now() and u.id = %s 
+                        order by hrc.id limit 1""" % self._uid)
+            r = self._cr.fetchone()
+            # default is 6 points per hour
+            default_multiplier = float(r[0]) if r else 6
+            
+            _logger.info("points from effort using multiplier %s", default_multiplier)
+            
+            self.points = math.ceil(self.effort * default_multiplier)
+            
+        
         return self.reply(wkf_trigger='ticket_quoted')
     
     @api.multi

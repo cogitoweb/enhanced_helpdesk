@@ -348,7 +348,7 @@
         
         <field name="groups_id" eval="[(4,[ref('enhanced_helpdesk.ticketing_external_user') ])]" /> 
         
-        <field name="ticket_display_id" />
+       <!-- <field name="ticket_display_id" /> -->
         
         <field name="arch" type="xml">
             <field name="project_id" position="after">

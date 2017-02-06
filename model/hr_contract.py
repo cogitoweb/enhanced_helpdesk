@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2014 Apulia Software S.r.l. (<info@apuliasoftware.it>)
+#    Copyright (C) 2014 Andre@ (<a.gallina@cgsoftware.it>)
 #    All Rights Reserved
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,18 +19,11 @@
 #
 ##############################################################################
 
+from openerp import models, fields, api
 
-from . import ir_attachment
-from . import crm_helpdesk
-from . import crm_case_categ
-from . import project
-from . import project_task
-from . import helpdesk_qa
-from . import helpdesk_status
-from . import res_partner
-from . import res_user
-from . import wizard_reply
-from . import wizard_cancel
-from . import res_company
-from . import guide
-from . import hr_contract
+
+class HrContract(models.Model):
+
+    _inherit = 'hr.contract'
+    
+    points_per_hour = fields.Integer()
