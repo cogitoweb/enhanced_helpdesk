@@ -309,6 +309,13 @@ class CrmHelpdesk(models.Model):
         if(ticket.sudo().task_id.project_id.user_id):
             mail_to_internal.extend(['"%s" <%s>' % (ticket.sudo().task_id.project_id.user_id.name, 
                     ticket.sudo().task_id.project_id.user_id.email)])
+                    
+        #
+        # Assigned to task user
+        #
+        if(ticket.sudo().task_id.user_id):
+            mail_to_internal.extend(['"%s" <%s>' % (ticket.sudo().task_id.user_id.name, 
+                    ticket.sudo().task_id.user_id.email)])
             
         #
         # Project TEAM emails only for first email
