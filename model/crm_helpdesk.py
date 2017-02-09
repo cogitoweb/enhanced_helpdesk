@@ -384,10 +384,32 @@ class CrmHelpdesk(models.Model):
             reply_id = self.env['helpdesk.qa'].create(thread_message_value)
         
         return True
+
+    #
     #
     #
     def set_status_email_text(self, prev_status):
         return _('il ticket è passato dallo stato <strong>%s</strong> allo stato <strong>%s</strong><br />') % (prev_status, self.ticket_status_id.status_name)
+    
+    #
+    #  recupero contatti indicati come fatturazione sul partner
+    #
+    def add_invoice_contacts(self):
+    
+        # search for notification contact on partner child_ids of type..
+        custom_deliver = []
+        child_ids = None
+        if(self.task_points > 0 and self.request_id.partner_id.parent_id):
+            child_ids = t.sudo().request_id.partner_id.parent_id.child_ids
+        
+        if(child_ids):
+            for child in child_ids:
+
+                ## right type and not myself
+                if(child.type and child.type == 'invoice' and child.id != self.request_id.partner_id.id):
+                    custom_deliver.extend(['"%s" <%s>' % (child.name, child.email)])
+                    
+        return custom_deliver
     
     @api.multi
     def new_ticket(self):
@@ -431,7 +453,7 @@ class CrmHelpdesk(models.Model):
                                     'crm.helpdesk', 
                                     self.id,
                                    expande)
-        
+       
     @api.multi
     def working_ticket(self):
         _logger.info("call to working_ticket")
@@ -455,18 +477,7 @@ class CrmHelpdesk(models.Model):
             
             _logger.info("approved estimation")
             is_approved = True
-            
-            # search for notification contact on partner child_ids of type..
-            child_ids = None
-            if(self.request_id.partner_id.parent_id):
-                child_ids = self.sudo().request_id.partner_id.parent_id.child_ids
-            
-            if(child_ids):
-                for child in child_ids:
-
-                    ## right type and not myself
-                    if(child.type and child.type == 'invoice' and child.id != self.request_id.partner_id.id):
-                        custom_deliver.extend(['"%s" <%s>' % (child.name, child.email)])
+            custom_deliver.extend(add_invoice_contacts())
 
         deadline_date = None
         deadline = None
@@ -530,10 +541,13 @@ class CrmHelpdesk(models.Model):
 
         expande = {'before_body': before_body}
         
+        custom_deliver = add_invoice_contacts()
+        
         self.send_notification_mail('email_template_ticket_change_state', 
                                     'crm.helpdesk', 
                                     self.id,
-                                   expande)
+                                   expande,
+                                   custom_deliver)
         
     @api.multi
     def deleted_ticket(self):     
