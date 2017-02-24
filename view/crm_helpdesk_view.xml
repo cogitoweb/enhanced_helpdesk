@@ -55,7 +55,7 @@
                             <div class="oe_kanban_content">
                                 <p class="ticket_state">
                                     <field name="ticket_status_id"/>
-                                    <field name="priority" widget="priority"/>
+                                    <field name="priority" widget="priority" readonly="True"/>
                                 </p>
                                 <p class="ticket_info" t-if="(record.request_id != undefined)" >
                                     <img t-att-src="kanban_image('res.users', 'image_small', record.request_id.raw_value)" t-att-title="record.request_id.value" width="24" height="24" class="oe_kanban_avatar"/>
@@ -155,7 +155,7 @@
 
                              <field name="task_id" groups="enhanced_helpdesk.ticketing_support" attrs="{'readonly': True}" action="action_view_portal_task"   />
                              <field name="task_points" string="Estimated points" attrs="{'readonly': True, 'invisible': ['|',('task_points', '=', 0),('task_id', '=', False)]}" />
-			                 <field name="task_deadline" string="Deadline" attrs="{'readonly': True, 'invisible': ['|',('task_points', '=', 0),('task_id', '=', False)]}" />
+			                 <field name="task_deadline" string="Deadline" attrs="{'readonly': True, 'invisible': [('task_id', '=', False)]}" />
                         </group>
                         
                         <group colspan="2">
@@ -281,10 +281,7 @@
                 <xpath expr="//field[@name='project_id']" position="attributes">
                     <attribute name="widget">many2one</attribute>
                     <!-- temporaneo: da rendere dipendente da request_id -->
-                    <attribute name="domain">[
-                     ('privacy_visibility', 'in', ['portal'])
-                    ]
-                    </attribute>
+                    <attribute name="domain">[('privacy_visibility', 'in', ['portal'])]</attribute>
                 </xpath>
                 
                 <xpath expr="//field[@name='priority']" position="after">
@@ -342,19 +339,23 @@
             
                 <xpath expr="//field[@name='project_id']" position="attributes">
                     <attribute name="widget">many2one</attribute>
-                    <attribute name="domain">[
-                     ('privacy_visibility', 'in', ['portal'])
-                    ]
-                    </attribute>
+                    <attribute name="domain">[('privacy_visibility', 'in', ['portal'])]</attribute>
                     <attribute name="options">{'no_open': True}</attribute>
                     <attribute name="attrs">{'readonly': True}</attribute>
                 </xpath>
+            
+                <xpath expr="//field[@name='priority']" position="attributes">
+                    <attribute name="attrs">{'readonly': True}</attribute>
+                </xpath>
 
-                <xpath expr="//field[@name='points']" position="replace">
-                    <field name="task_effort" attrs="{'readonly': ['|', '&amp;', '&amp;', ('is_emergency', '=', False), ('proxy_status_code', 'in', ('wrk', 'dlv', 'ok', 'xx')), ('is_emergency', '=', True), ('proxy_status_code', 'in', ('dlv', 'ok', 'xx'))]}" />
+                <xpath expr="//field[@name='task_points']" position="attributes">
+                    <attribute name="attrs">{'invisible': True}</attribute>
+                </xpath>
+            
+                <xpath expr="//field[@name='project_id']" position="after">
+                    <field name="task_effort" attrs="{'readonly': True}" />
                 </xpath>
                                 
-            
         </field>
     </record>
 
@@ -369,8 +370,6 @@
                 <field name="project_id" />
                 <field name="categ_id" />
                 <field name="description" />
-                <field name="date" string="Creation Date" />
-                <field name="last_answer_date" string="Last answer date" />
                 <filter name="filter_new" domain="[('proxy_status_code', '=', 'new')]" string="New"/> 
                 <filter name="filter_assigned" domain="[('proxy_status_code', '=', 'ass')]" string="Assigned"/>
                 <filter name="filter_pending" domain="[('proxy_status_code', '=', 'app')]" string="Pending"/>

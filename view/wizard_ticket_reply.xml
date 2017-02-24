@@ -11,6 +11,7 @@
                   
                     <field name="proxy_status_code" invisible="1" />
                     <field name="proxy_categ_emerg" invisible="1" />
+                    <field name="can_quote_ticket" invisible="1" />
                   
                         
                       <group colspan="4">
@@ -26,12 +27,12 @@
                                        'readonly': ['!', ('proxy_status_code', 'in', ('ass'))]}"/> />
                           
                           <field name="points" groups="enhanced_helpdesk.ticketing_support"
-                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass'))], 
-                                       'readonly': ['!', ('proxy_status_code', 'in', ('ass'))]}"/> />
+                                attrs="{'invisible': [('can_quote_ticket', '=', False)],
+                                       'readonly': [('can_quote_ticket', '=', False)]}"/> />
                           
                           <field string="Time effort (hours)" name="effort" groups="enhanced_helpdesk.ticketing_supplier_support"
-                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass'))], 
-                                       'readonly': ['!', ('proxy_status_code', 'in', ('ass'))]}"/> />
+                                attrs="{'invisible': [('can_quote_ticket', '=', False)],
+                                       'readonly': [('can_quote_ticket', '=', False)]}"/> />
                           
                           <field name="ticket_reply"/>
                         

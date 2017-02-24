@@ -91,14 +91,6 @@ class CrmHelpdesk(models.Model):
                 ('account_contact', 'desidero essere contattato dal mio account')
         ]
 
-    def _get_ticket_price(self):
-        price = 0
-
-        if(self.project_id and self.project_id.analytic_account_id):
-            price = self.task_points * self.project_id.analytic_account_id.point_unit_price
-
-        return price
-
     # ---- Fields
     source = fields.Selection(
         [('portal', 'Portal'), ('phone', 'Phone'), ('mail', 'Mail')],
@@ -111,28 +103,28 @@ class CrmHelpdesk(models.Model):
                                  default=_get_request_user_default,
                                  domain=_get_request_allowed_ids)
 
-    external_ticket_url = fields.Char(compute='_get_external_ticket_url')
+    external_ticket_url = fields.Char(compute='compute_external_ticket_url')
     helpdesk_qa_ids = fields.One2many('helpdesk.qa', 'helpdesk_id')
     attachment_ids = fields.One2many('ir.attachment',
                                      'crm_helpdesk_id')
     display_name = fields.Char(string='Ticket',
-                               compute='_compute_display_name',)
+                               compute='compute_display_name',)
     display_id = fields.Char(string='Ticket ID',
-                               compute='_compute_display_name',)
+                               compute='compute_display_name',)
     merge_ticket_id = fields.Many2one('crm.helpdesk')
     merge_ticket_ids = fields.One2many('crm.helpdesk', 'merge_ticket_id')
     related_ticket = fields.Html()
 
     project_id = fields.Many2one('project.project', required=True, string='Progetto')
     task_id = fields.Many2one('project.task', required=False, string='Task')
-    task_id_id = fields.Char(string='Ticket ID', compute='_compute_display_name',)
+    task_id_id = fields.Char(string='Ticket ID', compute='compute_display_name',)
     
     task_points = fields.Integer(string='Estimated points', related='task_id.points')
     task_effort = fields.Float(string='Time effort (hours)', related='task_id.planned_hours')
     task_deadline = fields.Date(string='Deadline', related='task_id.date_deadline')
 
     is_emergency = fields.Boolean(string="Is Emergency", related='categ_id.emergency')
-    price = fields.Float(string='Price', computed=_get_ticket_price)
+    price = fields.Float(string='Price', compute='compute_ticket_price', store=True)
 
     ticket_status_id = fields.Many2one('helpdesk.ticket.status', default=1,
                                        string="Ticket Status", track_visibility='onchange'); 
@@ -148,8 +140,9 @@ class CrmHelpdesk(models.Model):
     
     last_answer_date = fields.Datetime(
         compute='compute_ticket_last_answer',
-        string="Last Answer Date")
+        string="Last Answer Date", store=True)
     
+    account_type = fields.Selection(related='project_id.analytic_account_id.account_type')
 
     _track = {
         'merge_ticket_id': {
@@ -159,6 +152,16 @@ class CrmHelpdesk(models.Model):
     }
     
     @api.multi
+    @api.depends('task_id.points')
+    def compute_ticket_price(self):
+        
+        for r in self:
+            price = 0
+            if(r.project_id and r.project_id.analytic_account_id):
+                r.price = r.task_points * r.project_id.analytic_account_id.point_unit_price
+    
+    @api.multi
+    @api.depends('helpdesk_qa_ids')
     def compute_ticket_last_answer(self):
         for t in self:
             user_id = False
@@ -173,14 +176,14 @@ class CrmHelpdesk(models.Model):
 
     @api.one
     @api.depends('name')
-    def _compute_display_name(self):
+    def compute_display_name(self):
         self.display_name = '#%s - %s' % (self.id, self.name)
         self.display_id = '#%s' % (self.id)
         self.task_id_id = '%s' % (self.task_id.id)
         
 
     @api.multi
-    def _get_external_ticket_url(self):
+    def compute_external_ticket_url(self):
         for ticket in self:
             url = self._get_signup_url(ticket)
             self.external_ticket_url = url or ''
@@ -200,6 +203,10 @@ class CrmHelpdesk(models.Model):
             }
         
         task_id = self.env['project.task'].sudo().create(task_value)
+        
+        # ---- if emergency priority = 2 (hight)
+        if(res.is_emergency):
+            res.priority = '2'
         
         # ---- register self task
         res.task_id = task_id

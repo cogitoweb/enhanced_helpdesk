@@ -5,3 +5,12 @@ aggiungi all'utente il gruppo ticketing user
 abilita agli utenti interni il gruppo ticketing support
 pubblica in portal i progetti di interesse
 carica i punti sui task che vuoi esporre
+
+
+recumpute?
+session.open('cogitoweb')
+env = openerp.api.Environment(session.cr, session.uid, getattr(session, 'context', {} ))
+model = session.registry('crm.helpdesk')
+env.add_todo(model._fields['price'], model.search(session.cr, session.uid,[]))
+model.recompute(session.cr, session.uid)
+env.cr.commit()
