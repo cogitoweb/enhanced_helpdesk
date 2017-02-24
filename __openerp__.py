@@ -21,15 +21,15 @@
 
 {
     'name': "Enhanced Helpdesk",
-    'version': '0.3',
+    'version': '0.5',
     'category': 'CRM',
     'description': """
 Enhanced Openerp Helpdesk and Ticketing support
 """,
-    'author': 'Apulia Software Srl',
+    'author': 'Apulia Software Srl & Cogito Srl',
     'website': 'www.apuliasoftware.it',
     'license': 'AGPL-3',
-    "depends": ['base', 'web', 'crm_helpdesk', 'project', 'portal', 'base_cogitoweb', 'project_task_projectref_cogitoweb'],
+    "depends": ['base', 'web', 'crm_helpdesk', 'project', 'portal', 'base_cogitoweb', 'account_type_cogitoweb', 'project_task_projectref_cogitoweb'],
 
     "data": [
         'security/security.xml',
@@ -60,5 +60,6 @@ Enhanced Openerp Helpdesk and Ticketing support
     "update_xml": [],
     "demo_xml": [],
     "active": False,
+    "application": True,
     "installable": True
 }
