@@ -413,7 +413,7 @@ class CrmHelpdesk(models.Model):
         custom_deliver = []
         child_ids = None
         if(self.task_points > 0 and self.request_id.partner_id.parent_id):
-            child_ids = t.sudo().request_id.partner_id.parent_id.child_ids
+            child_ids = self.sudo().request_id.partner_id.parent_id.child_ids
         
         if(child_ids):
             for child in child_ids:
@@ -488,7 +488,7 @@ class CrmHelpdesk(models.Model):
             
             _logger.info("approved estimation")
             is_approved = True
-            custom_deliver.extend(add_invoice_contacts())
+            custom_deliver.extend(self.add_invoice_contacts())
 
         deadline_date = None
         deadline = None
@@ -552,7 +552,7 @@ class CrmHelpdesk(models.Model):
 
         expande = {'before_body': before_body}
         
-        custom_deliver = add_invoice_contacts()
+        custom_deliver = self.add_invoice_contacts()
         
         self.send_notification_mail('email_template_ticket_change_state', 
                                     'crm.helpdesk', 
