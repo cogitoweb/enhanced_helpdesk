@@ -131,7 +131,7 @@ class CrmHelpdesk(models.Model):
     task_effort = fields.Float(string='Time effort (hours)', related='task_id.planned_hours')
     task_deadline = fields.Date(string='Deadline', related='task_id.date_deadline')
 
-    is_emergency.Boolean(string="Is Emergency", related='categ_id.emergency')
+    is_emergency = Boolean(string="Is Emergency", related='categ_id.emergency')
     price = fields.Float(string='Price', computed=_get_ticket_price)
 
     ticket_status_id = fields.Many2one('helpdesk.ticket.status', default=1,
