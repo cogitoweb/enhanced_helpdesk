@@ -41,7 +41,6 @@ class wizard_ticket_reply(models.TransientModel):
         return self.env.user
 
     # ---- Fields
-
     ticket_id = fields.Many2one('crm.helpdesk')
     ticket_status_id = fields.Many2one('helpdesk.ticket.status', related='ticket_id.ticket_status_id',readonly=True)  
     ticket_reply = fields.Text('Reply')
@@ -154,3 +153,4 @@ class wizard_ticket_reply(models.TransientModel):
     @api.multi
     def ticket_completed(self):
         return self.reply(wkf_trigger='ticket_completed')
+

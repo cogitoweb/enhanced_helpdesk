@@ -29,4 +29,3 @@ class IrAttachment(models.Model):
 
     helpdesk_qa_id = fields.Many2one('helpdesk.qa')
     crm_helpdesk_id = fields.Many2one('crm.helpdesk')
-

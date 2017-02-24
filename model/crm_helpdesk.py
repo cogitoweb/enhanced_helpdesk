@@ -590,6 +590,4 @@ class CrmHelpdesk(models.Model):
                                     'crm.helpdesk', 
                                     self.id,
                                    expande)
-              
-
 
