@@ -34,3 +34,4 @@ from . import wizard_cancel
 from . import res_company
 from . import guide
 from . import hr_contract
+
