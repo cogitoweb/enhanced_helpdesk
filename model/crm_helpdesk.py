@@ -90,7 +90,7 @@ class CrmHelpdesk(models.Model):
                 ('not_compliant', 'la consegna non corrisponde ai requisiti iniziali'), 
                 ('account_contact', 'desidero essere contattato dal mio account')
         ]
-    
+
     def _get_ticket_price(self):
         price = 0
 
@@ -98,7 +98,6 @@ class CrmHelpdesk(models.Model):
             price = self.task_points * self.project_id.analytic_account_id.point_unit_price
 
         return price
-
 
     # ---- Fields
     source = fields.Selection(
@@ -126,8 +125,7 @@ class CrmHelpdesk(models.Model):
 
     project_id = fields.Many2one('project.project', required=True, string='Progetto')
     task_id = fields.Many2one('project.task', required=False, string='Task')
-    task_id_id = fields.Char(string='Ticket ID',
-                               compute='_compute_display_name',)
+    task_id_id = fields.Char(string='Ticket ID', compute='_compute_display_name',)
     
     task_points = fields.Integer(string='Estimated points', related='task_id.points')
     task_effort = fields.Float(string='Time effort (hours)', related='task_id.planned_hours')
@@ -146,9 +144,7 @@ class CrmHelpdesk(models.Model):
     
     invoiced = fields.Boolean(default=False)
     
-    last_answer_user_id = fields.Many2one(
-        'res.users', compute='compute_ticket_last_answer',
-        string="Last Answer User")
+    last_answer_user_id = fields.Many2one('res.users', compute='compute_ticket_last_answer', string="Last Answer User")
     
     last_answer_date = fields.Datetime(
         compute='compute_ticket_last_answer',
@@ -355,7 +351,7 @@ class CrmHelpdesk(models.Model):
         text = template_model.render_template(text, object_class, object_id)
         subject = template_model.render_template(subject, object_class, object_id)
             
-        if(ticket.categ_id.emergency):
+        if(ticket.is_emergency):
             subject = '- EMERG - ' + subject
             
         subject = ('[%s Ticketing System] ' % company.name) + subject
