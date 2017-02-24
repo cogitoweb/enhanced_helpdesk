@@ -91,6 +91,15 @@ class CrmHelpdesk(models.Model):
                 ('account_contact', 'desidero essere contattato dal mio account')
         ]
     
+    def _get_ticket_price(self):
+        price = 0
+
+        if(self.project_id and self.project_id.analytic_account_id):
+            price = self.task_points * self.project_id.analytic_account_id.point_unit_price
+
+        return price
+
+
     # ---- Fields
     source = fields.Selection(
         [('portal', 'Portal'), ('phone', 'Phone'), ('mail', 'Mail')],
@@ -121,7 +130,11 @@ class CrmHelpdesk(models.Model):
                                compute='_compute_display_name',)
     
     task_points = fields.Integer(string='Estimated points', related='task_id.points')
+    task_effort = fields.Float(string='Time effort (hours)', related='task_id.planned_hours')
     task_deadline = fields.Date(string='Deadline', related='task_id.date_deadline')
+
+    is_emergency.Boolean(string="Is Emergency", related='categ_id.emergency')
+    price = fields.Float(string='Price', computed=_get_ticket_price)
 
     ticket_status_id = fields.Many2one('helpdesk.ticket.status', default=1,
                                        string="Ticket Status", track_visibility='onchange'); 
@@ -465,10 +478,8 @@ class CrmHelpdesk(models.Model):
             is_rejected = True
             
         # emergency work
-        is_emergency = False
-        if(self.proxy_status_code == 'new'):
+        if(self.is_emergency):
             _logger.info("emergency work")
-            is_emergency = True
             
         # standard approved work
         custom_deliver = []
@@ -497,7 +508,7 @@ class CrmHelpdesk(models.Model):
         if(is_rejected):
             before_body += _('<br />la consegna è stata rifiutata ed il ticket è ritornato in lavorazione. Verrete contattati da uno dei nostri esperti.')
             
-        if(is_emergency):
+        if(self.is_emergency):
             before_body += _('<br />le fasi di quotazione e approvazione sono state saltate a causa della categoria di intervento in emergenza')
             before_body += _('<br />la calendarizzazione sarà immeditata, l\'effort richiesto sarà comunicato a consuntivo')
         

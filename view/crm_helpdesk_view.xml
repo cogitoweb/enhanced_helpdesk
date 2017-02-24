@@ -348,6 +348,10 @@
                     <attribute name="options">{'no_open': True}</attribute>
                     <attribute name="attrs">{'readonly': True}</attribute>
                 </xpath>
+
+                <xpath expr="//field[@name='priority']" position="after">
+                    <field name="task_effort" attrs="{'readonly': ['|', (('is_emergency', '=', False), ('proxy_status_code', 'in', ('wrk', 'dlv', 'ok', 'xx'))), (('is_emergency', '=', True), ('proxy_status_code', 'in', ('dlv', 'ok', 'xx')))]}" />
+                </xpath>
                                 
             
         </field>
@@ -364,7 +368,8 @@
                 <field name="project_id" />
                 <field name="categ_id" />
                 <field name="description" />
-                <field name="date" />
+                <field name="date" string="Creation Date" />
+                <field name="last_answer_date" string="Last answer date" />
                 <filter name="filter_new" domain="[('proxy_status_code', '=', 'new')]" string="New"/> 
                 <filter name="filter_assigned" domain="[('proxy_status_code', '=', 'ass')]" string="Assigned"/>
                 <filter name="filter_pending" domain="[('proxy_status_code', '=', 'app')]" string="Pending"/>
@@ -442,6 +447,8 @@
                 <field name="priority" string="Priority"/> 
                 <field name="task_id_id" string="Task ID" groups="enhanced_helpdesk.ticketing_support" /> 
                 <field name="task_points" string="Points" sum="Points"/> 
+                <field name="task_effort" sum="Time effort" />
+                <field name="price" sum="Price" groups="enhanced_helpdesk.ticketing_support" />
                 <field name="invoiced" groups="enhanced_helpdesk.ticketing_support" />
                 <field name="proxy_status_code" invisible="1" />
 
