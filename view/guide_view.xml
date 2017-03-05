@@ -37,20 +37,21 @@
                 <field name="filename"/>
                 <templates>
                     <t t-name="kanban-box">
-                        
-                        <a t-att-href='_s + "/web/binary/saveas?model=crm.helpdesk.guide&amp;field=file&amp;id=" + record.id.raw_value + "&amp;filename_field=filename"'>
-                            <img t-att-src='_s + "/enhanced_helpdesk/static/src/img/guide.png"' class="oe_kanban_image" 
-                                 style="width:128px;height:128px;"/>
-                        </a>
-                        
-                        <div class="oe_kanban_vignette oe_semantic_html_override">
-                            <div class="oe_kanban_details">
-                                <h4 class="oe_partner_heading"><field name="title"/></h4>
-                                
-                                <p><em>
-                                    <field name="description"/>
-                                    </em>
-                                </p>
+                        <div style="text-align:center;">
+                            <a t-att-href='_s + "/web/binary/saveas?model=crm.helpdesk.guide&amp;field=file&amp;id=" + record.id.raw_value + "&amp;filename_field=filename"'>
+                                <img t-att-src='_s + "/enhanced_helpdesk/static/src/img/guide.png"' class="oe_kanban_image" 
+                                     style="width:128px;height:128px;"/>
+                            </a>
+
+                            <div class="oe_kanban_vignette oe_semantic_html_override">
+                                <div class="oe_kanban_details">
+                                    <h4 class="oe_partner_heading"><field name="title"/></h4>
+
+                                    <p style="text-align:justify;"><em>
+                                        <field name="description"/>
+                                        </em>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </t>
