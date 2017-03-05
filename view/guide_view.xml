@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <form string="Guide">
                 <header>
-                    <button name="open_url" string="Visualizza Guida" type="object" class="oe_highlight"/>
+                    <!-- <button name="open_url" string="Visualizza Guida" type="object" class="oe_highlight"/> -->
                     <button name="set_draft" string="Bozza" type="object" states="need_review,published"/>
                     <button name="set_need_review" string="Revisiona" type="object" states="draft,published"/>
                     <button name="set_published" string="Pubblica" type="object" states="draft,need_review"/>
@@ -17,7 +17,9 @@
                 <sheet string="Guide">
                     <label for="title"/><field name="title" />
                     <label for="description"/><field name="description" />
-                    <label for="url"/><field name="url" />
+                    <label for="file"/><field name="filename" invisible="True" /><field name="file" filename="filename" />
+                    <br />
+                    <label for="group"/><field name="group" domain="[('name', 'ilike', 'ticket')]" />
                 </sheet>
             </form>
         </field>
@@ -25,24 +27,30 @@
 
     <!-- Guide Kanban View -->
     <record model="ir.ui.view" id="crm_helpdesk_guide_kanban">
-        <field name="name">rcrm.helpdesk.guide.kanban</field>
+        <field name="name">crm.helpdesk.guide.kanban</field>
         <field name="model">crm.helpdesk.guide</field>
         <field name="arch" type="xml">
             <kanban create="false">
                 <field name="title"/>
                 <field name="description"/>
+                <field name="file"/>
+                <field name="filename"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <a t-attf-href="#{record.url.raw_value}" target="_blank">
-                            <field name="url" invisible="1"/>
-                            <img t-att-src='_s + "/enhanced_helpdesk/static/src/img/guide.png"' class="oe_kanban_image"/>
+                        
+                        <a t-att-href='_s + "/web/binary/saveas?model=crm.helpdesk.guide&amp;field=file&amp;id=" + record.id.raw_value + "&amp;filename_field=filename"'>
+                            <img t-att-src='_s + "/enhanced_helpdesk/static/src/img/guide.png"' class="oe_kanban_image" 
+                                 style="width:128px;height:128px;"/>
                         </a>
+                        
                         <div class="oe_kanban_vignette oe_semantic_html_override">
                             <div class="oe_kanban_details">
                                 <h4 class="oe_partner_heading"><field name="title"/></h4>
-                                <ul>
-                                    <li><field name="description"/></li>
-                                </ul>
+                                
+                                <p><em>
+                                    <field name="description"/>
+                                    </em>
+                                </p>
                             </div>
                         </div>
                     </t>
@@ -57,9 +65,9 @@
         <field name="arch" type="xml">
             <tree string="Guide" colors="black:state=='published';red:state=='need_review';gray:state=='draft'">
                 <field name="title" />
-                <field name="url" />
+                <field name="file" />
                 <field name="state" />
-                <button name="open_url" string="Visualizza Guida" type="object"/>
+                <!-- <button name="open_url" string="Visualizza Guida" type="object"/> -->
             </tree>
         </field>
     </record>
@@ -82,7 +90,8 @@
         <field name="res_model">crm.helpdesk.guide</field>
         <field name="view_type">form</field>
         <field name="view_mode">kanban</field>
-        <field name="search_view_id" ref="search_crm_helpdesk_guide"/>
+        <field name="view_id" ref="crm_helpdesk_guide_kanban"/>
+        <field name="groups_id" eval="[(4,ref('enhanced_helpdesk.ticketing_external_user')), (4,ref('enhanced_helpdesk.ticketing_supplier_support'))]"/>
         <field name="domain">[('state', '=', 'published')]</field>
     </record>
 
@@ -91,22 +100,30 @@
         <field name="name">Guide</field>
         <field name="res_model">crm.helpdesk.guide</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,kanban,form</field>
         <field name="search_view_id" ref="search_crm_helpdesk_guide"/>
     </record>
 
-    <!-- Ticket User Menu for Guide -->
+    <!-- Ticket User Menu for Guide external -->
     <menuitem id="user_crm_helpdesk_guide_menu" action="user_crm_helpdesk_guide_action"
         parent="menu_enhanced_helpdesk" sequence="10" name="Guide"
-        string="Guide" groups="portal_cogitoweb.portal_group_with_no_access"/> <!-- groups="ticketing_external_user" -->
+        string="Guide" groups="enhanced_helpdesk.ticketing_external_user"/> 
 
+    <!-- Ticket User Menu for Guide suppplier -->
+    <menuitem id="user_crm_helpdesk_guide_menu_supplier" action="user_crm_helpdesk_guide_action"
+        parent="menu_ticket_helpdesk_supplier_parent" sequence="5" name="Guide"
+        string="Guide" groups="enhanced_helpdesk.ticketing_supplier_support"/> 
+
+    
     <!-- Support User Menu for Guide -->
     <menuitem id="menu_help_support_guide_title" action=""
-        parent="crm_helpdesk.menu_help_support_main" sequence="20" name="Guide / Tutorial" groups="enhanced_helpdesk.ticketing_support"/> <!-- ticketing_support -->
+        parent="crm_helpdesk.menu_help_support_main" sequence="20" name="Guide / Tutorial" 
+              groups="enhanced_helpdesk.ticketing_support"/> <!-- ticketing_support -->
         
         <!-- Support User Menu for Guide -->
     <menuitem id="menu_help_support_guide_action" action="support_crm_helpdesk_guide_action"
-        parent="menu_help_support_guide_title" sequence="20" name="Guide"  groups="enhanced_helpdesk.ticketing_support"/> <!-- ticketing_support -->
+        parent="menu_help_support_guide_title" sequence="20" name="Guide" 
+              groups="enhanced_helpdesk.ticketing_support"/> <!-- ticketing_support -->
         
 
 </data>

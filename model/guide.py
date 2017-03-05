@@ -31,21 +31,13 @@ class CrmHelpdeskGuide(models.Model):
     # ---- Fields
     title = fields.Char(required=True)
     description = fields.Text(required=True)
-    url = fields.Char(required=True)
-    #state = fields.Selection(
-        #[('draft', 'Draft'), ('need_review', 'Need Review'),
-         #('published', 'Published')], default='draft', readonly=False)
-
-        # Functiont to populate fields.Select()
-    # with ticket status coming from database
-    @api.model
-    def _get_ticket_status(self):
-        lst=[]
-        for status in self.env['helpdesk.ticket.status'].search([]):
-            lst.append((status.id, status.status_name))
-        return lst      
-    
-    state = fields.Selection(_get_ticket_status, default=1 ,readonly=False)
+    url = fields.Char(required=False)
+    file = fields.Binary(required=True)
+    filename = fields.Char()
+    state = fields.Selection(
+        [('draft', 'Draft'), ('need_review', 'Need Review'),
+         ('published', 'Published')], default='draft', readonly=False)
+    group = fields.Many2one('res.groups')
 
     @api.multi
     def open_url(self):

@@ -53,6 +53,13 @@
            <field name="groups" eval="[(4, ref('ticketing_external_user'))]"/>
            <field name="domain_force">[('partner_id','child_of',[user.partner_id.parent_id.id])]</field>
         </record>
+        
+        <record id="see_help_ticket_guide" model="ir.rule">
+           <field name="name">See Help Ticket Guide</field>
+           <field name="model_id" ref="model_crm_helpdesk_guide"/>
+           <field name="groups" eval="[(4, ref('ticketing_external_user'))]"/>
+           <field name="domain_force">[('group','in',user.groups_id.ids)]</field>
+        </record>
 
         <!-- fine regole per il pubblico -->
         
@@ -107,7 +114,7 @@
             <field name="model_id" ref="base.model_ir_ui_menu"/>
             <field name="groups" eval="[(4,ref('ticketing_supplier_support'))]"/>
             <field name="domain_force">[
-             ('name', 'in', ['Supporto e Ticket', 'Ticket'])
+             ('name', 'in', ['Supporto e Ticket', 'Ticket', 'Guide'])
             ]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_create" eval="False"/>
@@ -115,6 +122,13 @@
             <field name="perm_write" eval="False"/>
        </record>
         
+        <record id="see_help_ticket_guide_supplier" model="ir.rule">
+           <field name="name">See Help Ticket Guide Supplier</field>
+           <field name="model_id" ref="model_crm_helpdesk_guide"/>
+           <field name="groups" eval="[(4, ref('ticketing_supplier_support'))]"/>
+           <field name="domain_force">[('group','in',user.groups_id.ids)]</field>
+        </record>
+
         <!-- fine regole per i fornitori esterni -->
         
     </data>

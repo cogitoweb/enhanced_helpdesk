@@ -3,6 +3,24 @@
 
     <data>
     
+        <!-- ordinamento menu e azione di default -->
+        <menuitem name="Helpdesk and Support" id="crm_helpdesk.menu_help_support_main" action="action_enhanced_helpdesk_support"
+                groups="enhanced_helpdesk.ticketing_support"  />  
+        
+        <menuitem name="Supporto e Ticket"
+              parent="crm_helpdesk.menu_help_support_main"
+              id="menu_enhanced_helpdesk_support_parent"
+              sequence="1"
+              groups="enhanced_helpdesk.ticketing_support"/>
+        
+        <menuitem name="Ticket"
+              parent="menu_enhanced_helpdesk_support_parent"
+              action="action_enhanced_helpdesk_support"
+              id="menu_enhanced_helpdesk_support"
+              sequence="2"
+              groups="enhanced_helpdesk.ticketing_support"/>
+        
+        
         <!--
 
         customers
@@ -40,10 +58,6 @@
               groups="enhanced_helpdesk.ticketing_external_user"/>
         
         
-        
-        <!-- ordinamento menu e azione di default -->
-        <menuitem name="Helpdesk and Support" id="crm_helpdesk.menu_help_support_main" action="action_enhanced_helpdesk_support" />  
-        
         <!--
 
         suppliers
@@ -72,21 +86,20 @@
               id="menu_enhanced_helpdesk_supplier"
               sequence="1"
               groups="enhanced_helpdesk.ticketing_supplier_support"/>
-              
+        
         <menuitem name="Ticket"
               parent="menu_enhanced_helpdesk_supplier"
-              action="action_enhanced_helpdesk_supplier"
-              id="menu_ticket_helpdesk_supplier"
+              id="menu_ticket_helpdesk_supplier_parent"
               sequence="2"
               groups="enhanced_helpdesk.ticketing_supplier_support"/>
-        
-        <!-- needed a subvoice -->
-        <menuitem name="Gestione richieste"
-              parent="menu_ticket_helpdesk_supplier"
+              
+        <menuitem name="Ticket"
+              parent="menu_ticket_helpdesk_supplier_parent"
               action="action_enhanced_helpdesk_supplier"
-              id="menu_ticket_helpdesk_supplier_detail"
+              id="menu_ticket_helpdesk_supplier_child"
               sequence="3"
               groups="enhanced_helpdesk.ticketing_supplier_support"/>
+        
         
         <!-- hide empolyee menus for external suppliers -->
         <record id="mail.mail_feeds_main" model="ir.ui.menu">
