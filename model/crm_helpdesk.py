@@ -608,8 +608,10 @@ class CrmHelpdesk(models.Model):
         days = 15
         records = self.env['crm.helpdesk'].search([
             ('proxy_status_code', '=', 'dlv'),
-            ('last_answer_date', '<', datetime.today() - timedelta(days=days))
+            ('last_answer_date', '<', (datetime.now() - timedelta(days=days)).strftime('%Y-%m-%d %H:%M:$S'))
         ])
+
+        _logger.info("try to complete %s tickets" % days)
 
         for r in records:
 
