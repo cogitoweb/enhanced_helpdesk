@@ -187,7 +187,7 @@ class CrmHelpdesk(models.Model):
     def compute_external_ticket_url(self):
         for ticket in self:
             url = self._get_signup_url(ticket)
-            self.external_ticket_url = url or ''
+            ticket.external_ticket_url = url or ''
 
     @api.model
     def create(self, values):
