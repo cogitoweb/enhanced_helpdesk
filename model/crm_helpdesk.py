@@ -25,6 +25,7 @@ from openerp import models, fields, api, SUPERUSER_ID
 from openerp.tools.translate import _
 from openerp.exceptions import Warning
 from dateutil import parser
+from datetime import datetime, timedelta
 
 import pprint
 
@@ -597,4 +598,37 @@ class CrmHelpdesk(models.Model):
                                     'crm.helpdesk', 
                                     self.id,
                                    expande)
+
+    #
+    # scheduled action
+    #
+    def completed_expired_ticket_batch(self):
+        _logger.info("call to expired ticket")
+
+        days = 15
+        records = self.env['crm.helpdesk'].search([
+            ('proxy_status_code', '=', 'dlv'),
+            ('last_answer_date', '<', datetime.today() - timedelta(days=days))
+        ])
+
+        for r in records:
+
+            prev_status = r.ticket_status_id.status_name
+            r._change_status('ok')
+
+            before_body = r.set_status_email_text(prev_status)
+            before_body += _('<br />la consegna del ticket è stata accettata in via automatica per decorrenza dei termini di approvazione (%s giorni)') % days
+            before_body += _('<br />l\'effort richiesto per il ticket è stato di %s punti') % r.task_points
+
+            expande = {'before_body': before_body}
+
+            custom_deliver = r.add_invoice_contacts()
+
+            self.send_notification_mail('email_template_ticket_change_state',
+                                        'crm.helpdesk',
+                                        r.id,
+                                       expande,
+                                       custom_deliver)
+
+
 

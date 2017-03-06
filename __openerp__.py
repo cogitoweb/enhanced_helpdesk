@@ -50,7 +50,7 @@ Enhanced Openerp Helpdesk and Ticketing support
         
         'data/helpdesk_status_data.xml',
         'data/helpdesk_data.xml',
-        
+        'data/helpdesk_actions.xml',
         'workflow/helpdesk_workflow.xml',
         
         'view/sales_order_view.xml',
