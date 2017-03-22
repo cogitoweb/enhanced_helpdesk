@@ -40,9 +40,9 @@ class HelpdeskQA(models.Model):
     @api.multi
     def _complete_message(self):
         for msg in self:
-            info = '<img height="40px" \
+            info = '&lt;img height="40px" \
 src="/web/binary/image?model=res.partner&id=%s&field=image_medium" \
-/> %s - %s<br /><br />' % (msg.user_id.partner_id.id, msg.user_id.name, msg.date)
+/&gt; %s - %s<br /><br />' % (msg.user_id.partner_id.id, msg.user_id.name, msg.date)
             info = '%s%s' % (info, msg.message)
             if len(msg.attachment_ids) > 0:
                 info = '%s\n\n%s Attachment(s)' % (info,

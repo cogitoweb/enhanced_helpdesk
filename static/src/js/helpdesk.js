@@ -1,4 +1,4 @@
-/*openerp.web.ListView.List.include({
+openerp.web.ListView.List.include({
 
     htmlDecode: function(input){
         var e = document.createElement('div');
@@ -16,4 +16,3 @@
         },
 
     });
-*/
