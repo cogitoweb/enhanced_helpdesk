@@ -22,7 +22,7 @@
 
 from openerp import models, fields, api, SUPERUSER_ID, _
 from openerp.exceptions import Warning
-
+from dateutil import parser
 
 class HelpdeskQA(models.Model):
 
@@ -42,7 +42,7 @@ class HelpdeskQA(models.Model):
         for msg in self:
             info = '<img height="40px" \
 src="/web/binary/image?model=res.partner&id=%s&field=image_medium" \
-/> %s - %s<br /><br />' % (msg.user_id.partner_id.id, msg.user_id.name, msg.date)
+/> %s - %s<br /><br />' % (msg.user_id.partner_id.id, msg.user_id.name, parser.parse(msg.date).strftime('%d/%m/%Y %H:%M'))
             info = '%s%s' % (info, msg.message)
             if len(msg.attachment_ids) > 0:
                 info = '%s\n\n%s Attachment(s)' % (info,
