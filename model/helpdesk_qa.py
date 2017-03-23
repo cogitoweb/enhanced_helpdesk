@@ -45,7 +45,7 @@ src="/web/binary/image?model=res.partner&id=%s&field=image_medium" \
 /> %s - %s<br /><br />' % (msg.user_id.partner_id.id, msg.user_id.name, parser.parse(msg.date).strftime('%d/%m/%Y %H:%M'))
             info = '%s%s' % (info, msg.message)
             if len(msg.attachment_ids) > 0:
-                info = '%s\n\n%s %s' % (info, len(msg.attachment_ids), _('Attachments'))
+                info = '%s\n\n%s <em>(%s)</em>' % (info, len(msg.attachment_ids), _('Attachments'))
             msg.complete_message = info
 
     @api.onchange('message')
