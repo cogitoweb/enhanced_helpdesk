@@ -23,6 +23,7 @@
 from openerp import models, fields, api, SUPERUSER_ID, _
 from openerp.exceptions import Warning
 from dateutil import parser
+import pytz
 
 class HelpdeskQA(models.Model):
 
@@ -40,9 +41,14 @@ class HelpdeskQA(models.Model):
     @api.multi
     def _complete_message(self):
         for msg in self:
+
+            dt = parser.parse(msg.date)
+            tz = pytz.timezone(msg.user_id.tz) or pytz.utc
+            dtl = pytz.utc.localize(dt).astimezone(tz)
+
             info = '<img height="40px" \
 src="/web/binary/image?model=res.partner&id=%s&field=image_medium" \
-/> %s - %s<br /><br />' % (msg.user_id.partner_id.id, msg.user_id.name, parser.parse(msg.date).strftime('%d/%m/%Y %H:%M'))
+/> %s - %s<br /><br />' % (msg.user_id.partner_id.id, msg.user_id.name, dtl.strftime('%d/%m/%Y %H:%M'))
             info = '%s%s' % (info, msg.message)
             if len(msg.attachment_ids) > 0:
                 info = '%s\n\n<em>(%s %s)</em>' % (info, len(msg.attachment_ids), _('Attachments'))
