@@ -21,6 +21,7 @@ access_hr_timesheet_invoice_model_hr_timesheet_invoice_factor_user,hr_timesheet_
 access_crm_helpdesk_guide_support,crm_helpdesk_guide_supportuser,model_crm_helpdesk_guide,ticketing_support,1,1,1,1
 access_crm_helpdesk_supportuser,crm_helpdesk_supportuser,model_crm_helpdesk,ticketing_support,1,1,1,0
 access_helpdesk_qa_support,helpdeks_ticketuser_support,model_helpdesk_qa,ticketing_support,1,1,1,1
+access_res_users_ticket_support,res_users_ticketsupport,base.model_res_users,ticketing_support,1,1,0,0
 access_helpdesk_ticket_status,helpdesk_ticket_status,model_helpdesk_ticket_status,ticketing_support,1,1,0,0
 access_helpdesk_crm_case_categ,helpdesk_ticket_crm_case_categ,crm.model_crm_case_categ,ticketing_support,1,1,0,0
 ,,,,,,,
