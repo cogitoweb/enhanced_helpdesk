@@ -115,11 +115,6 @@ class wizard_ticket_reply(models.TransientModel):
                     }
                 self.env['ir.attachment'].create(attach_value)
 
-            # ---- send mail to support for the new reply to ticket
-            self.env['crm.helpdesk'].send_notification_mail(
-                template_xml_id='email_template_ticket_reply',
-                object_class='helpdesk.qa', object_id=reply_id.id)
-
         # ---- write new value on ticket
         if not self.ticket_id.user_id:
             self.ticket_id.user_id = self._uid
