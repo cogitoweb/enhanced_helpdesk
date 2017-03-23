@@ -127,4 +127,7 @@
 .openerp .oe_form .oe_form_field {
     vertical-align: middle;
 }
-    
+
+.oe_kanban_column  .oe_attachment {
+    width:auto;
+}

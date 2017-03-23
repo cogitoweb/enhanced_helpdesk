@@ -7,3 +7,6 @@
 .oe_view_manager_header .oe_view_manager_buttons .oe_fade {
     display: none !important;
 }
+.oe_kanban_column  .oe_attachment {
+    width:auto;
+}
