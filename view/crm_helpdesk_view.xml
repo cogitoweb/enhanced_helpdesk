@@ -439,6 +439,7 @@
                     colors="red:proxy_status_code in ('new','ass');black:proxy_status_code in ('wrk','dlv');blue:proxy_status_code=='app';green:proxy_status_code in ('ok');grey:proxy_status_code in ('xx')">
                 <field name="id" string="#" />
                 <field name="request_id" />
+                <field name="project_id" />
                 <field name="name" string="Title" />
                 <field name="date" string="Creation Date" widget="date" />
                 <field name="proxy_user_id" string="Responsible"/>
