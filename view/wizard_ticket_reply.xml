@@ -19,9 +19,9 @@
                           <field name="ticket_status_id" readonly="True" options="{'no_open': True}" />
                           
                           <field name="task_user_id" 
+                                domain="[('groups_id.id', '=', %(base.group_user)d)]"
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('new'))],
-                                        'readonly': ['!', ('proxy_status_code', 'in', ('new'))],
-                                        'domain': [('groups_id.id', '=', %(base.group_user)d)]}" />
+                                        'readonly': ['!', ('proxy_status_code', 'in', ('new'))]}" />
                           
                           <field name="deadline" 
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass'))], 
