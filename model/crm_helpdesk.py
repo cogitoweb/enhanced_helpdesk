@@ -64,7 +64,13 @@ class CrmHelpdesk(models.Model):
         if self.env.user.has_group('enhanced_helpdesk.ticketing_external_user'):
             return self.env.user
         else:
-            # non e possibile restituire None
+            users = self.env['res.users'].search(self._get_request_allowed_ids(), order='name asc')
+
+            if(users):
+                return users[0]
+
+            ## non e possibile restituire None
+            ## restituisco l'utente autenticato
             return self.env.user
     #
     # fine selezione richiedente
