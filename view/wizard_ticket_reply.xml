@@ -19,20 +19,21 @@
                           <field name="ticket_status_id" readonly="True" options="{'no_open': True}" />
                           
                           <field name="task_user_id" 
-                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('new'))],
-                                        'readonly': ['!', ('proxy_status_code', 'in', ('new'))]}"/> />
+                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('new'))],
+                                        'readonly': ['!', ('proxy_status_code', 'in', ('new'))]},
+                                        'domain': [('groups_id.id', '=', %(base.group_user)d)]" />
                           
                           <field name="deadline" 
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass'))], 
-                                       'readonly': ['!', ('proxy_status_code', 'in', ('ass'))]}"/> />
+                                        'readonly': ['!', ('proxy_status_code', 'in', ('ass'))]}" />
                           
                           <field name="points" groups="enhanced_helpdesk.ticketing_support"
                                 attrs="{'invisible': [('can_quote_ticket', '=', False)],
-                                       'readonly': [('can_quote_ticket', '=', False)]}"/> />
+                                        'readonly': [('can_quote_ticket', '=', False)]}" />
                           
                           <field string="Time effort (hours)" name="effort" groups="enhanced_helpdesk.ticketing_supplier_support"
                                 attrs="{'invisible': [('can_quote_ticket', '=', False)],
-                                       'readonly': [('can_quote_ticket', '=', False)]}"/> />
+                                        'readonly': [('can_quote_ticket', '=', False)]}" />
                           
                           <field name="ticket_reply"/>
                         
