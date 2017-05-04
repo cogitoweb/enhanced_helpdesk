@@ -24,15 +24,28 @@ from openerp.tools.translate import _
 from openerp import workflow
 from openerp.exceptions import Warning
 import math
+
 import logging
-#Get the logger
 _logger = logging.getLogger(__name__)
 
 
 class wizard_ticket_reply(models.TransientModel):
 
     _name = "wizard.ticket.reply"
+
+
+
+    def _get_quote_mode(self):
+        
+        if(self.env.user.has_group('enhanced_helpdesk.ticketing_support')):
+            return 'POINTS'
+        elif(self.env.user.has_group('enhanced_helpdesk.ticketing_supplier_support')):
+            return 'EFFORT'
+        else:
+            return 'NONE'
     
+
+
     def _get_request_user_default(self):
         
         if(self.task_user_id):
@@ -40,28 +53,31 @@ class wizard_ticket_reply(models.TransientModel):
         
         return self.env.user
     
+
+
     def _calculate_points_from_effort(self):
         
         # supplier effort instead of points
-        if self.effort:
+        if self.effort and self.task_user_id.has_group('enhanced_helpdesk.ticketing_supplier_support'):
             
             # default 6 point * hour
             default_multiplier = 6
             
             #search active contract for user employee
-            self._cr.execute("""select coalesce(points_per_hour,0) from hr_contract hrc
-                        inner join hr_employee hre on hre.id = hrc.employee_id
-                        inner join resource_resource rr on rr.id = hre.resource_id and rr.active = true 
-                        inner join res_users u on u.id = rr.user_id 
-                        where hrc.date_start <= now() and coalesce(hrc.date_end, now()) >= now() and u.id = %s 
-                        order by hrc.id limit 1""" % self._uid)
+            self._cr.execute("""SELECT coalesce(points_per_hour,0) FROM hr_contract hrc
+                        INNER JOIN hr_employee hre ON hre.id = hrc.employee_id
+                        INNER JOIN resource_resource rr ON rr.id = hre.resource_id AND rr.active = true 
+                        INNER JOIN res_users u ON u.id = rr.user_id 
+                        WHERE hrc.date_start <= now() AND coalesce(hrc.date_end, now()) >= now() AND u.id = %s 
+                        ORDER BY hrc.id LIMIT 1""" % self.task_user_id.id)
             r = self._cr.fetchone()
             # default is 6 points per hour
-            default_multiplier = float(r[0]) if r else 6
+            default_multiplier = float(r[0]) if (r and r[0]) else default_multiplier
             
             _logger.info("points from effort using multiplier %s", default_multiplier)
             
             self.points = math.ceil(self.effort * default_multiplier)
+            _logger.info("\n\n <><><> ticket_id = %s <><><> default_multiplier = %s <><><> effort = %s <><><> points = %s \n\n" % (self.ticket_id.id, default_multiplier, self.effort, self.points))
         
 
     # ---- Fields
@@ -83,20 +99,27 @@ class wizard_ticket_reply(models.TransientModel):
     deadline = fields.Date(string='Deadline', related='task_id.date_deadline')
             
     can_quote_ticket = fields.Boolean(compute='compute_can_quote_ticket')
-        
+    quote_mode = fields.Char(default=_get_quote_mode)
+
+
+
     @api.multi
     @api.depends('proxy_categ_emerg','proxy_status_code')
     def compute_can_quote_ticket(self):
         
         for r in self:
-
             if(r.proxy_status_code == 'ass' or (r.proxy_categ_emerg and r.proxy_status_code == 'wrk')):
                 r.can_quote_ticket = True
             else:
                 r.can_quote_ticket = False
-        
+
+
+
     @api.multi
     def reply(self, context=None, wkf_trigger=''):
+
+        _logger.info("\n\n <><><> ticket_id = %s <><><> effort = %s <><><> points = %s \n\n" % (str(self.ticket_id.id), str(self.effort or "XX"), str(self.points or "XX")))
+
         if self.ticket_reply:
             value = {
                 'message': self.ticket_reply,
@@ -130,9 +153,13 @@ class wizard_ticket_reply(models.TransientModel):
 
         return {'type': 'ir.actions.act_window_close'}
 
+
+
     @api.multi
     def ticket_assigned(self):
         return self.reply(wkf_trigger='ticket_assigned')
+
+
     
     @api.multi
     def ticket_pending(self):
@@ -147,15 +174,21 @@ class wizard_ticket_reply(models.TransientModel):
         self._calculate_points_from_effort()
 
         return self.reply(wkf_trigger='ticket_quoted')
-    
+
+
+
     @api.multi
     def ticket_working(self):
         return self.reply(wkf_trigger='ticket_approved')
-    
+
+
+
     @api.multi
     def ticket_emerg(self):
         return self.reply(wkf_trigger='ticket_emerg')
-    
+
+
+
     @api.multi
     def ticket_delivered(self):
         
@@ -166,8 +199,9 @@ class wizard_ticket_reply(models.TransientModel):
             self.deadline = fields.Date.today()
         
         return self.reply(wkf_trigger='ticket_delivered')
-    
+
+
+
     @api.multi
     def ticket_completed(self):
         return self.reply(wkf_trigger='ticket_completed')
-
