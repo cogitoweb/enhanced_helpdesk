@@ -52,6 +52,13 @@ class wizard_ticket_reply(models.TransientModel):
             return self.task_user_id
         
         return self.env.user
+
+
+
+    def is_multiple_of(self, num, step=25):
+        # (2,30 * 100) mod 25 --> false
+        # (2,50 * 100) mod 25 --> true
+        return ((num*100) % step) == 0
     
 
 
@@ -166,10 +173,15 @@ class wizard_ticket_reply(models.TransientModel):
         
         _logger.info('try pending with deadline %s', self.deadline)
         
-        # validation
+        # validation deadline
         if not self.deadline:
             raise Warning(
                     _('Deadline date is mandatory'))
+
+        # validation time
+        if not self.is_multiple_of(self.effort, 25):
+            raise Warning(
+                    _('The time effort must be rounded to 1/4 of an hour and expressed in decimal (1h 30m = 1,50)'))
             
         self._calculate_points_from_effort()
 
