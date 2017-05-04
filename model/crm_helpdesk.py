@@ -656,3 +656,59 @@ class CrmHelpdesk(models.Model):
 
             self.send_notification_mail('email_template_ticket_change_state',
                                         'crm.helpdesk', r.id, expande, custom_deliver)
+
+
+
+    def _get_projects_id(self):
+        current_request_id = self.request_id.id
+        relationship_recordset = self.search([('request_id', '=', current_request_id)])
+        lista_project = relationship_recordset.mapped('project_id')
+        lista_project_ids = lista_project.mapped('id')
+
+        # _logger.info("\n\n <><><> _get_projects_id --> lista_project_ids = " + str(lista_project_ids) + "\n\n")
+        return lista_project_ids
+
+
+
+    @api.onchange('request_id')
+    def on_change_request_id(self):
+        
+        result = []
+        
+        current_request_id = self.request_id.id
+        current_request_id_partner = self.request_id.partner_id
+        current_request_id_company = self.request_id.partner_id.parent_id.id
+
+        relationship_recordset = self.search([('request_id', '=', current_request_id)])
+        lista_project = relationship_recordset.mapped('project_id')
+        lista_project_ids = lista_project.mapped('id')
+
+        # _logger.info("\n\n <><><> on_change_request_id --> current_request_id = %s current_request_id_partner = %s current_request_id_company = %s \n\n" % (str(current_request_id), str(current_request_id_partner), str(current_request_id_company) ))
+
+        if current_request_id_company == 1:
+            # il richiedente è un account cogito, nessun filtro
+            # _logger.info("\n\n <><><> on_change_request_id --> account interno cogito \n\n")
+            result = {
+                'domain': {
+                    'project_id': [('privacy_visibility', 'in', ['portal'])]
+                }
+            }
+        elif lista_project_ids:
+            # il richiedente è un account esterno. Restituisce solo id dei progetti collegati
+            # _logger.info("\n\n <><><> on_change_request_id --> account externo \n\n")
+            result = {
+                'domain': {
+                    'project_id': [('privacy_visibility', 'in', ['portal']), ('id', 'in', lista_project_ids)]
+                }
+            }
+        else:
+            # Se non ci sono progetti collegati, permette di selezionare tutti i progetti
+            # _logger.info("\n\n <><><> on_change_request_id --> account senza progetti \n\n")
+            result = {
+                'domain': {
+                    'project_id': [('privacy_visibility', 'in', ['portal'])]
+                }
+            }
+
+        # _logger.info("\n\n <><><> on_change_request_id --> result = " + str(result) + "\n\n")
+        return result
