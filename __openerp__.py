@@ -57,6 +57,11 @@ Enhanced Openerp Helpdesk and Ticketing support
         'view/account_invoice_view.xml',
         
         ],
+    
+    'qweb': [ 
+        "static/src/xml/base.xml", 
+    ],
+
     "update_xml": [],
     "demo_xml": [],
     "active": False,
