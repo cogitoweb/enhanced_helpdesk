@@ -12,33 +12,35 @@
                     <field name="proxy_status_code" invisible="1" />
                     <field name="proxy_categ_emerg" invisible="1" />
                     <field name="can_quote_ticket" invisible="1" />
+                    <field name="quote_mode" invisible="1" />
                   
                         
                       <group colspan="4">
                           <field name="ticket_id" readonly="True" options="{'no_open': True}" />
                           <field name="ticket_status_id" readonly="True" options="{'no_open': True}" />
                           
-                          <field name="task_user_id" 
-                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('new'))],
-                                        'readonly': ['!', ('proxy_status_code', 'in', ('new'))]}"/> />
+                          <field name="task_user_id" domain="[('groups_id.id', '=', %(base.group_user)d)]"
+                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('new'))],
+                                        'readonly': ['!', ('proxy_status_code', 'in', ('new'))]}" />
                           
                           <field name="deadline" 
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass'))], 
-                                       'readonly': ['!', ('proxy_status_code', 'in', ('ass'))]}"/> />
+                                        'readonly': ['!', ('proxy_status_code', 'in', ('ass'))]}" />
                           
-                          <field name="points" groups="enhanced_helpdesk.ticketing_support"
-                                attrs="{'invisible': [('can_quote_ticket', '=', False)],
-                                       'readonly': [('can_quote_ticket', '=', False)]}"/> />
+                          <field name="points"
+                                attrs="{'invisible': ['|', ('can_quote_ticket', '=', False), ('quote_mode', '!=', 'POINTS')],
+                                        'readonly': ['|', ('can_quote_ticket', '=', False), ('quote_mode', '!=', 'POINTS')]}" />
                           
-                          <field string="Time effort (hours)" name="effort" groups="enhanced_helpdesk.ticketing_supplier_support"
-                                attrs="{'invisible': [('can_quote_ticket', '=', False)],
-                                       'readonly': [('can_quote_ticket', '=', False)]}"/> />
+                          <field name="effort" string="Time effort (hours)"
+                                attrs="{'invisible': ['|', ('can_quote_ticket', '=', False), ('quote_mode', '!=', 'EFFORT')],
+                                        'readonly': ['|', ('can_quote_ticket', '=', False), ('quote_mode', '!=', 'EFFORT')]}" />
                           
                           <field name="ticket_reply"/>
                         
                           <field name="attachment_name" attrs="{'invisible': True}"/>
                           <field name="attachment" filename="attachment_name"/>
                       </group>
+
                       <footer>
                           <button name="reply" string="Reply" type="object" class="oe_highlight" />
                           

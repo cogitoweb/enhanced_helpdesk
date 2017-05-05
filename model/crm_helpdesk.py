@@ -29,9 +29,7 @@ from datetime import datetime, timedelta
 
 import pprint
 
-#Import logger
 import logging
-#Get the logger
 _logger = logging.getLogger(__name__)
 
 
@@ -39,6 +37,7 @@ class CrmHelpdesk(models.Model):
 
     _inherit = "crm.helpdesk"
     _rec_name = 'display_name'
+
 
     # selezione del richiedente
     #
@@ -60,16 +59,25 @@ class CrmHelpdesk(models.Model):
                 
         return [('id', 'in', request_allowed_ids)]
     
+
+
     def _get_request_user_default(self):
         if self.env.user.has_group('enhanced_helpdesk.ticketing_external_user'):
             return self.env.user
         else:
-            # non e possibile restituire None
+            users = self.env['res.users'].search(self._get_request_allowed_ids(), order='name asc')
+
+            if(users):
+                return users[0]
+
+            ## non e possibile restituire None
+            ## restituisco l'utente autenticato
             return self.env.user
     #
     # fine selezione richiedente
     
     
+
     def _get_ticket_status_default(self):
         ## default status
         status_code = 'new'
@@ -82,6 +90,7 @@ class CrmHelpdesk(models.Model):
         return status_ids[0]
     
     
+
     def _get_reject_reasons(self):
         return [
                 ('wrong_effort', 'effort economico non adeguato'), 
@@ -92,12 +101,13 @@ class CrmHelpdesk(models.Model):
                 ('account_contact', 'desidero essere contattato dal mio account')
         ]
 
+
+
     # ---- Fields
     source = fields.Selection(
         [('portal', 'Portal'), ('phone', 'Phone'), ('mail', 'Mail')],
         string='Source', default='portal')
        
-        
     request_id = fields.Many2one('res.users',
                                  required=True,
                                  string='Richiedente',
@@ -152,6 +162,8 @@ class CrmHelpdesk(models.Model):
         },
     }
     
+
+
     @api.multi
     @api.depends('task_id.points')
     def compute_ticket_price(self):
@@ -161,6 +173,8 @@ class CrmHelpdesk(models.Model):
             if(r.project_id and r.project_id.analytic_account_id):
                 r.price = r.task_points * r.project_id.analytic_account_id.point_unit_price
     
+
+
     @api.multi
     @api.depends('helpdesk_qa_ids')
     def compute_ticket_last_answer(self):
@@ -175,6 +189,8 @@ class CrmHelpdesk(models.Model):
             t.last_answer_user_id = user_id
             t.last_answer_date = date
 
+
+
     @api.one
     @api.depends('name')
     def compute_display_name(self):
@@ -183,11 +199,14 @@ class CrmHelpdesk(models.Model):
         self.task_id_id = '%s' % (self.task_id.id)
         
 
+
     @api.multi
     def compute_external_ticket_url(self):
         for ticket in self:
             url = self._get_signup_url(ticket)
             ticket.external_ticket_url = url or ''
+
+
 
     @api.model
     def create(self, values):
@@ -230,12 +249,16 @@ class CrmHelpdesk(models.Model):
 
         return res
 
+
+
     @api.onchange('request_id')
     def onchange_requestid(self):
         self.user_id = False
         if self.request_id:
             self.partner_id = self.request_id.partner_id.parent_id.id
             self.email_from = self.request_id.email
+
+
 
     def _get_signup_url(self, ticket):
         user_logged = self.env.user.id
@@ -256,6 +279,8 @@ class CrmHelpdesk(models.Model):
 
         return val
             
+
+
     # change status
     # base on code
     def _change_status(self, status_code):
@@ -290,6 +315,7 @@ class CrmHelpdesk(models.Model):
                     _logger.info("migrated child task %s to stage %s", sub.id, stage_ids[0])
 
         
+
     # send email
     #
     def send_notification_mail(self, template_xml_id=None,
@@ -428,10 +454,14 @@ class CrmHelpdesk(models.Model):
                     
         return custom_deliver
     
+
+
     @api.multi
     def new_ticket(self):
         _logger.info("call to new_ticket")
     
+
+
     @api.multi
     def assigned_ticket(self):
         _logger.info("call to assigned_ticket")
@@ -445,9 +475,9 @@ class CrmHelpdesk(models.Model):
         expande = {'before_body': before_body}
         
         self.send_notification_mail('email_template_ticket_change_state', 
-                                    'crm.helpdesk', 
-                                    self.id,
-                                   expande)
+                                    'crm.helpdesk', self.id, expande)
+
+
 
     @api.multi
     def pending_ticket(self):
@@ -471,6 +501,8 @@ class CrmHelpdesk(models.Model):
                                     self.id,
                                    expande)
        
+
+
     @api.multi
     def working_ticket(self):
         _logger.info("call to working_ticket")
@@ -525,6 +557,7 @@ class CrmHelpdesk(models.Model):
                                    custom_deliver)
         
         
+
     @api.multi
     def delivered_ticket(self):
         _logger.info("call to delivered_ticket")
@@ -538,10 +571,9 @@ class CrmHelpdesk(models.Model):
         expande = {'before_body': before_body}
         
         self.send_notification_mail('email_template_ticket_change_state', 
-                                    'crm.helpdesk', 
-                                    self.id,
-                                   expande)
+                                    'crm.helpdesk', self.id, expande)
         
+
         
     @api.multi
     def completed_ticket(self):
@@ -559,11 +591,10 @@ class CrmHelpdesk(models.Model):
         custom_deliver = self.add_invoice_contacts()
         
         self.send_notification_mail('email_template_ticket_change_state', 
-                                    'crm.helpdesk', 
-                                    self.id,
-                                   expande,
-                                   custom_deliver)
+                                    'crm.helpdesk', self.id, expande, custom_deliver)
         
+
+
     @api.multi
     def deleted_ticket(self):     
         _logger.info("call to deleted_ticket")
@@ -577,11 +608,10 @@ class CrmHelpdesk(models.Model):
         expande = {'before_body': before_body}
         
         self.send_notification_mail('email_template_ticket_change_state', 
-                                    'crm.helpdesk', 
-                                    self.id,
-                                   expande)
+                                    'crm.helpdesk', self.id, expande)
         
             
+
     @api.multi
     def refuse_ticket(self):
         _logger.info("call to refuse_ticket")
@@ -595,9 +625,7 @@ class CrmHelpdesk(models.Model):
         expande = {'before_body': before_body}
         
         self.send_notification_mail('email_template_ticket_change_state', 
-                                    'crm.helpdesk', 
-                                    self.id,
-                                   expande)
+                                    'crm.helpdesk', self.id, expande)
 
     #
     # scheduled action
@@ -627,10 +655,60 @@ class CrmHelpdesk(models.Model):
             custom_deliver = r.add_invoice_contacts()
 
             self.send_notification_mail('email_template_ticket_change_state',
-                                        'crm.helpdesk',
-                                        r.id,
-                                       expande,
-                                       custom_deliver)
+                                        'crm.helpdesk', r.id, expande, custom_deliver)
 
 
 
+    def _get_projects_id(self):
+        current_request_id = self.request_id.id
+        relationship_recordset = self.search([('request_id', '=', current_request_id)])
+        lista_project = relationship_recordset.mapped('project_id')
+        lista_project_ids = lista_project.mapped('id')
+
+        # _logger.info("\n\n <><><> _get_projects_id --> lista_project_ids = " + str(lista_project_ids) + "\n\n")
+        return lista_project_ids
+
+
+
+    @api.onchange('request_id')
+    def on_change_request_id(self):
+        
+        result = []
+        
+        current_request_id = self.request_id.id
+        current_request_id_partner = self.request_id.partner_id
+        current_request_id_company = self.request_id.partner_id.parent_id.id
+
+        relationship_recordset = self.search([('request_id', '=', current_request_id)])
+        lista_project = relationship_recordset.mapped('project_id')
+        lista_project_ids = lista_project.mapped('id')
+
+        # _logger.info("\n\n <><><> on_change_request_id --> current_request_id = %s current_request_id_partner = %s current_request_id_company = %s \n\n" % (str(current_request_id), str(current_request_id_partner), str(current_request_id_company) ))
+
+        if current_request_id_company == 1:
+            # il richiedente è un account cogito, nessun filtro
+            # _logger.info("\n\n <><><> on_change_request_id --> account interno cogito \n\n")
+            result = {
+                'domain': {
+                    'project_id': [('privacy_visibility', 'in', ['portal'])]
+                }
+            }
+        elif lista_project_ids:
+            # il richiedente è un account esterno. Restituisce solo id dei progetti collegati
+            # _logger.info("\n\n <><><> on_change_request_id --> account externo \n\n")
+            result = {
+                'domain': {
+                    'project_id': [('privacy_visibility', 'in', ['portal']), ('id', 'in', lista_project_ids)]
+                }
+            }
+        else:
+            # Se non ci sono progetti collegati, permette di selezionare tutti i progetti
+            # _logger.info("\n\n <><><> on_change_request_id --> account senza progetti \n\n")
+            result = {
+                'domain': {
+                    'project_id': [('privacy_visibility', 'in', ['portal'])]
+                }
+            }
+
+        # _logger.info("\n\n <><><> on_change_request_id --> result = " + str(result) + "\n\n")
+        return result
