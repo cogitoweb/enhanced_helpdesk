@@ -259,6 +259,13 @@ class CrmHelpdesk(models.Model):
             self.email_from = self.request_id.email
 
 
+    @api.onchange('project_id')
+    def onchange_projectid(self):
+
+        if self.project_id:
+            self.partner_id = self.project_id.partner_id.id
+
+
 
     def _get_signup_url(self, ticket):
         user_logged = self.env.user.id
@@ -442,8 +449,8 @@ class CrmHelpdesk(models.Model):
         # search for notification contact on partner child_ids of type..
         custom_deliver = []
         child_ids = None
-        if(self.task_points > 0 and self.request_id.partner_id.parent_id):
-            child_ids = self.sudo().request_id.partner_id.parent_id.child_ids
+        if(self.task_points > 0 and self.project_id.partner_id):
+            child_ids = self.sudo().project_id.partner_id.child_ids
         
         if(child_ids):
             for child in child_ids:
@@ -592,7 +599,7 @@ class CrmHelpdesk(models.Model):
         
         self.send_notification_mail('email_template_ticket_change_state', 
                                     'crm.helpdesk', self.id, expande, custom_deliver)
-        
+
 
 
     @api.multi
@@ -609,8 +616,8 @@ class CrmHelpdesk(models.Model):
         
         self.send_notification_mail('email_template_ticket_change_state', 
                                     'crm.helpdesk', self.id, expande)
-        
-            
+
+
 
     @api.multi
     def refuse_ticket(self):
@@ -665,7 +672,6 @@ class CrmHelpdesk(models.Model):
         lista_project = relationship_recordset.mapped('project_id')
         lista_project_ids = lista_project.mapped('id')
 
-        # _logger.info("\n\n <><><> _get_projects_id --> lista_project_ids = " + str(lista_project_ids) + "\n\n")
         return lista_project_ids
 
 
@@ -683,11 +689,8 @@ class CrmHelpdesk(models.Model):
         lista_project = relationship_recordset.mapped('project_id')
         lista_project_ids = lista_project.mapped('id')
 
-        # _logger.info("\n\n <><><> on_change_request_id --> current_request_id = %s current_request_id_partner = %s current_request_id_company = %s \n\n" % (str(current_request_id), str(current_request_id_partner), str(current_request_id_company) ))
-
         if current_request_id_company == 1:
             # il richiedente è un account cogito, nessun filtro
-            # _logger.info("\n\n <><><> on_change_request_id --> account interno cogito \n\n")
             result = {
                 'domain': {
                     'project_id': [('privacy_visibility', 'in', ['portal'])]
@@ -695,7 +698,6 @@ class CrmHelpdesk(models.Model):
             }
         elif lista_project_ids:
             # il richiedente è un account esterno. Restituisce solo id dei progetti collegati
-            # _logger.info("\n\n <><><> on_change_request_id --> account externo \n\n")
             result = {
                 'domain': {
                     'project_id': [('privacy_visibility', 'in', ['portal']), ('id', 'in', lista_project_ids)]
@@ -703,12 +705,10 @@ class CrmHelpdesk(models.Model):
             }
         else:
             # Se non ci sono progetti collegati, permette di selezionare tutti i progetti
-            # _logger.info("\n\n <><><> on_change_request_id --> account senza progetti \n\n")
             result = {
                 'domain': {
                     'project_id': [('privacy_visibility', 'in', ['portal'])]
                 }
             }
 
-        # _logger.info("\n\n <><><> on_change_request_id --> result = " + str(result) + "\n\n")
         return result

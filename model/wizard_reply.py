@@ -24,6 +24,7 @@ from openerp.tools.translate import _
 from openerp import workflow
 from openerp.exceptions import Warning
 import math
+from dateutil import parser
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -55,6 +56,16 @@ class wizard_ticket_reply(models.TransientModel):
 
 
 
+    @api.depends('ticket_id')
+    def _get_deadline(self):
+        
+        if(self.ticket_id):
+            return self.ticket_id.task_id.date_deadline
+        
+        return False
+
+
+
     def is_multiple_of(self, num, step=25):
         # (2,30 * 100) mod 25 --> false
         # (2,50 * 100) mod 25 --> true
@@ -81,11 +92,7 @@ class wizard_ticket_reply(models.TransientModel):
             # default is 6 points per hour
             default_multiplier = float(r[0]) if (r and r[0]) else default_multiplier
             
-            _logger.info("points from effort using multiplier %s", default_multiplier)
-            
             self.points = math.ceil(self.effort * default_multiplier)
-            _logger.info("\n\n <><><> ticket_id = %s <><><> default_multiplier = %s <><><> effort = %s <><><> points = %s \n\n" % (self.ticket_id.id, default_multiplier, self.effort, self.points))
-        
 
     # ---- Fields
     ticket_id = fields.Many2one('crm.helpdesk')
@@ -103,7 +110,8 @@ class wizard_ticket_reply(models.TransientModel):
                                  string='Assigned to', 
                                  default=_get_request_user_default,
                                  related='task_id.user_id') 
-    deadline = fields.Date(string='Deadline', related='task_id.date_deadline')
+    deadline = fields.Date(string='Deadline', related='ticket_id.task_id.date_deadline')
+    new_deadline = fields.Date()
             
     can_quote_ticket = fields.Boolean(compute='compute_can_quote_ticket')
     quote_mode = fields.Char(default=_get_quote_mode)
@@ -125,11 +133,22 @@ class wizard_ticket_reply(models.TransientModel):
     @api.multi
     def reply(self, context=None, wkf_trigger=''):
 
-        _logger.info("\n\n <><><> ticket_id = %s <><><> effort = %s <><><> points = %s \n\n" % (str(self.ticket_id.id), str(self.effort or "XX"), str(self.points or "XX")))
+        if self.ticket_reply or self.new_deadline:
 
-        if self.ticket_reply:
+            if(self.new_deadline):
+
+                new_deadline = parser.parse(self.new_deadline).strftime('%d/%m/%Y')
+                deadline = parser.parse(self.deadline).strftime('%d/%m/%Y')
+
+                message = (_('La data di consegna del ticket è stata modificata dal %s al %s con la seguente motivazione: %s') 
+                    % (deadline, new_deadline, self.ticket_reply))
+
+                self.deadline = self.new_deadline
+            else:
+                message = self.ticket_reply
+
             value = {
-                'message': self.ticket_reply,
+                'message': message,
                 'helpdesk_id': self.ticket_id.id,
                 'user_id': self._uid,
                 }
