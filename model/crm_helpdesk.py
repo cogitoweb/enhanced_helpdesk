@@ -27,6 +27,9 @@ from openerp.exceptions import Warning
 from dateutil import parser
 from datetime import datetime, timedelta
 
+from urllib import urlencode
+from urlparse import urlparse, urlunparse, parse_qs
+
 import pprint
 
 import logging
@@ -282,7 +285,14 @@ class CrmHelpdesk(models.Model):
         ## infamous hack to 
         ## redirect to login instead of signup
         if(val):
-            val = val.replace('web/signup?', 'web/login?')
+            
+            # remove login parameter
+            u = urlparse(val)
+            query = parse_qs(u.query)
+            query.pop('login', None)
+            u = u._replace(query=urlencode(query, True))
+            # turn to login instead of..
+            val = u.geturl().replace('web/signup?', 'web/login?')
 
         return val
             
