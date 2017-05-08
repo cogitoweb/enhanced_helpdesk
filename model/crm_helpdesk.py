@@ -637,6 +637,7 @@ class CrmHelpdesk(models.Model):
     #
     # scheduled action
     #
+    @api.model
     def completed_expired_ticket_batch(self):
         _logger.info("call to expired ticket")
 
