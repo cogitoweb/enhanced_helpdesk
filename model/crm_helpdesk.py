@@ -580,12 +580,13 @@ class CrmHelpdesk(models.Model):
         _logger.info("call to delivered_ticket")
         
         prev_status = self.ticket_status_id.status_name
+        prev_status_code = self.ticket_status_id.status_code
         self._change_status('dlv') 
         
         before_body = self.set_status_email_text(prev_status)
 
         ## direct deliver
-        if(prev_status == 'ass'):
+        if(prev_status_code == 'ass'):
             before_body += _('<br />la segnalazione è stato risolta ed il ticket non necessita di ulteriori interventi,')
 
         before_body += _('<br />verificare il prodotto e validare la consegna')
