@@ -583,6 +583,11 @@ class CrmHelpdesk(models.Model):
         self._change_status('dlv') 
         
         before_body = self.set_status_email_text(prev_status)
+
+        ## direct deliver
+        if(prev_status == 'ass'):
+            before_body += _('<br />la segnalazione è stato risolta ed il ticket non necessita di ulteriori interventi,')
+
         before_body += _('<br />verificare il prodotto e validare la consegna')
         
         expande = {'before_body': before_body}

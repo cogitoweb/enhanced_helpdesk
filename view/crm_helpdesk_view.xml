@@ -265,10 +265,14 @@
 
                         <button class="oe_highlight" type="action" attrs="{'invisible': [('id', '=', False)]}"
                             name="%(action_ticket_reply)d"
-                            string="Ticket Reply"
+                            string="Reply"
                             context="{'default_ticket_id': id}" />
                         
-                        <button name="ticket_deleted" class="" string="Cancel ticket"
+                        <button name="ticket_delivered" class="" string="Direct deliver"
+                                confirm="Are you sure you want to deliver this ticket?"
+                                attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'not in', ('ass'))]}" />
+
+                        <button name="ticket_deleted" class="" string="Cancel"
                                 confirm="Are you sure you want to cancel this ticket?"
                                 attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'in', ('wrk', 'dlv', 'ok', 'xx'))]}" />
 
