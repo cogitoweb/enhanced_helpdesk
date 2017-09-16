@@ -269,7 +269,8 @@ class CrmHelpdesk(models.Model):
             self.partner_id = self.project_id.partner_id.id
 
 
-
+    ## compute direct link to ticket
+    ##
     def _get_signup_url(self, ticket):
         user_logged = self.env.user.id
         partner = ticket.request_id.partner_id
@@ -283,7 +284,7 @@ class CrmHelpdesk(models.Model):
             res_id=ticket.id, context=ctx)[partner.id]
         
         ## infamous hack to 
-        ## redirect to login instead of signup
+        ## redirect to login instead of signup or reset password
         if(val):
             
             # remove login parameter
@@ -292,7 +293,7 @@ class CrmHelpdesk(models.Model):
             query.pop('login', None)
             u = u._replace(query=urlencode(query, True))
             # turn to login instead of..
-            val = u.geturl().replace('web/signup?', 'web/login?')
+            val = u.geturl().replace('web/signup?', 'web/login?').replace('web/reset_password?', 'web/login?')
 
         return val
             
