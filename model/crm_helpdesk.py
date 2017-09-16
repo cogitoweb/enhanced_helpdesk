@@ -442,7 +442,7 @@ class CrmHelpdesk(models.Model):
                 'helpdesk_id': ticket.id,
                 'user_id': self._uid,
                 }
-            reply_id = self.env['helpdesk.qa'].create(thread_message_value)
+            reply_id = self.env['helpdesk.qa'].with_context(nomail=True).create(thread_message_value)
         
         return True
 

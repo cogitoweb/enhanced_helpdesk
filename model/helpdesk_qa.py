@@ -78,8 +78,9 @@ src="/web/binary/image?model=res.partner&id=%s&field=image_medium" \
         res = super(HelpdeskQA, self).create(values)
 
         # ---- send mail to support for the new reply to ticket
-        self.env['crm.helpdesk'].send_notification_mail(
-            template_xml_id='email_template_ticket_reply',
-            object_class='helpdesk.qa', object_id=res.id)
+        if(not self.env.context.get('nomail',False)):
+            self.env['crm.helpdesk'].send_notification_mail(
+                template_xml_id='email_template_ticket_reply',
+                object_class='helpdesk.qa', object_id=res.id)
 #       
         return res
