@@ -700,15 +700,18 @@ class CrmHelpdesk(models.Model):
         result = []
         
         current_request_id = self.request_id.id
-        current_request_id_partner = self.request_id.partner_id
+        current_request_id_partner = self.request_id.partner_id.id
         current_request_id_company = self.request_id.partner_id.parent_id.id
 
-        relationship_recordset = self.search([('request_id', '=', current_request_id)])
+        relationship_recordset = self.env['project.project'].search(
+            [
+                ('analytic_account_id.partner_id', 'in', (current_request_id_company, current_request_id_partner, current_request_id))
+            ])
         lista_project = relationship_recordset.mapped('project_id')
         lista_project_ids = lista_project.mapped('id')
 
         if current_request_id_company == 1:
-            # il richiedente è un account cogito, nessun filtro
+            # il richiedente è un account del main partner, nessun filtro
             result = {
                 'domain': {
                     'project_id': [('privacy_visibility', 'in', ['portal'])]
@@ -722,10 +725,10 @@ class CrmHelpdesk(models.Model):
                 }
             }
         else:
-            # Se non ci sono progetti collegati, permette di selezionare tutti i progetti
+            # Se non ci sono progetti collegati non permette di selezionare nulla
             result = {
                 'domain': {
-                    'project_id': [('privacy_visibility', 'in', ['portal'])]
+                    'project_id': [('id', 'in', [0])]
                 }
             }
 
