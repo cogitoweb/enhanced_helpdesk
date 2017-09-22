@@ -706,9 +706,9 @@ class CrmHelpdesk(models.Model):
         relationship_recordset = self.env['project.project'].search(
             [
                 ('analytic_account_id.partner_id', 'in', (current_request_id_company, current_request_id_partner, current_request_id))
-            ])
-        lista_project = relationship_recordset.mapped('project_id')
-        lista_project_ids = lista_project.mapped('id')
+            ]
+        )
+        lista_project_ids = relationship_recordset.mapped('id')
 
         if current_request_id_company == 1:
             # il richiedente è un account del main partner, nessun filtro
