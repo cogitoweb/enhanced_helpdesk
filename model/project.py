@@ -27,13 +27,6 @@ class Project(models.Model):
     
     _inherit = 'project.project'
     
-    # il campo di riferimento è 
-    ### points su task
-    total_points = fields.Integer(compute='compute_total_points', store=True)
-    used_points = fields.Integer(compute='compute_total_points', store=True)
-    locked_points = fields.Integer(compute='compute_total_points', store=True)
-    free_points = fields.Integer(compute='compute_total_points', store=True)
-    
     @api.depends('tasks.points', 'tasks.stage_id')
     def compute_total_points(self):
         for record in self:
