@@ -27,35 +27,3 @@ class Project(models.Model):
     
     _inherit = 'project.project'
     
-    @api.depends('tasks.points', 'tasks.stage_id')
-    def compute_total_points(self):
-        for record in self:
-            
-            ## one liner
-            # sum(task.points for task in record.tasks)
-            
-            tot = 0
-            used = 0
-            locked = 0
-            free = 0
-            
-            for task in record.tasks:
-                
-                if task.points > 0:
-                    if task.stage_id.id not in [7,8]: #not done or cancelled
-                        locked = locked + task.points
-                    elif task.stage_id.id in [7]: #only done
-                        used = used + task.points
-                elif task.points < 0:
-                    if task.stage_id.id in [7]: #only done
-                            tot = tot - task.points
-
-                #_logger.info('task id')
-                #_logger.info(task.id)
-
-            free = tot - (used + locked)
-            
-            record.total_points = tot
-            record.used_points = used
-            record.locked_points = locked
-            record.free_points = free
