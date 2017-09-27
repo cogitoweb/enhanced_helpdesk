@@ -131,3 +131,8 @@
 .oe_kanban_column  .oe_attachment {
     width:auto;
 }
+
+/* various */
+.openerp .oe_form .oe_input_icon {
+    position: absolute;
+}
