@@ -136,3 +136,6 @@
 .openerp .oe_form .oe_input_icon {
     position: absolute;
 }
+.openerp .oe_searchview {
+    min-width:100%;
+}
