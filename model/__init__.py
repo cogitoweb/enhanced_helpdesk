@@ -23,7 +23,6 @@
 from . import ir_attachment
 from . import crm_helpdesk
 from . import crm_case_categ
-from . import project
 from . import project_task
 from . import helpdesk_qa
 from . import helpdesk_status

@@ -450,9 +450,9 @@
                 <field name="ticket_status_id" string="Status"/>
                 <field name="last_answer_date" string="Last answer date" widget="date"/>
                 <field name="priority" string="Priority"/> 
-                <field name="task_id_id" string="Task ID" groups="enhanced_helpdesk.ticketing_support" /> 
+                <field name="task_deadline" string="Deadline" groups="enhanced_helpdesk.ticketing_support" /> 
                 <field name="task_points" string="Points" sum="Points" groups="enhanced_helpdesk.ticketing_support"/> 
-                <field name="task_effort" sum="Time effort" />
+                <field name="task_effort" string="Effort (h)" sum="Time effort" />
                 <field name="price" sum="Price" groups="enhanced_helpdesk.ticketing_support" />
                 <field name="invoiced" groups="enhanced_helpdesk.ticketing_support" />
                 <field name="proxy_status_code" invisible="1" />

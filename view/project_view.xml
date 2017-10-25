@@ -118,7 +118,7 @@
         <field name="name">project.project.tree</field>
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.view_project"/>
-        <field name="priority">30</field>
+        <field name="priority">90</field>
 
         <field name="groups_id" eval="[(4,[ref('enhanced_helpdesk.ticketing_support') ])]" />  
 
@@ -223,10 +223,11 @@
         
     <!-- override Project show for ticketing_external_user -->
     <record id="enhanced_helpdesk_project_edit_project" model="ir.ui.view">
-            <field name="name">project.project.form</field>
+            <field name="name">project.form.helpdesk.external</field>
             <field name="model">project.project</field>
             <field name="inherit_id" ref="project.edit_project" />
-            <field name="priority" eval="90" />
+            <field name="active" eval="True" />
+	    <field name="priority" eval="90" />
             <field name="groups_id" eval="[(4,[ref('enhanced_helpdesk.ticketing_external_user') ])]" />
             
             <field name="arch" type="xml">
@@ -265,17 +266,6 @@
                         </group>
                         <notebook>
                        
-<!--
-                        <page string="Points wallet" name="bonus">
-                            <group string="Points summary" name="disp">
-                                <field name="total_points" string="Total points" />
-                                <field name="used_points" string="Used points"  />
-                                <field name="locked_points" string="Locked points"  />
-                                <field name="free_points" string="Free points"  />
-                            </group>
-                        </page>
--->
-
                             <page string="Team" name="team" invisible="True">
                                 <field colspan="4" name="members" widget="many2many_kanban" context="{'default_groups_ref': ['base.group_user', 'base.group_partner_manager', 'project.group_project_user']}">
                                     <kanban quick_create="false" create="true" delete="true">
@@ -311,10 +301,11 @@
         </record>
         
     <!-- add for all Disponibilità su progetto -->        
-    <record id="project_issue.view_project_form_inherited_banca_ore" model="ir.ui.view">
-        <field name="name">project.project.form</field>
+    <record id="view_project_form_inherited_banca_ore" model="ir.ui.view">
+        <field name="name">project.form.helpdesk.internal</field>
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.edit_project" />
+        <field name="active" eval="True" />
         <field name="priority" eval="90" />
         
         <field name="groups_id" eval="[(4,[ref('enhanced_helpdesk.ticketing_support'), ref('enhanced_helpdesk.ticketing_external_user') ])]" />
