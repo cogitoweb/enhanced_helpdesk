@@ -113,7 +113,7 @@ class CrmHelpdesk(models.Model):
        
     request_id = fields.Many2one('res.users',
                                  required=True,
-                                 string='Richiedente',
+                                 string='Sender',
                                  default=_get_request_user_default,
                                  domain=_get_request_allowed_ids)
 
@@ -129,7 +129,7 @@ class CrmHelpdesk(models.Model):
     merge_ticket_ids = fields.One2many('crm.helpdesk', 'merge_ticket_id')
     related_ticket = fields.Html()
 
-    project_id = fields.Many2one('project.project', required=True, string='Progetto')
+    project_id = fields.Many2one('project.project', required=True, string='Project')
     task_id = fields.Many2one('project.task', required=False, string='Task')
     task_id_id = fields.Char(string='Ticket ID', compute='compute_display_name',)
     

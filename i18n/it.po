@@ -1181,7 +1181,7 @@ msgstr "Professional Register"
 
 #. module: enhanced_helpdesk
 #: field:crm.helpdesk,project_id:0
-msgid "Progetto"
+msgid "Project"
 msgstr "Progetto"
 
 #. module: enhanced_helpdesk
@@ -1355,7 +1355,7 @@ msgstr "Revisiona"
 
 #. module: enhanced_helpdesk
 #: field:crm.helpdesk,request_id:0
-msgid "Richiedente"
+msgid "Sender"
 msgstr "Richiedente"
 
 #. module: enhanced_helpdesk
