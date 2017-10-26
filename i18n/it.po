@@ -570,7 +570,7 @@ msgstr "Descrizione"
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.enhanced_helpdesk_form_support
 msgid "Direct deliver"
-msgstr "Direct deliver"
+msgstr "Consegna diretta"
 
 #. module: enhanced_helpdesk
 #: field:crm.helpdesk.guide,display_name:0
@@ -605,7 +605,7 @@ msgstr "EORI Code"
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.support_enhanced_helpdesk_tree
 msgid "Effort (h)"
-msgstr "Effort (h)"
+msgstr "Impegno (ore)"
 
 #. module: enhanced_helpdesk
 #: field:res.company,email_ticket:0
@@ -820,7 +820,7 @@ msgstr "Fattura"
 #. module: enhanced_helpdesk
 #: field:crm.helpdesk,invoiced:0
 msgid "Invoiced"
-msgstr "Invoiced"
+msgstr "Fatturato"
 
 #. module: enhanced_helpdesk
 #: field:res.users,property_invoice_type:0
@@ -1122,17 +1122,17 @@ msgstr "In Approvazione"
 #. module: enhanced_helpdesk
 #: selection:crm.helpdesk,source:0
 msgid "Phone"
-msgstr "Phone"
+msgstr "Telefono"
 
 #. module: enhanced_helpdesk
 #: view:project.task:enhanced_helpdesk.view_task_tree2
 msgid "Planned Hours"
-msgstr "Planned Hours"
+msgstr "Ore pianificate"
 
 #. module: enhanced_helpdesk
 #: field:project.project,point_unit_price:0
 msgid "Point unit price"
-msgstr "Point unit price"
+msgstr "Prezzo punto"
 
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.support_enhanced_helpdesk_tree
@@ -1145,7 +1145,7 @@ msgstr "Punti"
 #. module: enhanced_helpdesk
 #: field:hr.contract,points_per_hour:0
 msgid "Points per hour"
-msgstr "Points per hour"
+msgstr "Punti per ora"
 
 #. module: enhanced_helpdesk
 #: view:project.project:enhanced_helpdesk.view_project_form_inherited_banca_ore
@@ -1161,7 +1161,7 @@ msgstr "Portal"
 #: view:crm.helpdesk:enhanced_helpdesk.support_enhanced_helpdesk_tree
 #: field:crm.helpdesk,price:0
 msgid "Price"
-msgstr "Price"
+msgstr "Prezzo"
 
 #. module: enhanced_helpdesk
 #: view:crm.helpdesk:enhanced_helpdesk.support_enhanced_helpdesk_tree
@@ -1228,7 +1228,7 @@ msgstr "Pubblica"
 #. module: enhanced_helpdesk
 #: selection:crm.helpdesk.guide,state:0
 msgid "Published"
-msgstr "Published"
+msgstr "Pubblicato"
 
 #. module: enhanced_helpdesk
 #: view:project.task:enhanced_helpdesk.view_task_tree2
@@ -1361,7 +1361,7 @@ msgstr "Richiedente"
 #. module: enhanced_helpdesk
 #: field:project.project,sale_offer_markup:0
 msgid "Sale offer markup"
-msgstr "Sale offer markup"
+msgstr "Markup ordine"
 
 #. module: enhanced_helpdesk
 #: field:res.users,sale_order_ids:0
