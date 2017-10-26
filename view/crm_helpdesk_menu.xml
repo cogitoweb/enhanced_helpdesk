@@ -7,7 +7,7 @@
         <menuitem name="Helpdesk and Support" id="crm_helpdesk.menu_help_support_main" action="action_enhanced_helpdesk_support"
                 groups="enhanced_helpdesk.ticketing_support"  />  
         
-        <menuitem name="Supporto e Ticket"
+        <menuitem name="Helpdesk and Support"
               parent="crm_helpdesk.menu_help_support_main"
               id="menu_enhanced_helpdesk_support_parent"
               sequence="1"
@@ -44,7 +44,7 @@
             }</field> 
         </record>
         
-         <menuitem name="Supporto e Ticket"
+         <menuitem name="Helpdesk and Support"
               parent="portal.portal_menu"
               id="menu_enhanced_helpdesk"
               sequence="1"
@@ -81,7 +81,7 @@
             }</field> 
         </record>
         
-        <menuitem name="Supporto e Ticket"
+        <menuitem name="Helpdesk and Support"
               action="action_enhanced_helpdesk_supplier"
               id="menu_enhanced_helpdesk_supplier"
               sequence="1"

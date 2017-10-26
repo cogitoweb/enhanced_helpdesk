@@ -44,7 +44,7 @@
                             </a>
 
                             <div class="oe_kanban_vignette oe_semantic_html_override">
-                                <div class="oe_kanban_details">
+                                <div class="oe_kanban_details kanban_guida">
                                     <h4 class="oe_partner_heading"><field name="title"/></h4>
 
                                     <p style="text-align:justify;"><em>
@@ -74,7 +74,7 @@
     </record>
 
     <record id="search_crm_helpdesk_guide" model="ir.ui.view">
-        <field name="name">Guide</field>
+        <field name="name">Help</field>
         <field name="model">crm.helpdesk.guide</field>
         <field name="type">search</field>
         <field name="arch" type="xml">
@@ -87,7 +87,7 @@
 
     <!-- Ticket User Action for Guide -->
     <record id="user_crm_helpdesk_guide_action" model="ir.actions.act_window">
-        <field name="name">Guide</field>
+        <field name="name">Help</field>
         <field name="res_model">crm.helpdesk.guide</field>
         <field name="view_type">form</field>
         <field name="view_mode">kanban</field>
@@ -98,7 +98,7 @@
 
     <!-- Support User Action for Guide -->
     <record id="support_crm_helpdesk_guide_action" model="ir.actions.act_window">
-        <field name="name">Guide</field>
+        <field name="name">Help</field>
         <field name="res_model">crm.helpdesk.guide</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>

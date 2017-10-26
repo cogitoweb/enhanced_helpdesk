@@ -139,3 +139,7 @@
 .openerp .oe_searchview {
     min-width:100%;
 }
+
+.openerp .oe_kanban_view .oe_kanban_details.kanban_guida {
+    width:450px;
+}

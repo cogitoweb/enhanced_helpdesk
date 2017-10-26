@@ -29,8 +29,8 @@ class CrmHelpdeskGuide(models.Model):
     _order = "title asc"
 
     # ---- Fields
-    title = fields.Char(required=True)
-    description = fields.Text(required=True)
+    title = fields.Char(required=True, translate=True)
+    description = fields.Text(required=True, translate=True)
     url = fields.Char(required=False)
     file = fields.Binary(required=True)
     filename = fields.Char()

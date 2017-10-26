@@ -23,8 +23,8 @@
                     fonts="bold:proxy_status_code in ('app','dlv')"
                     colors="black:proxy_status_code in ('wrk');blue:proxy_status_code in ('app', 'dlv');green:proxy_status_code in ('ok');grey:proxy_status_code in ('xx')">
                     <field name="id" string="ID" />
-                    <field name="name" string="Oggetto" />
-                    <field name="project_id" />
+                    <field name="name" string="Subject" />
+                    <field name="project_id" string="Project" />
                     <field name="categ_id" />
                     <field name="priority"/>
                     <field name="ticket_status_id" />
@@ -139,15 +139,15 @@
                                        'base.group_partner_manager',
                                        'base.group_sale_salesman_all_leads']}" />
                         
-                        <field name="request_id" widget="selection" colspan="2" attrs="{'readonly': True}" context="{'show_email': True}" />
+                        <field name="request_id" string="Sender" colspan="2" attrs="{'readonly': True}" options="{'no_quick_create':True,'no_create_edit':True,'no_open':True}" />
                         
-                        <field name="date" attrs="{'readonly': True}" colspan="2" string="Data"/>
+                        <field name="date" attrs="{'readonly': True}" colspan="2" string="Date"/>
                         <field name="date_deadline" invisible="1" colspan="4"/>
                         <field name="email_from" invisible="1" />
                         <!--  Partner_id is required for annoying checking rules -->
                         <field name="partner_id" invisible="1"/>
                         <group colspan="2">
-                             <field name="project_id" widget="selection" colspan="2" 
+                             <field name="project_id" widget="selection" colspan="2" string="Project"
                                     attrs="{'readonly': [('proxy_status_code', '!=', 'new')]}" />
                             
                              <field name="channel_id" invisible="1"/>
@@ -386,7 +386,7 @@
     </record>
 
     <record model="ir.actions.act_window" id="action_enhanced_helpdesk">
-        <field name="name">Ticketing / Supporto</field>
+        <field name="name">Ticket</field>
         <field name="res_model">crm.helpdesk</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>

@@ -96,12 +96,12 @@ class CrmHelpdesk(models.Model):
 
     def _get_reject_reasons(self):
         return [
-                ('wrong_effort', 'effort economico non adeguato'), 
-                ('wrong_scheduling', 'pianificazione temporale non adeguata'), 
-                ('changed_idea', 'ho cambiato idea, l\'attività non è più necessaria'), 
-                ('made_myself', 'ho risolto il mio problema da solo'), 
-                ('not_compliant', 'la consegna non corrisponde ai requisiti iniziali'), 
-                ('account_contact', 'desidero essere contattato dal mio account')
+                ('wrong_effort', _('Inadequate economic effort')), 
+                ('wrong_scheduling', _('Inadequate planning')), 
+                ('changed_idea', _('Changed idea, activity is no longer necessary')), 
+                ('made_myself', _('I solved my problem by myself')), 
+                ('not_compliant', _('The delivery does not match the initial requirements')), 
+                ('account_contact', _('I want to be contacted by my account'))
         ]
 
 
