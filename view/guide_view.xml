@@ -118,7 +118,7 @@
     
     <!-- Support User Menu for Guide -->
     <menuitem id="menu_help_support_guide_title" action=""
-        parent="crm_helpdesk.menu_help_support_main" sequence="20" name="Guide / Tutorial" 
+        parent="new_menu_help_support_main" sequence="20" name="Guide / Tutorial" 
               groups="enhanced_helpdesk.ticketing_support"/> <!-- ticketing_support -->
         
         <!-- Support User Menu for Guide -->

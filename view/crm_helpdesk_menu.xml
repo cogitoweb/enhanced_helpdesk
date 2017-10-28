@@ -38,14 +38,14 @@
             }</field> 
         </record>
 
-	<!-- ordinamento menu e azione di default -->
-        <menuitem name="Helpdesk and Support" id="crm_helpdesk.menu_help_support_main" action="action_enhanced_helpdesk_support"
-                groups="enhanced_helpdesk.ticketing_support"  />
+	ordinamento menu e azione di default
+        <menuitem name="Helpdesk and Support" id="new_menu_help_support_main" action="action_enhanced_helpdesk_support"
+                groups="enhanced_helpdesk.ticketing_support" sequence="10" parent=""  />
 
         <menuitem name="Helpdesk and Support"
-              parent="crm_helpdesk.menu_help_support_main"
+              parent="new_menu_help_support_main"
               id="menu_enhanced_helpdesk_support_parent"
-              sequence="1"
+              sequence="10"
               groups="enhanced_helpdesk.ticketing_support"/>
 
         <menuitem name="Ticket"
