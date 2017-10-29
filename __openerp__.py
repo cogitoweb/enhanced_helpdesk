@@ -55,6 +55,8 @@ Enhanced Openerp Helpdesk and Ticketing support
         
         'view/sales_order_view.xml',
         'view/account_invoice_view.xml',
+
+        'view/webclient_templates.xml'
         
         ],
     

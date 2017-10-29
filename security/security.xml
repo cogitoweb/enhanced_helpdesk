@@ -2,16 +2,32 @@
 <openerp>
     <data>
 
+        <record model="ir.module.category" id="module_management">
+            <field name="name">Ticketing system</field>
+            <field name="description">User access level for Ticketing system</field>
+            <field name="sequence">999</field>
+        </record>
+
         <record id="ticketing_external_user" model="res.groups">
-            <field name="name">Ticketing User</field>
+            <field name="name">User (customer)</field>
+            <field name="category_id" ref="module_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_portal'))]"/>
         </record>
 
         <record id="ticketing_support" model="res.groups">
-            <field name="name">Ticketing Support</field>
+            <field name="name">Support (internal Employee)</field>
+            <field name="category_id" ref="module_management"/>
         </record>
         
         <record id="ticketing_supplier_support" model="res.groups">
-            <field name="name">Ticketing Supplier Support</field>
+            <field name="name">Supplier</field>
+            <field name="category_id" ref="module_management"/>
+        </record>
+
+        <record id="ticketing_supplier_pm" model="res.groups">
+            <field name="name">Supplier Project Manager</field>
+            <field name="implied_ids" eval="[(4, ref('enhanced_helpdesk.ticketing_supplier_support')), (4, ref('project.group_time_work_estimation_tasks'))]"/>
+            <field name="category_id" ref="module_management"/>
         </record>
         
         <!-- regole per il pubblico -->
@@ -63,23 +79,6 @@
 
         <!-- fine regole per il pubblico -->
         
-        <!-- regole per il supporto -->
-        
-        <record id="see_support_portal_projects" model="ir.rule">
-            <field name="name">See Support Portal projects</field>
-            <field name="model_id" ref="project.model_project_project"/>
-            <field name="groups" eval="[(4,ref('ticketing_support'))]"/>
-            <field name="domain_force">[
-                ('privacy_visibility', 'in', ['portal'])
-            ]</field>
-            <field name="perm_read" eval="True"/>
-            <field name="perm_create" eval="False"/>
-            <field name="perm_unlink" eval="False"/>
-            <field name="perm_write" eval="False"/>
-       </record>
-        
-        <!-- fine regole per il supporto -->
-        
         <!-- regole per i fornitori esterni -->
         
         <record id="see_assigned_tickets" model="ir.rule">
@@ -95,26 +94,25 @@
             <field name="perm_write" eval="False"/>
        </record>
 
-	       <!-- TODO check REAL ticket relation -->
-       <record id="see_projects_assigned_tickets" model="ir.rule">
-            <field name="name">See Portal projects of assigned tickets</field>
-            <field name="model_id" ref="project.model_project_project"/>
+       <record id="see_assigned_tasks" model="ir.rule">
+            <field name="name">See Portal assigned tasks</field>
+            <field name="model_id" ref="project.model_project_task"/>
             <field name="groups" eval="[(4,ref('ticketing_supplier_support'))]"/>
             <field name="domain_force">[
-             ('privacy_visibility', 'in', ['portal']), ('state', '=', 'open')
+             ('user_id.id', '=', user.id)
             ]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_create" eval="False"/>
             <field name="perm_unlink" eval="False"/>
             <field name="perm_write" eval="False"/>
        </record>
-        
-       <record id="hide_employee_menus" model="ir.rule">
-            <field name="name">Hide employee menus</field>
-            <field name="model_id" ref="base.model_ir_ui_menu"/>
+
+       <record id="see_projects_assigned_tickets" model="ir.rule">
+            <field name="name">See Portal projects of assigned tickets</field>
+            <field name="model_id" ref="project.model_project_project"/>
             <field name="groups" eval="[(4,ref('ticketing_supplier_support'))]"/>
             <field name="domain_force">[
-             ('name', 'in', ['Helpdesk and Support', 'Ticket', 'Guide', 'Guide / Tutorial'])
+             ('privacy_visibility', 'in', ['portal']), ('state','=','open'), ('task_ids.user_id.id', '=', user.id)
             ]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_create" eval="False"/>
@@ -130,6 +128,21 @@
         </record>
 
         <!-- fine regole per i fornitori esterni -->
+
+        <!-- regole per i fornitori esterni PM -->
+        
+        <record id="see_projects_all_tasks" model="ir.rule">
+            <field name="name">See Portal projects of assigned tasks</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="groups" eval="[(4,ref('ticketing_supplier_pm'))]"/>
+            <field name="domain_force">[
+             ('project_id.privacy_visibility', 'in', ['portal']), ('project_id.state','=','open'), ('project_id.task_ids.user_id.id', '=', user.id)
+            ]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="perm_write" eval="False"/>
+       </record>
         
     </data>
 </openerp>

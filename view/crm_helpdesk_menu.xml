@@ -38,7 +38,6 @@
             }</field> 
         </record>
 
-	ordinamento menu e azione di default
         <menuitem name="Helpdesk and Support" id="new_menu_help_support_main" action="action_enhanced_helpdesk_support"
                 groups="enhanced_helpdesk.ticketing_support" sequence="10" parent=""  />
 
@@ -89,6 +88,28 @@
               id="menu_ticket_helpdesk_supplier_child"
               sequence="3"
               groups="enhanced_helpdesk.ticketing_supplier_support"/>
+
+        <!-- pm suppliers -->
+
+        <menuitem name="Projects"
+              parent="menu_enhanced_helpdesk_supplier"
+              id="menu_ticket_helpdesk_pm_supplier_parent"
+              sequence="2"
+              groups="enhanced_helpdesk.ticketing_supplier_pm"/>
+
+        <menuitem name="Projects"
+              parent="menu_ticket_helpdesk_pm_supplier_parent"
+              action="base_cogitoweb.open_view_project_all_cogitoweb"
+              id="menu_ticket_helpdesk_pm_supplier_prj"
+              sequence="3"
+              groups="enhanced_helpdesk.ticketing_supplier_pm"/>
+
+        <menuitem name="Tasks"
+              parent="menu_ticket_helpdesk_pm_supplier_parent"
+              action="base_cogitoweb.action_view_task_cogitoweb"
+              id="menu_ticket_helpdesk_pm_supplier_tsk"
+              sequence="5"
+              groups="enhanced_helpdesk.ticketing_supplier_pm"/>
         
         
         <!-- hide empolyee menus for external suppliers -->

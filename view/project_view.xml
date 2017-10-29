@@ -135,6 +135,7 @@
         </field>
     </record>
     
+    
     <!-- override tree task -->
     <record id="view_task_tree2" model="ir.ui.view">
             <field name="name">project.task.tree</field>
@@ -324,6 +325,37 @@
                 </page>
                 
             </xpath>
+        </field>
+    </record>
+
+    <record id="view_project_form_inherited_supplier_pm" model="ir.ui.view">
+        <field name="name">project.form.helpdesk.supplier.pm</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project" />
+        <field name="active" eval="True" />
+        <field name="priority" eval="999" />
+        
+        <field name="groups_id" eval="[(4,[ref('enhanced_helpdesk.ticketing_supplier_pm') ])]" />
+
+        <field name="arch" type="xml">
+
+            <xpath expr="//div[@name='buttons']" position="attributes">
+                <attribute name="groups">base.group_user,enhanced_helpdesk.ticketing_supplier_pm</attribute>
+            </xpath>
+
+            <xpath expr="//sheet/group" position="replace">
+
+                 <group>
+                        <group col="4">
+                            <field name="user_id" string="Project Manager" readonly="True" options="{'no_open':True}"
+                                context="{'default_groups_ref': ['base.group_user', 'base.group_partner_manager', 'project.group_project_manager']}"/>
+                            <newline/>
+                            <field name="partner_id" readonly="True" options="{'no_open':True}" string="Customer"/>
+                        </group>
+                    </group>
+
+            </xpath>
+
         </field>
     </record>
      
