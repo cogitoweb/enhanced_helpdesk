@@ -143,3 +143,13 @@
 .openerp .oe_kanban_view .oe_kanban_details.kanban_guida {
     width:450px;
 }
+.openerp .oe_form_sheet_width {
+    max-width: 85%;
+}
+.openerp .oe_form div.oe_chatter {
+    max-width: 89%;
+}
+
+.openerp .oe_form h5.oe_comment {
+    margin: 4px 0 4px 0;
+}
