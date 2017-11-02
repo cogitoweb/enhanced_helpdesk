@@ -136,7 +136,7 @@
             <field name="model_id" ref="project.model_project_task"/>
             <field name="groups" eval="[(4,ref('ticketing_supplier_pm'))]"/>
             <field name="domain_force">[
-             ('project_id.privacy_visibility', 'in', ['portal']), ('project_id.state','=','open'), ('project_id.task_ids.user_id.id', '=', user.id)
+             ('project_id.state','=','open'), ('project_id.user_id', '=', user.id)
             ]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_create" eval="False"/>
