@@ -19,7 +19,8 @@
                           <field name="ticket_id" readonly="True" options="{'no_open': True}" />
                           <field name="ticket_status_id" readonly="True" options="{'no_open': True}" />
                           
-                          <field name="task_user_id" domain="[('groups_id.id', '=', %(enhanced_helpdesk.ticketing_support)d)]"
+                          <field name="task_user_id" domain="[('groups_id.id', 'in', [%(enhanced_helpdesk.ticketing_support)d,%(enhanced_helpdesk.ticketing_supplier_support)d]])"
+                                    options="{'no_quick_create':True,'no_create_edit':True,'no_open':True}"
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('new'))],
                                         'readonly': ['!', ('proxy_status_code', 'in', ('new'))]}" />
                           
