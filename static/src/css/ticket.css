@@ -139,7 +139,6 @@
 .openerp .oe_searchview {
     min-width:100%;
 }
-
 .openerp .oe_kanban_view .oe_kanban_details.kanban_guida {
     width:450px;
 }
@@ -149,7 +148,21 @@
 .openerp .oe_form div.oe_chatter {
     max-width: 89%;
 }
-
 .openerp .oe_form h5.oe_comment {
     margin: 8px 0 4px 0;
 }
+.openerp .oe_button_box {
+    width: 40%;
+}
+.openerp .oe_stat_button {
+   padding: 0 14px 0 4px;
+   width: auto !important;
+}
+
+
+
+
+
+
+
+
