@@ -14,6 +14,7 @@
                             <field name="status_code"/>
                             <field name="status_name"/>
                             <field name="status_deadline"/>
+                            <field name="stage_id"/>
                             <field name="status_order" groups="base.group_no_one"/>
                         </group>
                     </group>
@@ -39,10 +40,11 @@
             <field name="name">helpdesk.ticket.status.tree</field>
             <field name="model">helpdesk.ticket.status</field>
             <field name="arch" type="xml">
-                <tree string="Task Stage">
+                <tree string="Ticket Stage">
                     <field name="status_order"/>
                     <field name="status_code"/>
                     <field name="status_name"/>
+                    <field name="stage_id"/>
                     <field name="status_deadline"/>
                     <field name="status_description"/>
                 </tree>

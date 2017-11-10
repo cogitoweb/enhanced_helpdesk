@@ -223,6 +223,7 @@ class CrmHelpdesk(models.Model):
             'name': values['name'],
             'description': values['description'],
             'ticket_id': res.id,
+            'stage_id': res.ticket_status_id.stage_id.id if res.ticket_status_id.stage_id else 2
             }
         
         task_id = self.env['project.task'].sudo().create(task_value)
@@ -296,43 +297,34 @@ class CrmHelpdesk(models.Model):
             val = u.geturl().replace('web/signup?', 'web/login?').replace('web/reset_password?', 'web/login?')
 
         return val
-            
-
 
     # change status
     # base on code
     def _change_status(self, status_code):
         
-        pool = self.pool.get('helpdesk.ticket.status')
-        status_ids = pool.search(self._cr, self._uid, [('status_code','=',status_code)])
-        
-        if not(status_ids):
+        status_ids = self.env['helpdesk.ticket.status'].search([('status_code','=',status_code)])
+        status = status_ids[0] if status_ids else False
+
+        if not(status):
             raise Warning(_('No status with wired code %s') % status_code)
-            
-        _logger.info("going to status %s", status_ids[0])
+
+        _logger.info("going to status %s", status)
         
-        self.write({'ticket_status_id':status_ids[0]}) 
+        self.write({'ticket_status_id':status.id}) 
         
         ## update related task status
-        if(status_code in ('ok', 'xx')):
+        if(status.stage_id):
             
-            state_name = 'Done' if(status_code == 'ok') else 'Cancelled'
-            stage_pool = self.pool.get('project.task.type')
-            stage_ids = stage_pool.search(self._cr, SUPERUSER_ID, [('name','=',state_name)])
-            
-            if not(status_ids):
-                raise Warning(_('No task stage with wired name %s') % state_name)
+            task_stage_id = status.stage_id.id
             
             task = self.task_id
-            task.sudo().write({'stage_id': stage_ids[0]})
-            _logger.info("migrated rel. task %s to stage %s", task.id, stage_ids[0])
+            task.sudo().write({'stage_id': task_stage_id})
+            _logger.info("migrated rel. task %s to stage %s", task.id, task_stage_id)
             
             if task.sudo().child_ids:
                 for sub in task.sudo().child_ids:
-                    sub.sudo().write({'stage_id': stage_ids[0]})
-                    _logger.info("migrated child task %s to stage %s", sub.id, stage_ids[0])
-
-        
+                    sub.sudo().write({'stage_id': task_stage_id})
+                    _logger.info("migrated child task %s to stage %s", sub.id, task_stage_id)
 
     # send email
     #

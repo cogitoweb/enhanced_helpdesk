@@ -16,5 +16,7 @@ class HelpdeskStatus(models.Model):
 	status_deadline = fields.Char('Durata' , translate=True, help="Deadline in Minutes")
 	status_order = fields.Integer('Ordinamento')
 
+	stage_id = fields.Many2one('project.task.type', string="Task Stage")
+
 
 	

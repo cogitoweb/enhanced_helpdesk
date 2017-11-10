@@ -103,8 +103,8 @@ class wizard_ticket_reply(models.TransientModel):
     proxy_status_code = fields.Char(related='ticket_status_id.status_code')
     proxy_categ_emerg = fields.Boolean(related='ticket_id.is_emergency')
     task_id = fields.Many2one('project.task', related='ticket_id.task_id',readonly=True) 
-    points = fields.Integer(string='Points', related='task_id.points')
-    effort = fields.Float(string='Time effort (hours)', related='task_id.planned_hours')
+    points = fields.Integer(string='Points', related='ticket_id.task_id.points')
+    effort = fields.Float(string='Time effort (hours)', related='ticket_id.task_id.planned_hours')
     task_user_id = fields.Many2one('res.users',
                                  required=True,
                                  string='Assigned to', 
