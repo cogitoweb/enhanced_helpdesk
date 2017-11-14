@@ -156,6 +156,19 @@
             <field name="perm_unlink" eval="False"/>
             <field name="perm_write" eval="False"/>
        </record>
+
+       <record id="see_projects_all_tickets" model="ir.rule">
+            <field name="name">See Portal assigned tickets</field>
+            <field name="model_id" ref="crm_helpdesk.model_crm_helpdesk"/>
+            <field name="groups" eval="[(4,ref('ticketing_supplier_pm'))]"/>
+            <field name="domain_force">[
+             ('task_id.project_id.user_id.id', '=', user.id)
+            ]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="perm_write" eval="False"/>
+       </record>
         
     </data>
 </openerp>
