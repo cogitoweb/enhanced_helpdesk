@@ -490,6 +490,24 @@
         </field>
     </record>
     
+    <!-- override task form for readonly only for ticketing_external_user -->
+    <record id="ticket_view_task_form2_supplier_pm" model="ir.ui.view">
+        <field name="name">ticket.project.task.form.pm</field>
+        <field name="model">project.task</field>
+        <field name="priority">60</field>
+        <field name="inherit_id" ref="ticket_view_task_form2"/>
+
+        <field name="arch" type="xml">
+            
+            <!-- allow pm to be assigned to tasks -->
+            <field name="user_id" position="attributes">
+				<attribute name="domain">"['|', ('groups_id.id', '=', %(base.group_user)d), ('groups_id.id', '=', %(enhanced_helpdesk.ticketing_supplier_pm)d)]"</attribute>
+			</field>
+
+           
+        </field>
+    </record>
+
 
 </data>
 </openerp>
