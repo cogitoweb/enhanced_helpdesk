@@ -41,6 +41,7 @@ Enhanced Openerp Helpdesk and Ticketing support
         'view/crm_helpdesk_menu.xml',
         'view/crm_case_categ_view.xml',
         
+        'view/product_category.xml',
         'view/project_view.xml',
         'view/partner_view.xml',
         'view/company_view.xml',
