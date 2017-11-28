@@ -501,7 +501,7 @@
             
             <!-- allow pm to be assigned to tasks -->
             <field name="user_id" position="attributes">
-				<attribute name="domain">"['|', ('groups_id.id', '=', %(base.group_user)d), ('groups_id.id', '=', %(enhanced_helpdesk.ticketing_supplier_pm)d)]"</attribute>
+				<attribute name="domain">"[('groups_id.id', 'in', (%(base.group_user)d, %(enhanced_helpdesk.ticketing_supplier_support)d, %(enhanced_helpdesk.ticketing_supplier_pm)d))]"</attribute>
 			</field>
 
            
