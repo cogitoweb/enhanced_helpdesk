@@ -12,20 +12,24 @@
         
         <field name="arch" type="xml">
 
-            <!-- nascondo fattura pa -->
+            <!-- nascondo fattura pa 
             <xpath expr="//page[@string='FatturaPA']" position="attributes">
                 <attribute name="invisible">True</attribute>
             </xpath>
             
             <xpath expr="//page[@string='FatturaPA attachments']" position="attributes">
                 <attribute name="invisible">True</attribute>
-            </xpath>
+            </xpath> 
             
             <xpath expr="//page[@string='Related Documents ']" position="attributes">
                 <attribute name="invisible">True</attribute>
-            </xpath>
+            </xpath> -->
             
             <xpath expr="//page[@string='Other Info']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+
+            <xpath expr="//page[@string='Shipping Informations']" position="attributes">
                 <attribute name="invisible">True</attribute>
             </xpath>
             
@@ -50,6 +54,7 @@
             </field>
             <field name="message_ids" position="replace">
             </field>
+
 
         </field>
    </record>
