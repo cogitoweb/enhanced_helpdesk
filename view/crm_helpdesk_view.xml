@@ -374,7 +374,9 @@
                 <field name="name" />
                 <field name="project_id" />
                 <field name="categ_id" />
+		<field name="proxy_user_id"/>
                 <field name="description" />
+		<field name="last_answer_date" />
                 <filter name="filter_new" domain="[('proxy_status_code', '=', 'new')]" string="New"/> 
                 <filter name="filter_assigned" domain="[('proxy_status_code', '=', 'ass')]" string="Assigned"/>
                 <filter name="filter_pending" domain="[('proxy_status_code', '=', 'app')]" string="Pending"/>
