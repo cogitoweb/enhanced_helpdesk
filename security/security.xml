@@ -13,6 +13,10 @@
             <field name="category_id" ref="module_management"/>
             <field name="implied_ids" eval="[(4, ref('base.group_portal'))]"/>
         </record>
+        
+        <record id="base.group_portal" model="res.groups">
+            <field name="implied_ids" eval="[(4, ref('ticketing_external_user'))]"/>
+        </record>
 
         <record id="ticketing_support" model="res.groups">
             <field name="name">Support (internal Employee)</field>
