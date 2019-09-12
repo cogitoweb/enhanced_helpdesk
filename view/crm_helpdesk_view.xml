@@ -283,13 +283,15 @@
                 </xpath>
                 
                 <xpath expr="//field[@name='project_id']" position="attributes">
-			<attribute name="widget">many2one</attribute>
-			<!-- temporaneo: da rendere dipendente da request_id -->
-			<attribute name="domain">[('privacy_visibility', 'in', ['portal'])]</attribute>
-			<attribute name="attrs">{'readonly': [('invoiced', '=', True)]}</attribute>
-		</xpath>
+                    <attribute name="widget">many2one</attribute>
+                    <!-- temporaneo: da rendere dipendente da request_id -->
+                    <attribute name="domain">[('privacy_visibility', 'in', ['portal'])]</attribute>
+                    <attribute name="attrs">{'readonly': [('invoiced', '=', True)]}</attribute>
+                </xpath>
                 
                 <xpath expr="//field[@name='priority']" position="after">
+                    <field name="task_direct_sale_line_id" readonly="True" />
+                    <field name="task_product_id" attrs="{'readonly': ['task_direct_sale_line_id', '!=', False]}" />
                     <field name="invoiced" attrs="{'readonly': ['!', ('proxy_status_code', '=', ('ok'))]}" />
                 </xpath>
             

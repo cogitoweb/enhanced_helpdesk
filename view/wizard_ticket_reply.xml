@@ -23,6 +23,11 @@
                                     options="{'no_quick_create':True,'no_create_edit':True,'no_open':True}"
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('new'))],
                                         'readonly': ['!', ('proxy_status_code', 'in', ('new'))]}" />
+
+                         <field name="task_product_id" domain="[('groups_id.id', 'in', [%(enhanced_helpdesk.ticketing_support)d,%(enhanced_helpdesk.ticketing_supplier_support)d])]"
+                                    options="{'no_quick_create':True,'no_create_edit':True,'no_open':True}"
+                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('new')), ('task_direct_sale_line_id', '!=', False)],
+                                        'readonly': ['!', ('proxy_status_code', 'in', ('new')), ('task_direct_sale_line_id', '!=', False)]}" />
                           
                           <field name="deadline" 
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass', 'app', 'wrk'))], 

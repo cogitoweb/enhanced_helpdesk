@@ -137,6 +137,13 @@ class CrmHelpdesk(models.Model):
     task_effort = fields.Float(string='Time effort (hours)', related='task_id.planned_hours')
     task_deadline = fields.Date(string='Deadline', related='task_id.date_deadline')
 
+    task_direct_sale_line_id = fields.Many2one(
+        related='task_id.direct_sale_line_id'
+    )
+    task_product_id = fields.Many2one(
+        related='task_id.product_id'
+    )
+
     is_emergency = fields.Boolean(string="Is Emergency", related='categ_id.emergency')
     price = fields.Float(string='Price', compute='compute_ticket_price', store=True)
 
@@ -168,14 +175,23 @@ class CrmHelpdesk(models.Model):
 
 
     @api.multi
-    @api.depends('task_id.points')
+    @api.depends('task_id.points', 'task_id.direct_sale_line_id')
     def compute_ticket_price(self):
         
         for r in self:
             price = 0
-            if(r.project_id and r.project_id.analytic_account_id):
+
+            if r.task_direct_sale_line_id:
+
+                line = r.task_direct_sale_line_id
+                r.price = (line.product_uos_qty * line.price_unit) - line.discount
+
+            elif(r.project_id and r.project_id.analytic_account_id):
+
                 r.price = r.task_points * r.project_id.analytic_account_id.point_unit_price
-    
+
+            else:
+                r.price = 0
 
 
     @api.multi
