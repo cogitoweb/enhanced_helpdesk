@@ -102,7 +102,10 @@ class wizard_ticket_reply(models.TransientModel):
     attachment_name = fields.Char(size=64)
     proxy_status_code = fields.Char(related='ticket_status_id.status_code')
     proxy_categ_emerg = fields.Boolean(related='ticket_id.is_emergency')
-    task_id = fields.Many2one('project.task', related='ticket_id.task_id',readonly=True) 
+    task_id = fields.Many2one('project.task', related='ticket_id.task_id',readonly=True)
+    task_product_id = fields.Many2one(
+        related='ticket_id.task_id.product_id'
+    )
     points = fields.Integer(string='Points', related='ticket_id.task_id.points')
     effort = fields.Float(string='Time effort (hours)', related='ticket_id.task_id.planned_hours')
     task_user_id = fields.Many2one('res.users',
