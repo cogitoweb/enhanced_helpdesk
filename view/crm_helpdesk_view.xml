@@ -291,7 +291,7 @@
                 
                 <xpath expr="//field[@name='priority']" position="after">
                     <field name="task_direct_sale_line_id" readonly="True" />
-                    <field name="task_product_id" attrs="{'readonly': ['task_direct_sale_line_id', '!=', False]}" />
+                    <field name="task_product_id" attrs="{'readonly': [('task_direct_sale_line_id', '!=', False)]}" />
                     <field name="invoiced" attrs="{'readonly': ['!', ('proxy_status_code', '=', ('ok'))]}" />
                 </xpath>
             
