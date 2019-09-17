@@ -293,6 +293,7 @@
                     <field name="task_direct_sale_line_id" readonly="True" />
                     <field name="task_product_id" attrs="{'readonly': [('task_direct_sale_line_id', '!=', False)]}" />
                     <field name="invoiced" attrs="{'readonly': ['!', ('proxy_status_code', '=', ('ok'))]}" />
+                    <field name="invoice_id" />
                 </xpath>
             
                 <xpath expr="//field[@name='date']" position="attributes">
@@ -458,8 +459,9 @@
                 <field name="task_deadline" string="Deadline" groups="enhanced_helpdesk.ticketing_support" /> 
                 <field name="task_points" string="Points" sum="Points" groups="enhanced_helpdesk.ticketing_support"/> 
                 <field name="task_effort" string="Effort (h)" sum="Time effort" />
-                <field name="price" sum="Price" groups="enhanced_helpdesk.ticketing_support" />
-                <field name="invoiced" groups="enhanced_helpdesk.ticketing_support" />
+                <field name="price" sum="Price" groups="enhanced_helpdesk.ticketing_support_admin" />
+                <field name="cost" sum="Cost"groups="enhanced_helpdesk.ticketing_support_admin" />
+                <field name="invoiced" groups="enhanced_helpdesk.ticketing_support_admin" />
                 <field name="proxy_status_code" invisible="1" />
 
             </tree>

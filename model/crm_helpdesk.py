@@ -146,6 +146,7 @@ class CrmHelpdesk(models.Model):
 
     is_emergency = fields.Boolean(string="Is Emergency", related='categ_id.emergency')
     price = fields.Float(string='Price', compute='compute_ticket_price', store=True)
+    cost = fields.Float(string='Cost', related='task_id.cost', readonly=True)
 
     ticket_status_id = fields.Many2one('helpdesk.ticket.status', default=1,
                                        string="Ticket Status", track_visibility='onchange'); 
@@ -155,7 +156,17 @@ class CrmHelpdesk(models.Model):
     reject_reason = fields.Selection(_get_reject_reasons, string='Reject Reason')
     reject_descr = fields.Text('Reject description')
     
-    invoiced = fields.Boolean(default=False)
+    ignore_invoicing = fields.Boolean(
+        compute='compute_ignore_invoicing',
+        store=True
+    )
+    invoiced = fields.Many2one(
+        compute='compute_is_invoiced',
+        store=True
+    )
+    invoice_id = fields.Many2one(
+        related='task_id.invoice_id'
+    )
     
     last_answer_user_id = fields.Many2one('res.users', compute='compute_ticket_last_answer', string="Last Answer User")
     
@@ -172,7 +183,19 @@ class CrmHelpdesk(models.Model):
         },
     }
     
+    @api.multi
+    @api.depends('task_id.an_acc_by_prj.pre_paid', 'task_id.an_acc_by_prj.custom_invoicing_plan')
+    def compute_ignore_invoicing(self):
 
+        for r in self:
+            r.ignore_invoicing = True if r.task_id.an_acc_by_prj.pre_paid or r.task_id.an_acc_by_prj.custom_invoicing_plan else False
+
+    @api.multi
+    @api.depends('task_id.invoice_id')
+    def compute_is_invoiced(self):
+
+        for r in self:
+            r.invoiced = True if r.invoice_id else False
 
     @api.multi
     @api.depends('task_id.points', 'task_id.direct_sale_line_id')

@@ -26,11 +26,16 @@
                                         'readonly': ['!', ('proxy_status_code', 'in', ('new'))]}" />
 
                         <!-- only for support / not for suppliers -->
-                         <field name="task_product_id"
+                        <field name="task_product_id"
                                     options="{'no_quick_create':True,'no_create_edit':True,'no_open':True}"
                                     groups="enhanced_helpdesk.ticketing_support"
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('new'))],
                                         'readonly': [('task_direct_sale_line_id', '!=', False)]}" />
+
+                        <!-- only for support / not for suppliers -->
+                        <field name="cost"
+                                    groups="enhanced_helpdesk.ticketing_support_admin"
+                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('new'))]}" />
                           
                           <field name="deadline" 
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass', 'app', 'wrk'))], 

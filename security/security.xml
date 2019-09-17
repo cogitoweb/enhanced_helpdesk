@@ -8,6 +8,7 @@
             <field name="sequence">999</field>
         </record>
 
+        <!-- start customer -->
         <record id="ticketing_external_user" model="res.groups">
             <field name="name">User (customer)</field>
             <field name="category_id" ref="module_management"/>
@@ -17,12 +18,22 @@
         <record id="base.group_portal" model="res.groups">
             <field name="implied_ids" eval="[(4, ref('ticketing_external_user'))]"/>
         </record>
+        <!-- end customer -->
 
+        <!-- start Support -->
         <record id="ticketing_support" model="res.groups">
             <field name="name">Support (internal Employee)</field>
             <field name="category_id" ref="module_management"/>
         </record>
+
+        <record id="ticketing_support_admin" model="res.groups">
+            <field name="name">Support admin (internal Employee with cost valuation)</field>
+            <field name="category_id" ref="module_management"/>
+            <field name="implied_ids" eval="[(4, ref('ticketing_support'))]"/>
+        </record>
+        <!-- end Support -->
         
+        <!-- suppliers -->
         <record id="ticketing_supplier_support" model="res.groups">
             <field name="name">Supplier</field>
             <field name="category_id" ref="module_management"/>
@@ -33,6 +44,7 @@
             <field name="implied_ids" eval="[(4, ref('enhanced_helpdesk.ticketing_supplier_support')), (4, ref('project.group_time_work_estimation_tasks'))]"/>
             <field name="category_id" ref="module_management"/>
         </record>
+        <!-- end suppliers -->
         
         <!-- regole per il pubblico -->
         
