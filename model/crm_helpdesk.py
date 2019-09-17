@@ -201,6 +201,7 @@ class CrmHelpdesk(models.Model):
     @api.depends('task_id.points', 'task_id.direct_sale_line_id')
     def compute_ticket_price(self):
         
+        last_price = 0
         for r in self:
             price = 0
 
@@ -216,6 +217,11 @@ class CrmHelpdesk(models.Model):
             else:
                 r.price = 0
 
+            last_price = r.price
+
+        # return last price to caller
+        # for wizard in helpdesk
+        return last_price
 
     @api.multi
     @api.depends('helpdesk_qa_ids')

@@ -111,6 +111,9 @@ class wizard_ticket_reply(models.TransientModel):
     )
     points = fields.Integer(string='Points', related='ticket_id.task_id.points')
     price = fields.Float(string='Price', related='ticket_id.price')
+    price_preview = fields.Float(
+        readonly=True
+    )
     cost = fields.Float(string='Cost', related='ticket_id.task_id.cost')
     effort = fields.Float(string='Time effort (hours)', related='ticket_id.task_id.planned_hours')
     task_user_id = fields.Many2one('res.users',
@@ -124,8 +127,10 @@ class wizard_ticket_reply(models.TransientModel):
     can_quote_ticket = fields.Boolean(compute='compute_can_quote_ticket')
     quote_mode = fields.Char(default=_get_quote_mode)
 
-
-
+    @api.onchange('points', 'task_direct_sale_line_id')
+    def _onchange_points(self):
+        self.price_preview = self.task_id.compute_ticket_price()
+    
     @api.multi
     @api.depends('proxy_categ_emerg','proxy_status_code')
     def compute_can_quote_ticket(self):

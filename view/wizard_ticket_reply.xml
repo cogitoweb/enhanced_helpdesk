@@ -31,11 +31,6 @@
                                     groups="enhanced_helpdesk.ticketing_support"
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('new'))],
                                         'readonly': [('task_direct_sale_line_id', '!=', False)]}" />
-
-                        <!-- only for support / not for suppliers -->
-                        <field name="cost"
-                                    groups="enhanced_helpdesk.ticketing_support_admin"
-                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('new'))]}" />
                           
                           <field name="deadline" 
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass', 'app', 'wrk'))], 
@@ -54,6 +49,16 @@
                           <field name="effort" string="Time effort (hours)"
                                 attrs="{'invisible': ['|', ('can_quote_ticket', '=', False), ('quote_mode', '!=', 'EFFORT')],
                                         'readonly': ['|', ('can_quote_ticket', '=', False), ('quote_mode', '!=', 'EFFORT')]}" />
+
+
+                        <!-- only for support / not for suppliers -->
+                        <field name="cost"
+                                    groups="enhanced_helpdesk.ticketing_support_admin"
+                                attrs="{'invisible': [('proxy_status_code', 'in', ('new'))]}" />
+                        <!-- only for support / not for suppliers -->
+                        <field name="price_preview"
+                                    groups="enhanced_helpdesk.ticketing_support_admin"
+                                attrs="{'invisible': [('proxy_status_code', 'in', ('new'))]}" />
                           
                           <field name="ticket_reply" attrs="{'required': [('new_deadline', '!=', False)]}"/>
                         
