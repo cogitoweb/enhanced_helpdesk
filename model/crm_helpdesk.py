@@ -160,7 +160,7 @@ class CrmHelpdesk(models.Model):
         compute='compute_ignore_invoicing',
         store=True
     )
-    invoiced = fields.Many2one(
+    invoiced = fields.Boolean(
         compute='compute_is_invoiced',
         store=True
     )

@@ -110,6 +110,8 @@ class wizard_ticket_reply(models.TransientModel):
         related='ticket_id.task_id.direct_sale_line_id'
     )
     points = fields.Integer(string='Points', related='ticket_id.task_id.points')
+    price = fields.Integer(string='Points', related='ticket_id.price')
+    cost = fields.Integer(string='Points', related='ticket_id.task_id.cost')
     effort = fields.Float(string='Time effort (hours)', related='ticket_id.task_id.planned_hours')
     task_user_id = fields.Many2one('res.users',
                                  required=True,
