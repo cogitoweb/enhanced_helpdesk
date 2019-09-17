@@ -460,7 +460,7 @@
                 <field name="task_points" string="Points" sum="Points" groups="enhanced_helpdesk.ticketing_support"/> 
                 <field name="task_effort" string="Effort (h)" sum="Time effort" />
                 <field name="price" sum="Price" groups="enhanced_helpdesk.ticketing_support_admin" />
-                <field name="cost" sum="Cost"groups="enhanced_helpdesk.ticketing_support_admin" />
+                <field name="cost" sum="Cost" groups="enhanced_helpdesk.ticketing_support_admin" />
                 <field name="invoiced" groups="enhanced_helpdesk.ticketing_support_admin" />
                 <field name="proxy_status_code" invisible="1" />
 
