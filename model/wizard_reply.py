@@ -130,6 +130,10 @@ class wizard_ticket_reply(models.TransientModel):
     @api.onchange('points', 'task_direct_sale_line_id')
     def _onchange_points(self):
         self.price_preview = self.ticket_id.compute_ticket_price()
+
+        return {'value':{
+                            'price_preview': self.price_preview
+                    }}
     
     @api.multi
     @api.depends('proxy_categ_emerg','proxy_status_code')
