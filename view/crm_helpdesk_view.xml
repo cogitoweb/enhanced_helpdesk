@@ -387,6 +387,13 @@
                 <filter name="filter_delivered" domain="[('proxy_status_code', '=', 'dlv')]" string="Delivered"/>
                 <filter name="filter_done" domain="[('proxy_status_code', '=', 'ok')]" string="Completed"/>
                 <filter name="filter_cancel" domain="[('proxy_status_code', '=', 'xx')]" string="Cancelled"/>
+		    
+		<group expand="0" string="Group by...">
+                       <filter string="Category" domain="[]" context="{'group_by' : 'categ_id'}"/>
+                       <filter string="Project" domain="[]" context="{'group_by' : 'project_id'}"/>
+                       <filter string="Status" domain="[]" context="{'group_by' : 'ticket_status_id'}"/>
+			<filter string="Partner" domain="[]" context="{'group_by' : 'partner_id'}"/>
+                 </group>
             </search>
         </field>
     </record>
