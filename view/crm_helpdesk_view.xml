@@ -272,9 +272,12 @@
                             string="Reply"
                             context="{'default_ticket_id': id}" />
 
-                        <button name="ticket_work_direct" class="" string="Start work"
-                                confirm="Are you sure you want to start working fot this ticket?"
-                                attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'not in', ('ass'))]}" />
+                        <button type="action"
+                            attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'not in', ('ass'))]}"
+                            string="Start work"
+                            name="%(action_ticket_start_work)d" class="" 
+                            context="{'default_ticket_id': id}"
+                        />
                         
                         <button name="ticket_delivered" class="" string="Direct deliver"
                                 confirm="Are you sure you want to deliver this ticket?"
