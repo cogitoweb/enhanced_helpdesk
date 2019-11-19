@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="wizard_ticket_start_work_view" model="ir.ui.view">
+            <field name="name">Ticket Start Work</field>
+            <field name="model">wizard.ticket.start_work</field>
+            <field name="arch" type="xml">
+                  
+              <form string="Ticket start Work">
+                        
+                      <group colspan="4">
+                          <field name="ticket_id" readonly="True" options="{'no_open': True}" />
+
+                        <!-- only for support / not for suppliers -->
+                          
+                          <field name="deadline" 
+                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass', 'app', 'wrk'))], 
+                                        'readonly': ['!', ('proxy_status_code', 'in', ('ass'))]}" />
+                      </group>
+
+                      <footer>
+                          <button name="ticket_working" string="Start work" type="object" class="oe_highlight" />
+                          
+                          <button string="Cancel" class="oe_link" special="cancel" />
+                      </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_ticket_start_work" model="ir.actions.act_window">
+            <field name="name">Ticket Start Work</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wizard.ticket.start_work</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="wizard_ticket_start_work_view"/>
+            <field name="context">{'record_id' : active_id}</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>
