@@ -278,7 +278,7 @@ class CrmHelpdesk(models.Model):
     @api.model
     def create(self, values):
 
-        res = super(CrmHelpdesk, self).sudo().create(values)
+        res = super(CrmHelpdesk, self).create(values)
         
         # ----- Create task related with this ticket
         task_value = {
