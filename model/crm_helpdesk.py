@@ -105,6 +105,11 @@ class CrmHelpdesk(models.Model):
         ]
 
 
+    @api.depends('task_id.date_deadline')
+    def _compute_task_deadline(self):
+        for record in self:
+            record.task_deadline = record.task_id.date_deadline if record.task_id else False
+
 
     # ---- Fields
     source = fields.Selection(
@@ -140,7 +145,8 @@ class CrmHelpdesk(models.Model):
     task_effort = fields.Float(string='Time effort (hours)', related='task_id.planned_hours')
     task_deadline = fields.Date(
         string='Deadline',
-        related='task_id.date_deadline',
+        compute_sudo=True,
+        compute=_compute_task_deadline
         store=True
     )
 
