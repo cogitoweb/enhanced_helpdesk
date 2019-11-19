@@ -494,7 +494,13 @@ class CrmHelpdesk(models.Model):
     #
     #
     def set_status_email_text(self, prev_status):
-        return _('il ticket è passato dallo stato <strong>%s</strong> allo stato <strong>%s</strong><br />') % (prev_status, self.ticket_status_id.status_name)
+
+        translated_prev_status = _(prev_status)
+        translated_new_status = _(self.ticket_status_id.status_name)
+
+        return _('il ticket è passato dallo stato <strong>%s</strong> allo stato <strong>%s</strong><br />') % (
+            translated_prev_status, translated_new_status
+        )
     
     #
     #  recupero contatti indicati come fatturazione sul partner
