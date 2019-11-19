@@ -110,6 +110,10 @@ class CrmHelpdesk(models.Model):
         for record in self:
             record.task_deadline = record.task_id.date_deadline if record.task_id else False
 
+    @api.depends('project_id.partner_id')
+    def _compute_partner_id(self):
+        for record in self:
+            record.partner_id = record.project_id.partner_id if record.project_id else False
 
     # ---- Fields
     source = fields.Selection(
@@ -136,7 +140,9 @@ class CrmHelpdesk(models.Model):
 
     project_id = fields.Many2one('project.project', required=True, string='Project')
     partner_id = fields.Many2one(
-        related='project_id.partner_id'
+        compute_sudo=True,
+        compute=_compute_partner_id,
+        store=True
     )
     task_id = fields.Many2one('project.task', required=False, string='Task')
     task_id_id = fields.Char(string='Ticket ID', compute='compute_display_name',)
@@ -272,21 +278,18 @@ class CrmHelpdesk(models.Model):
     @api.model
     def create(self, values):
 
-        partner_id = values['partner_id']
-        del values['partner_id']
-
         res = super(CrmHelpdesk, self).sudo().create(values)
         
         # ----- Create task related with this ticket
         task_value = {
             'project_id': values['project_id'],
-            'partner_id': partner_id,
+            'partner_id': values['partner_id'],
             'user_id': "",
             'name': values['name'],
             'description': values['description'],
             'ticket_id': res.id,
             'stage_id': res.ticket_status_id.stage_id.id if res.ticket_status_id.stage_id else 2
-            }
+        }
         
         task_id = self.env['project.task'].sudo().create(task_value)
         
