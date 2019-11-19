@@ -14,9 +14,7 @@
 
                         <!-- only for support / not for suppliers -->
                           
-                          <field name="deadline" 
-                                attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass', 'app', 'wrk'))], 
-                                        'readonly': ['!', ('proxy_status_code', 'in', ('ass'))]}" />
+                          <field name="deadline" />
                       </group>
 
                       <footer>
