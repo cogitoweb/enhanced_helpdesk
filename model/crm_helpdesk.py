@@ -275,7 +275,7 @@ class CrmHelpdesk(models.Model):
         partner_id = values['partner_id']
         del values['partner_id']
 
-        res = super(CrmHelpdesk, self).create(values)
+        res = super(CrmHelpdesk, self).sudo().create(values)
         
         # ----- Create task related with this ticket
         task_value = {
