@@ -282,7 +282,7 @@ class CrmHelpdesk(models.Model):
             values['priority'] = 2
 
         # create ticket
-        res = super(CrmHelpdesk, self).create(
+        res = super(CrmHelpdesk, self).sudo().create(
             values
         )
 
