@@ -116,7 +116,7 @@
         </record>
 
         <record id="t28" model="workflow.transition">
-            <field name="act_from" ref="act_apps"/>
+            <field name="act_from" ref="act_app"/>
             <field name="act_to" ref="act_wait"/>
             <field name="signal">ticket_wait</field>
         </record>
