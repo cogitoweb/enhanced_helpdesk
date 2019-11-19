@@ -271,12 +271,16 @@ class CrmHelpdesk(models.Model):
 
     @api.model
     def create(self, values):
+
+        partner_id = values['partner_id']
+        del values['partner_id']
+
         res = super(CrmHelpdesk, self).create(values)
         
         # ----- Create task related with this ticket
         task_value = {
             'project_id': values['project_id'],
-            'partner_id': values['partner_id'],
+            'partner_id': partner_id,
             'user_id': "",
             'name': values['name'],
             'description': values['description'],
