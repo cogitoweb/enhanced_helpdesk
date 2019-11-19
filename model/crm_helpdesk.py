@@ -146,7 +146,7 @@ class CrmHelpdesk(models.Model):
     task_deadline = fields.Date(
         string='Deadline',
         compute_sudo=True,
-        compute=_compute_task_deadline
+        compute=_compute_task_deadline,
         store=True
     )
 
