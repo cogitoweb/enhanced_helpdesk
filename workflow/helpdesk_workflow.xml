@@ -115,15 +115,21 @@
             <field name="signal">ticket_wait</field>
         </record>
 
-        <record id="t27" model="workflow.transition">
-            <field name="act_from" ref="act_ass"/>
+        <record id="t28" model="workflow.transition">
+            <field name="act_from" ref="act_apps"/>
             <field name="act_to" ref="act_wait"/>
             <field name="signal">ticket_wait</field>
         </record>
 
-        <record id="t28" model="workflow.transition">
+        <record id="t29" model="workflow.transition">
             <field name="act_from" ref="act_wait"/>
             <field name="act_to" ref="act_ass"/>
+            <field name="signal">ticket_reactivate</field>
+        </record>
+
+        <record id="t30" model="workflow.transition">
+            <field name="act_from" ref="act_wait"/>
+            <field name="act_to" ref="act_app"/>
             <field name="signal">ticket_reactivate</field>
         </record>
 

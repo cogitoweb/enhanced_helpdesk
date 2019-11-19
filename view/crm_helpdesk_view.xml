@@ -278,7 +278,7 @@
 
                         <button name="ticket_wait" class="" string="Suspend"
                                 confirm="Are you sure you want to suspend this ticket?"
-                                attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'not in', ('ass'))]}" />
+                                attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'not in', ('ass', 'app'))]}" />
 
                         <button name="ticket_reactivate" class="" string="Reactivate"
                             confirm="Are you sure you want to reactivate this ticket?"
