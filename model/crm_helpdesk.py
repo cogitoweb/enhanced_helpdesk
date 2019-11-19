@@ -568,10 +568,7 @@ class CrmHelpdesk(models.Model):
         _logger.info("call to wait_ticket")
         
         prev_status = self.ticket_status_id.status_name
-        self._change_status('wait') 
-        
-        deadline_date = parser.parse(self.task_deadline)
-        deadline = deadline_date.strftime('%d/%m/%Y')
+        self._change_status('wait')
         
         before_body = self.set_status_email_text(prev_status)
         before_body += _('<br />il ticket è stato sospeso. Il lavoro potrà essere ripreso in un momento successivo.')
