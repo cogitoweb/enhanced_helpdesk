@@ -394,17 +394,18 @@
 		        <field name="last_answer_date" />
                 <filter name="filter_new" domain="[('proxy_status_code', '=', 'new')]" string="New"/> 
                 <filter name="filter_assigned" domain="[('proxy_status_code', '=', 'ass')]" string="Assigned"/>
-                <filter name="filter_pending" domain="[('proxy_status_code', '=', 'app')]" string="Pending"/>
+                <filter name="filter_pending" domain="[('proxy_status_code', '=', 'app')]" string="Waiting approval"/>
+                <filter name="filter_suspended" domain="[('proxy_status_code', '=', 'wait')]" string="Suspended"/>
                 <filter name="filter_working" domain="[('proxy_status_code', '=', 'wrk')]" string="Working"/>
                 <filter name="filter_delivered" domain="[('proxy_status_code', '=', 'dlv')]" string="Delivered"/>
                 <filter name="filter_done" domain="[('proxy_status_code', '=', 'ok')]" string="Completed"/>
                 <filter name="filter_cancel" domain="[('proxy_status_code', '=', 'xx')]" string="Cancelled"/>
 		    
-		<group expand="0" string="Group by...">
-                       <filter string="Category" domain="[]" context="{'group_by' : 'categ_id'}"/>
-                       <filter string="Project" domain="[]" context="{'group_by' : 'project_id'}"/>
-                       <filter string="Status" domain="[]" context="{'group_by' : 'ticket_status_id'}"/>
-			<filter string="Partner" domain="[]" context="{'group_by' : 'partner_id'}"/>
+                <group expand="0" string="Group by...">
+                    <filter string="Category" domain="[]" context="{'group_by' : 'categ_id'}"/>
+                    <filter string="Project" domain="[]" context="{'group_by' : 'project_id'}"/>
+                    <filter string="Status" domain="[]" context="{'group_by' : 'ticket_status_id'}"/>
+                    <filter string="Partner" domain="[]" context="{'group_by' : 'partner_id'}"/>
                  </group>
             </search>
         </field>
