@@ -86,10 +86,19 @@ class wizard_ticket_cancel(models.TransientModel):
             template_xml_id='email_template_ticket_reply',
             object_class='helpdesk.qa', object_id=reply_id.id)
 
-        workflow.trg_validate(self._uid, 
-                              'crm.helpdesk', 
-                              self.ticket_id.id, 
-                              'ticket_deleted', self._cr)
+        # ---- if delivered go to refused
+        if self.ticket_id.ticket_status_id.status_code == 'dlv':
+
+            workflow.trg_validate(self._uid, 
+                                'crm.helpdesk', 
+                                self.ticket_id.id, 
+                                'ticket_work_refused', self._cr)
+        else:
+        # ---- else go deleted
+            workflow.trg_validate(self._uid, 
+                                'crm.helpdesk', 
+                                self.ticket_id.id, 
+                                'ticket_deleted', self._cr)
             
 
         return {'type': 'ir.actions.act_window_close'}

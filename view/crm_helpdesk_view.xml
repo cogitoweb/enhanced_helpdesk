@@ -105,7 +105,11 @@
                     <button name="ticket_completed" class="oe_highlight_green" string="Accept deliver"
                             attrs="{'invisible': [('proxy_status_code', '!=', 'dlv')]}"  /> 
                     
-                    <button name="ticket_work_refused" class="oe_read_only" string="Reject work" confirm="Are you sure you want to reject the work?"
+                    <button class="oe_read_only" type="action"
+                            name="%(action_ticket_cancel)d"
+                            string="Reject work"
+                            context="{'default_ticket_id': id}"
+                            confirm="Are you sure you want to reject the work?"
                             attrs="{'invisible': [('proxy_status_code', '!=', 'dlv')]}"  /> 
 
                     <button class="oe_read_only" type="action"
