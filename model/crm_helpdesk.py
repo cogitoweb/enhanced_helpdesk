@@ -130,12 +130,19 @@ class CrmHelpdesk(models.Model):
     related_ticket = fields.Html()
 
     project_id = fields.Many2one('project.project', required=True, string='Project')
+    partner_id = fields.Many2one(
+        related='project_id.partner_id'
+    )
     task_id = fields.Many2one('project.task', required=False, string='Task')
     task_id_id = fields.Char(string='Ticket ID', compute='compute_display_name',)
     
     task_points = fields.Integer(string='Estimated points', related='task_id.points')
     task_effort = fields.Float(string='Time effort (hours)', related='task_id.planned_hours')
-    task_deadline = fields.Date(string='Deadline', related='task_id.date_deadline')
+    task_deadline = fields.Date(
+        string='Deadline',
+        related='task_id.date_deadline',
+        store=True
+    )
 
     task_direct_sale_line_id = fields.Many2one(
         related='task_id.direct_sale_line_id'
@@ -555,7 +562,26 @@ class CrmHelpdesk(models.Model):
                                     'crm.helpdesk', 
                                     self.id,
                                    expande)
-       
+
+    @api.multi
+    def wait_ticket(self):
+        _logger.info("call to wait_ticket")
+        
+        prev_status = self.ticket_status_id.status_name
+        self._change_status('wait') 
+        
+        deadline_date = parser.parse(self.task_deadline)
+        deadline = deadline_date.strftime('%d/%m/%Y')
+        
+        before_body = self.set_status_email_text(prev_status)
+        before_body += _('<br />il ticket è stato sospeso. Il lavoro potrà essere ripreso in un momento successivo.')
+        
+        expande = {'before_body': before_body}
+
+        self.send_notification_mail('email_template_ticket_change_state', 
+                                    'crm.helpdesk', 
+                                    self.id,
+                                   expande)
 
 
     @api.multi

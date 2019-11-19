@@ -267,10 +267,22 @@
                             name="%(action_ticket_reply)d"
                             string="Reply"
                             context="{'default_ticket_id': id}" />
+
+                        <button name="ticket_work_direct" class="" string="Start work"
+                                confirm="Are you sure you want to start working fot this ticket?"
+                                attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'not in', ('ass'))]}" />
                         
                         <button name="ticket_delivered" class="" string="Direct deliver"
                                 confirm="Are you sure you want to deliver this ticket?"
                                 attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'not in', ('ass'))]}" />
+
+                        <button name="ticket_wait" class="" string="Suspend"
+                                confirm="Are you sure you want to suspend this ticket?"
+                                attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'not in', ('ass'))]}" />
+
+                        <button name="ticket_reactivate" class="" string="Reactivate"
+                            confirm="Are you sure you want to reactivate this ticket?"
+                            attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'not in', ('wait'))]}" />
 
                         <button name="ticket_deleted" class="" string="Cancel"
                                 confirm="Are you sure you want to cancel this ticket?"
