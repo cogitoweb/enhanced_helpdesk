@@ -265,7 +265,7 @@ class CrmHelpdesk(models.Model):
 
     @api.model
     def create(self, values):
-        res = super(CrmHelpdesk, self).create(values)
+        res = super(CrmHelpdesk, self).sudo().create(values)
         
         # ----- Create task related with this ticket
         task_value = {
@@ -276,7 +276,7 @@ class CrmHelpdesk(models.Model):
             'description': values['description'],
             'ticket_id': res.id,
             'stage_id': res.ticket_status_id.stage_id.id if res.ticket_status_id.stage_id else 2
-            }
+        }
         
         task_id = self.env['project.task'].sudo().create(task_value)
         
@@ -301,7 +301,7 @@ class CrmHelpdesk(models.Model):
             object_class='crm.helpdesk',
             object_id=res.id,
             expande={'before_body': before_body}
-            )
+        )
 
         return res
 
