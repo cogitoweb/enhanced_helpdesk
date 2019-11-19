@@ -128,7 +128,7 @@ class wizard_ticket_reply(models.TransientModel):
     quote_mode = fields.Char(default=_get_quote_mode)
 
     @api.onchange('points', 'task_direct_sale_line_id')
-    def _onchange_points(self):
+    def onchange_points(self):
         self.price_preview = self.ticket_id.compute_ticket_price()
 
         return {'value':{
