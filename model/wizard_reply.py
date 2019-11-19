@@ -150,6 +150,7 @@ class wizard_ticket_reply(models.TransientModel):
     @api.multi
     def reply(self, context=None, wkf_trigger=''):
 
+        reply_id = False
         if self.ticket_reply or self.new_deadline:
 
             if(self.new_deadline):
@@ -173,6 +174,16 @@ class wizard_ticket_reply(models.TransientModel):
 
         # ---- eventually attach
         if self.attachment:
+
+            if not reply_id:
+                reply_id = self.env['helpdesk.qa'].create(
+                    {
+                        'message': _('See attachment'),
+                        'helpdesk_id': self.ticket_id.id,
+                        'user_id': self._uid,
+                    }
+                )
+
             attach_value = {
                 'name': self.attachment_name,
                 'db_datas': self.attachment,
