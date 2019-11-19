@@ -288,8 +288,10 @@ class CrmHelpdesk(models.Model):
 
         # link back task
         task_id.sudo().write(
-            'ticket_id': res.id,
-            'stage_id': res.ticket_status_id.stage_id.id if res.ticket_status_id.stage_id else 2
+            {
+                'ticket_id': res.id,
+                'stage_id': res.ticket_status_id.stage_id.id if res.ticket_status_id.stage_id else 2
+            }
         )
         
         before_body = _('Project: %s') % task_id.project_id.name
