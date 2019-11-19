@@ -406,6 +406,7 @@
                     <filter string="Project" domain="[]" context="{'group_by' : 'project_id'}"/>
                     <filter string="Status" domain="[]" context="{'group_by' : 'ticket_status_id'}"/>
                     <filter string="Partner" domain="[]" context="{'group_by' : 'partner_id'}"/>
+                    <filter string="Assigned to" domain="[]" context="{'group_by' : 'proxy_user_id'}"/>
                  </group>
             </search>
         </field>
