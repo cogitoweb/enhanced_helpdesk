@@ -265,6 +265,7 @@ class CrmHelpdesk(models.Model):
 
     @api.model
     def create(self, values):
+        res = super(CrmHelpdesk, self).create(values)
         
         # ----- Create task related with this ticket
         task_value = {
@@ -273,26 +274,18 @@ class CrmHelpdesk(models.Model):
             'user_id': "",
             'name': values['name'],
             'description': values['description'],
-        }
+            'ticket_id': res.id,
+            'stage_id': res.ticket_status_id.stage_id.id if res.ticket_status_id.stage_id else 2
+            }
         
         task_id = self.env['project.task'].sudo().create(task_value)
-
-        values['task_id'] = task_id.id
-        if 'is_emergency' in values and values['is_emergency']:
-            values['priority'] = 2
-
-        # create ticket
-        res = super(CrmHelpdesk, self).sudo().create(
-            values
-        )
-
-        # link back task
-        task_id.sudo().write(
-            {
-                'ticket_id': res.id,
-                'stage_id': res.ticket_status_id.stage_id.id if res.ticket_status_id.stage_id else 2
-            }
-        )
+        
+        # ---- if emergency priority = 2 (hight)
+        if(res.is_emergency):
+            res.priority = '2'
+        
+        # ---- register self task
+        res.task_id = task_id
         
         before_body = _('Project: %s') % task_id.project_id.name
         before_body += '<br />'
@@ -308,7 +301,7 @@ class CrmHelpdesk(models.Model):
             object_class='crm.helpdesk',
             object_id=res.id,
             expande={'before_body': before_body}
-        )
+            )
 
         return res
 
