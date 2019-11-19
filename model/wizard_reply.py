@@ -171,15 +171,16 @@ class wizard_ticket_reply(models.TransientModel):
                 }
             reply_id = self.env['helpdesk.qa'].create(value)
 
-            if self.attachment:
-                attach_value = {
-                    'name': self.attachment_name,
-                    'db_datas': self.attachment,
-                    'res_model': 'helpdesk.qa',
-                    'res_id': reply_id.id,
-                    'helpdesk_qa_id': reply_id.id,
-                    }
-                self.env['ir.attachment'].create(attach_value)
+        # ---- eventually attach
+        if self.attachment:
+            attach_value = {
+                'name': self.attachment_name,
+                'db_datas': self.attachment,
+                'res_model': 'helpdesk.qa',
+                'res_id': reply_id.id,
+                'helpdesk_qa_id': reply_id.id,
+                }
+            self.env['ir.attachment'].create(attach_value)
 
         # ---- write new value on ticket
         if not self.ticket_id.user_id:
