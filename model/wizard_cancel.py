@@ -62,7 +62,7 @@ class wizard_ticket_cancel(models.TransientModel):
 
         message = dict(self.ticket_id._get_reject_reasons())[self.ticket_reject_reason]
         if(self.ticket_reject_descr):
-            message += u' ### %s ###'.encode("utf8") % self.ticket_reject_descr.encode("utf8")
+            message = " --- %s ---" % self.ticket_reject_descr
         
         value = {
             'message': message,
