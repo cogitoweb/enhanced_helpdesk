@@ -430,6 +430,15 @@ class CrmHelpdesk(models.Model):
         if(ticket.sudo().task_id.project_id.user_id):
             mail_to_internal.extend(['"%s" <%s>' % (ticket.sudo().task_id.project_id.user_id.name, 
                     ticket.sudo().task_id.project_id.user_id.email)])
+            
+            
+        # direzione
+        analytic_direction_id = self.env['ir.config_parameter'].sudo().get_param('internal_analytic_direction_id', default=False)
+        if analytic_direction_id:
+            aaa = self.env['account.analytic.account'].sudo().browse(analytic_direction_id)
+            if aaa and aaa.manager_id:
+                mail_to_internal.extend(['"%s" <%s>' % (aaa.manager_id.name, 
+                    aaa.manager_id.email)])
                     
         #
         # Assigned to task user
