@@ -68,4 +68,4 @@ class Task(models.Model):
                       "or open a ticket.")
                              )
 
-        res = super(Task, self).create(values)
+        return super(Task, self).create(values)
