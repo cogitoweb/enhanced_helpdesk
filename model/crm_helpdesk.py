@@ -435,7 +435,7 @@ class CrmHelpdesk(models.Model):
         if(template_xml_id == 'email_template_ticket_new'):
             analytic_sales_id = self.env['ir.config_parameter'].sudo().get_param('internal_analytic_account_sales_id', default=False)
             if analytic_sales_id:
-                aaa = self.env['account.analytic.account'].sudo().browse(analytic_sales_id)
+                aaa = self.env['account.analytic.account'].sudo().browse(int(analytic_sales_id))
                 if aaa and aaa.manager_id:
                     mail_to_internal.extend(
                         ['"%s" <%s>' % (aaa.manager_id.name, 
@@ -445,7 +445,7 @@ class CrmHelpdesk(models.Model):
         # direzione
         analytic_direction_id = self.env['ir.config_parameter'].sudo().get_param('internal_analytic_direction_id', default=False)
         if analytic_direction_id:
-            aaa = self.env['account.analytic.account'].sudo().browse(analytic_direction_id)
+            aaa = self.env['account.analytic.account'].sudo().browse(int(analytic_direction_id))
             if aaa and aaa.manager_id:
                 mail_to_internal.extend(
                     ['"%s" <%s>' % (aaa.manager_id.name, 
