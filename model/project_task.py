@@ -19,7 +19,8 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api
+from openerp import models, fields, api, _
+from openerp.exceptions import Warning
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -44,4 +45,27 @@ class Task(models.Model):
         related='ticket_id.last_answer_date',
         string="Last Answer Date", readonly=True)
 
-    ticket_state = fields.Many2one('helpdesk.ticket.status', related='ticket_id.ticket_status_id',readonly=True)                          
+    ticket_state = fields.Many2one('helpdesk.ticket.status', related='ticket_id.ticket_status_id',readonly=True)
+    
+    
+    @api.model
+    def create(self, values):
+        
+        if not values.get('ticket_id', False):
+            
+            # check project
+            project = self.env['project.project'].browse(values.get('project_id'))
+            allow_creation = False
+            
+            if project and project.analytic_account_id:
+                if project.analytic_account_id.account_type in ('', ''):
+                    allow_creation = True
+            
+            if not allow_creation:
+                raise Warning(
+                    _("I'm sorry, tasks without tickets can no longer be created "
+                      "except on internal projects. Please check if you are on an internal project "
+                      "or open a ticket.")
+                             )
+
+        res = super(Task, self).create(values)
