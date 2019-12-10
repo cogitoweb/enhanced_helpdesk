@@ -58,7 +58,7 @@ class Task(models.Model):
             allow_creation = False
             
             if project and project.analytic_account_id:
-                if project.analytic_account_id.account_type in ('', ''):
+                if project.analytic_account_id.account_type in ('CP', 'NS'):
                     allow_creation = True
             
             if not allow_creation:
