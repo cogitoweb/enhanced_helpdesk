@@ -817,14 +817,20 @@ class CrmHelpdesk(models.Model):
             # il richiedente è un account del main partner, nessun filtro
             result = {
                 'domain': {
-                    'project_id': [('privacy_visibility', 'in', ['portal'])]
+                    'project_id': [
+                        ('state', '=', 'open'),
+                        ('privacy_visibility', 'in', ['portal'])
+                    ]
                 }
             }
         elif lista_project_ids:
             # il richiedente è un account esterno. Restituisce solo id dei progetti collegati
             result = {
                 'domain': {
-                    'project_id': [('privacy_visibility', 'in', ['portal']), ('id', 'in', lista_project_ids)]
+                    'project_id': [
+                        ('state', '=', 'open'),
+                        ('privacy_visibility', 'in', ['portal']), ('id', 'in', lista_project_ids)
+                    ]
                 }
             }
         else:
