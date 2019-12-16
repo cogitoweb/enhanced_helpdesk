@@ -829,7 +829,9 @@ class CrmHelpdesk(models.Model):
                 'domain': {
                     'project_id': [
                         ('state', '=', 'open'),
-                        ('privacy_visibility', 'in', ['portal']), ('id', 'in', lista_project_ids)
+                        ('privacy_visibility', 'in', ['portal']),
+                        ('id', 'in', lista_project_ids),
+                        ('analytic_account_id.account_type', '=', 'PM')
                     ]
                 }
             }
