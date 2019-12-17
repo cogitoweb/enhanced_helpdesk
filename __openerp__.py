@@ -29,7 +29,7 @@ Enhanced Openerp Helpdesk and Ticketing support
     'author': 'Apulia Software Srl & Cogito Srl',
     'website': 'www.apuliasoftware.it',
     'license': 'AGPL-3',
-    "depends": ['crm_helpdesk', 'portal', 'account_type_cogitoweb', 'project_task_projectref_cogitoweb'],
+    "depends": ['crm_helpdesk', 'portal', 'project_task_projectref_cogitoweb'],
 
     "data": [
         'security/security.xml',
