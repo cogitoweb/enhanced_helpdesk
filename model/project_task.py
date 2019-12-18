@@ -69,3 +69,21 @@ class Task(models.Model):
                              )
 
         return super(Task, self).create(values)
+
+    # override to sync related tasks projects
+    @api.multi
+    def write(self, values):
+
+        res = super(Task, self).write(values)
+
+        if not self.env.context.get('skip_sync_projects'):
+            if 'project_id' in values:
+                for r in self:
+                    if r.ticket_id and r.ticket_id.project_id.id != values['project_id']:
+                        r.ticket_id.with_context(skip_sync_projects=True).write(
+                            {
+                                'project_id': values['project_id']
+                            }
+                        )
+
+        return res

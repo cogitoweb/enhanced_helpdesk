@@ -321,7 +321,24 @@ class CrmHelpdesk(models.Model):
 
         return res
 
+    # override to sync related tasks projects
+    @api.multi
+    def write(self, values):
 
+        res = super(CrmHelpdesk, self).write(values)
+
+        if not self.env.context.get('skip_sync_projects'):
+            if 'project_id' in values:
+                for r in self:
+                    if r.task_id.project_id.id != values['project_id']:
+                        r.task_id.with_context(skip_sync_projects=True).write(
+                            {
+                                'project_id': values['project_id']
+                            }
+                        )
+
+
+        return res
 
     @api.onchange('request_id')
     def onchange_requestid(self):
