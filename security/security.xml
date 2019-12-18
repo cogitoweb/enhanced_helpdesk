@@ -55,7 +55,7 @@
             <field name="domain_force">['|',
              ('partner_id.child_ids', 'in', [user.partner_id.id]),
              ('partner_id', 'in', [user.partner_id.id]),
-             ('privacy_visibility', 'in', ['portal']), ('state', '=', 'open'),
+             ('privacy_visibility', 'in', ['portal']), ('state', 'in', ('open', 'close')),
             ]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_create" eval="False"/>
@@ -70,8 +70,8 @@
             <field name="domain_force">['|',
              ('partner_id.child_ids', 'in', [user.partner_id.id]),
              ('partner_id', 'in', [user.partner_id.id]),
-             ('points', '>', 0),
-             ('project_id.privacy_visibility', 'in', ['portal']), ('project_id.state', '=', 'open'),
+             ('ticket_id', '!=', False),
+             ('project_id.privacy_visibility', 'in', ['portal']), ('project_id.state', 'in', ('open', 'close')),
             ]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_create" eval="False"/>
