@@ -217,7 +217,7 @@ class CrmHelpdesk(models.Model):
     def compute_is_invoiced(self):
 
         for r in self:
-            r.invoiced = True if r.invoice_id else False
+            r.invoiced = True if r.invoice_id or r.task_id.invoiced else False
 
     @api.multi
     @api.depends('task_id.points', 'task_id.direct_sale_line_id')
