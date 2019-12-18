@@ -310,9 +310,9 @@
                 
                 <xpath expr="//field[@name='priority']" position="after">
                     <field name="task_direct_sale_line_id" readonly="True" />
-                    <field name="task_product_id" attrs="{'readonly': [('task_direct_sale_line_id', '!=', False)]}" />
-                    <field name="invoiced" attrs="{'readonly': ['!', ('proxy_status_code', '=', ('ok'))], 'invisible': [('proxy_status_code', 'not in', ('ok'))]}" />
-                    <field name="invoice_id" attrs="{'invisible': [('proxy_status_code', 'not in', ('ok'))]}" />
+                    <field name="task_product_id" attrs="{'readonly': ['|', ('invoice_id', '!=', False), ('task_direct_sale_line_id', '!=', False)]}" />
+                    <field name="invoiced" attrs="{'invisible': [('proxy_status_code', 'not in', ('ok'))]}" />
+                    <field name="invoice_id" readonly="True" attrs="{'invisible': [('proxy_status_code', 'not in', ('ok'))]}" />
                 </xpath>
             
                 <xpath expr="//field[@name='date']" position="attributes">
