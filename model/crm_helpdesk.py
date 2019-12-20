@@ -403,6 +403,12 @@ class CrmHelpdesk(models.Model):
             task_stage_id = status.stage_id.id
             
             task = self.task_id
+
+            if task_stage_id in (7):
+                for predecessor in task.predecessor_ids:
+                    predecessor.sudo().write({'stage_id': task_stage_id})
+                    _logger.info("forced predecessor rel. task %s to stage %s", predecessor.id, task_stage_id)
+
             task.sudo().write({'stage_id': task_stage_id})
             _logger.info("migrated rel. task %s to stage %s", task.id, task_stage_id)
             
