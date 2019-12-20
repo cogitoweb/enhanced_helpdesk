@@ -407,6 +407,7 @@ class CrmHelpdesk(models.Model):
             _logger.info("stage %s" % task_stage_id)
 
             if task_stage_id in [7]:
+                _logger.info("check predecessors")
                 for predecessor in task.predecessor_ids:
                     predecessor.sudo().write({'stage_id': task_stage_id})
                     _logger.info("forced predecessor rel. task %s to stage %s", predecessor.id, task_stage_id)
