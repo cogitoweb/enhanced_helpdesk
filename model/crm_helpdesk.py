@@ -404,6 +404,8 @@ class CrmHelpdesk(models.Model):
             
             task = self.task_id
 
+            _logger.info("stage %s" % task_stage_id)
+
             if task_stage_id in [7]:
                 for predecessor in task.predecessor_ids:
                     predecessor.sudo().write({'stage_id': task_stage_id})
