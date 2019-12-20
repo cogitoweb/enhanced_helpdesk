@@ -36,7 +36,7 @@
                 <templates>
                     <t t-name="kanban-box">
                     
-                        <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_project oe_kanban_global_click">
+                        <div t-att-class="record.state.raw_value == 'close'  ? 'oe_kanban_color_1  oe_kanban_card oe_kanban_project oe_kanban_global_click' : 'oe_kanban_color_0  oe_kanban_card oe_kanban_project oe_kanban_global_click'">
 
                             <div class="oe_kanban_content enhanced_helpdesk_project_kanban" style="position:relative">
                                 <h4 class="text-center"><strong><field name="name" /></strong></h4>
