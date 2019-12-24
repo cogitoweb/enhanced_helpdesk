@@ -62,7 +62,53 @@ class CrmHelpdesk(models.Model):
                 
         return [('id', 'in', request_allowed_ids)]
     
+    @api.onchange('request_id')
+    def on_change_request_id(self):
+        
+        result = []
+        
+        current_request_id = self.request_id.id
+        current_request_id_partner = self.request_id.partner_id.id
+        current_request_id_company = self.request_id.partner_id.parent_id.id
 
+        relationship_recordset = self.env['project.project'].search(
+            [
+                ('analytic_account_id.partner_id', 'in', (current_request_id_company, current_request_id_partner, current_request_id))
+            ]
+        )
+        lista_project_ids = relationship_recordset.mapped('id')
+
+        if current_request_id_company == 1:
+            # il richiedente è un account del main partner, nessun filtro
+            result = {
+                'domain': {
+                    'project_id': [
+                        ('state', '=', 'open'),
+                        ('privacy_visibility', 'in', ['portal'])
+                    ]
+                }
+            }
+        elif lista_project_ids:
+            # il richiedente è un account esterno. Restituisce solo id dei progetti collegati
+            result = {
+                'domain': {
+                    'project_id': [
+                        ('state', '=', 'open'),
+                        ('privacy_visibility', 'in', ['portal']),
+                        ('id', 'in', lista_project_ids),
+                        ('analytic_account_id.account_type', '=', 'PM')
+                    ]
+                }
+            }
+        else:
+            # Se non ci sono progetti collegati non permette di selezionare nulla
+            result = {
+                'domain': {
+                    'project_id': [('id', 'in', [0])]
+                }
+            }
+
+        return result
 
     def _get_request_user_default(self):
         if self.env.user.has_group('enhanced_helpdesk.ticketing_external_user'):
@@ -79,7 +125,13 @@ class CrmHelpdesk(models.Model):
     #
     # fine selezione richiedente
     
-    
+    def _get_projects_id(self):
+        current_request_id = self.request_id.id
+        relationship_recordset = self.search([('request_id', '=', current_request_id)])
+        lista_project = relationship_recordset.mapped('project_id')
+        lista_project_ids = lista_project.mapped('id')
+
+        return lista_project_ids
 
     def _get_ticket_status_default(self):
         ## default status
@@ -92,8 +144,6 @@ class CrmHelpdesk(models.Model):
             
         return status_ids[0]
     
-    
-
     def _get_reject_reasons(self):
         return [
                 ('wrong_effort', _('Inadequate economic effort')), 
@@ -103,7 +153,6 @@ class CrmHelpdesk(models.Model):
                 ('not_compliant', _('The delivery does not match the initial requirements')), 
                 ('account_contact', _('I want to be contacted by my account'))
         ]
-
 
     @api.depends('task_id.date_deadline')
     def _compute_task_deadline(self):
@@ -422,9 +471,13 @@ class CrmHelpdesk(models.Model):
 
     # send email
     #
-    def send_notification_mail(self, template_xml_id=None,
-                               object_class=None, object_id=False,
-                               expande=None, custom_deliver=None):
+    def send_notification_mail(self,
+                               template_xml_id=None,
+                               object_class=None,
+                               object_id=False,
+                               expande=None,
+                               custom_deliver=None,
+                               custom_internal_deliver=None):
         # ---- send mail to support for the new ticket
         company = self.env['res.users'].browse(SUPERUSER_ID).company_id
     
@@ -457,27 +510,17 @@ class CrmHelpdesk(models.Model):
             mail_to_internal.extend(['"%s" <%s>' % (ticket.sudo().task_id.project_id.user_id.name, 
                     ticket.sudo().task_id.project_id.user_id.email)])
             
-        # vendite (solo il primo)
+        # vendite e direzione (solo il primo)
         if(template_xml_id == 'email_template_ticket_new'):
-            analytic_sales_id = self.env['ir.config_parameter'].sudo().get_param('internal_analytic_account_sales_id', default=False)
-            if analytic_sales_id:
-                aaa = self.env['account.analytic.account'].sudo().browse(int(analytic_sales_id))
-                if aaa and aaa.manager_id:
-                    mail_to_internal.extend(
-                        ['"%s" <%s>' % (aaa.manager_id.name, 
-                        aaa.manager_id.email)]
-                    )
+
+            vendite = self.add_vendite_contact()
+            if vendite:
+                mail_to_internal.extend(vendite) 
+
+            direzione = self.add_direzione_contact()
+            if direzione:
+                mail_to_internal.extend(direzione)
         
-        # direzione
-        analytic_direction_id = self.env['ir.config_parameter'].sudo().get_param('internal_analytic_direction_id', default=False)
-        if analytic_direction_id:
-            aaa = self.env['account.analytic.account'].sudo().browse(int(analytic_direction_id))
-            if aaa and aaa.manager_id:
-                mail_to_internal.extend(
-                    ['"%s" <%s>' % (aaa.manager_id.name, 
-                    aaa.manager_id.email)]
-                )
-                    
         #
         # Assigned to task user
         #
@@ -497,9 +540,16 @@ class CrmHelpdesk(models.Model):
         #
         # Custom deliver
         #
-        if(custom_deliver and len(custom_deliver)>0):
+        if custom_deliver:
             mail_to.extend(custom_deliver)
-            
+
+        #
+        # Custom deliver internal
+        #
+        if custom_internal_deliver:
+            mail_to_internal.extend(custom_internal_deliver)
+
+        # ----- Message composition  
         ir_model_data = self.env['ir.model.data']
         template_id = ir_model_data.get_object_reference(
             'enhanced_helpdesk', template_xml_id)[1] or False
@@ -585,14 +635,49 @@ class CrmHelpdesk(models.Model):
                     
         return custom_deliver
     
+    #
+    #  recupero il contatto indicato come direzione
+    #
+    def add_direzione_contact(self):
+    
+        # direzione
+        mail_to_internal = []
+        analytic_direction_id = self.env['ir.config_parameter'].sudo().get_param('internal_analytic_direction_id', default=False)
+        if analytic_direction_id:
+            aaa = self.env['account.analytic.account'].sudo().browse(int(analytic_direction_id))
+            if aaa and aaa.manager_id:
+                mail_to_internal.extend(
+                    ['"%s" <%s>' % (aaa.manager_id.name, 
+                    aaa.manager_id.email)]
+                )
 
+        return mail_to_internal
+
+    #
+    #  recupero il contatto indicato come vendite
+    #
+    def add_vendite_contact(self):
+
+        mail_to_internal = []
+        analytic_sales_id = self.env['ir.config_parameter'].sudo().get_param('internal_analytic_account_sales_id', default=False)
+        if analytic_sales_id:
+            aaa = self.env['account.analytic.account'].sudo().browse(int(analytic_sales_id))
+            if aaa and aaa.manager_id:
+                mail_to_internal.extend(
+                    ['"%s" <%s>' % (aaa.manager_id.name, 
+                    aaa.manager_id.email)]
+                )
+
+        return mail_to_internal
+
+    #
+    # WORKFLOW
+    #
 
     @api.multi
     def new_ticket(self):
         _logger.info("call to new_ticket")
     
-
-
     @api.multi
     def assigned_ticket(self):
         _logger.info("call to assigned_ticket")
@@ -605,10 +690,12 @@ class CrmHelpdesk(models.Model):
         
         expande = {'before_body': before_body}
         
-        self.send_notification_mail('email_template_ticket_change_state', 
-                                    'crm.helpdesk', self.id, expande)
-
-
+        self.send_notification_mail(
+            'email_template_ticket_change_state', 
+            'crm.helpdesk',
+            self.id,
+            expande
+        )
 
     @api.multi
     def pending_ticket(self):
@@ -627,10 +714,14 @@ class CrmHelpdesk(models.Model):
         
         expande = {'before_body': before_body}
         
-        self.send_notification_mail('email_template_ticket_change_state', 
-                                    'crm.helpdesk', 
-                                    self.id,
-                                   expande)
+        self.send_notification_mail(
+            'email_template_ticket_change_state', 
+            'crm.helpdesk', 
+            self.id,
+            expande,
+            [],
+            self.add_direzione_contact()
+        )
 
     @api.multi
     def wait_ticket(self):
@@ -644,11 +735,12 @@ class CrmHelpdesk(models.Model):
         
         expande = {'before_body': before_body}
 
-        self.send_notification_mail('email_template_ticket_change_state', 
-                                    'crm.helpdesk', 
-                                    self.id,
-                                   expande)
-
+        self.send_notification_mail(
+            'email_template_ticket_change_state', 
+            'crm.helpdesk', 
+            self.id,
+            expande
+        )
 
     @api.multi
     def working_ticket(self):
@@ -697,13 +789,13 @@ class CrmHelpdesk(models.Model):
         
         expande = {'before_body': before_body}
         
-        self.send_notification_mail('email_template_ticket_change_state', 
-                                    'crm.helpdesk', 
-                                    self.id,
-                                   expande,
-                                   custom_deliver)
-        
-        
+        self.send_notification_mail(
+            'email_template_ticket_change_state', 
+            'crm.helpdesk', 
+            self.id,
+            expande,
+            custom_deliver
+        )
 
     @api.multi
     def delivered_ticket(self):
@@ -723,10 +815,14 @@ class CrmHelpdesk(models.Model):
         
         expande = {'before_body': before_body}
         
-        self.send_notification_mail('email_template_ticket_change_state', 
-                                    'crm.helpdesk', self.id, expande)
-        
-
+        self.send_notification_mail(
+            'email_template_ticket_change_state', 
+            'crm.helpdesk',
+            self.id,
+            expande,
+            [],
+            self.add_direzione_contact()
+        )
         
     @api.multi
     def completed_ticket(self):
@@ -743,10 +839,13 @@ class CrmHelpdesk(models.Model):
         
         custom_deliver = self.add_invoice_contacts()
         
-        self.send_notification_mail('email_template_ticket_change_state', 
-                                    'crm.helpdesk', self.id, expande, custom_deliver)
-
-
+        self.send_notification_mail(
+            'email_template_ticket_change_state', 
+            'crm.helpdesk',
+            self.id,
+            expande,
+            custom_deliver
+        )
 
     @api.multi
     def deleted_ticket(self):     
@@ -760,10 +859,12 @@ class CrmHelpdesk(models.Model):
 
         expande = {'before_body': before_body}
         
-        self.send_notification_mail('email_template_ticket_change_state', 
-                                    'crm.helpdesk', self.id, expande)
-
-
+        self.send_notification_mail(
+            'email_template_ticket_change_state', 
+            'crm.helpdesk',
+            self.id,
+            expande
+        )
 
     @api.multi
     def refuse_ticket(self):
@@ -777,8 +878,12 @@ class CrmHelpdesk(models.Model):
 
         expande = {'before_body': before_body}
         
-        self.send_notification_mail('email_template_ticket_change_state', 
-                                    'crm.helpdesk', self.id, expande)
+        self.send_notification_mail(
+            'email_template_ticket_change_state', 
+            'crm.helpdesk',
+            self.id,
+            expande
+        )
 
     #
     # scheduled action
@@ -811,62 +916,3 @@ class CrmHelpdesk(models.Model):
             self.send_notification_mail('email_template_ticket_change_state',
                                         'crm.helpdesk', r.id, expande, custom_deliver)
 
-
-
-    def _get_projects_id(self):
-        current_request_id = self.request_id.id
-        relationship_recordset = self.search([('request_id', '=', current_request_id)])
-        lista_project = relationship_recordset.mapped('project_id')
-        lista_project_ids = lista_project.mapped('id')
-
-        return lista_project_ids
-
-
-
-    @api.onchange('request_id')
-    def on_change_request_id(self):
-        
-        result = []
-        
-        current_request_id = self.request_id.id
-        current_request_id_partner = self.request_id.partner_id.id
-        current_request_id_company = self.request_id.partner_id.parent_id.id
-
-        relationship_recordset = self.env['project.project'].search(
-            [
-                ('analytic_account_id.partner_id', 'in', (current_request_id_company, current_request_id_partner, current_request_id))
-            ]
-        )
-        lista_project_ids = relationship_recordset.mapped('id')
-
-        if current_request_id_company == 1:
-            # il richiedente è un account del main partner, nessun filtro
-            result = {
-                'domain': {
-                    'project_id': [
-                        ('state', '=', 'open'),
-                        ('privacy_visibility', 'in', ['portal'])
-                    ]
-                }
-            }
-        elif lista_project_ids:
-            # il richiedente è un account esterno. Restituisce solo id dei progetti collegati
-            result = {
-                'domain': {
-                    'project_id': [
-                        ('state', '=', 'open'),
-                        ('privacy_visibility', 'in', ['portal']),
-                        ('id', 'in', lista_project_ids),
-                        ('analytic_account_id.account_type', '=', 'PM')
-                    ]
-                }
-            }
-        else:
-            # Se non ci sono progetti collegati non permette di selezionare nulla
-            result = {
-                'domain': {
-                    'project_id': [('id', 'in', [0])]
-                }
-            }
-
-        return result
