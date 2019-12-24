@@ -157,7 +157,7 @@
                              <field name="channel_id" invisible="1"/>
                              <field name="source" groups="enhanced_helpdesk.ticketing_support" attrs="{'readonly': [('id', '!=', False)]}"/>
 
-                             <field name="task_id" groups="enhanced_helpdesk.ticketing_support" attrs="{'readonly': True}" action="action_view_portal_task"   />
+                             <field name="task_id" groups="enhanced_helpdesk.ticketing_support" attrs="{'readonly': True, 'invisible': [('task_id', '=', False)]}" action="action_view_portal_task"   />
                              <field name="task_points" string="Estimated points" attrs="{'readonly': True, 'invisible': ['|',('task_points', '=', 0),('task_id', '=', False)]}" />
 			                 <field name="task_deadline" string="Deadline" attrs="{'readonly': True, 'invisible': [('task_id', '=', False)]}" />
                         </group>
@@ -309,10 +309,15 @@
                 </xpath>
                 
                 <xpath expr="//field[@name='priority']" position="after">
-                    <field name="task_direct_sale_line_id" readonly="True" />
+                    <field name="task_direct_sale_line_id" readonly="True" attrs="{'invisible': [('task_direct_sale_line_id', '=', False)]}"/>
                     <field name="task_product_id" attrs="{'readonly': ['|', ('invoice_id', '!=', False), ('task_direct_sale_line_id', '!=', False)]}" />
                     <field name="invoiced" attrs="{'invisible': [('proxy_status_code', 'not in', ('ok'))]}" />
                     <field name="invoice_id" readonly="True" attrs="{'invisible': [('proxy_status_code', 'not in', ('ok'))]}" />
+                </xpath>
+
+                <xpath expr="//field[@name='task_id']" position="after">
+                    <field name="create_date" invisible="True" />
+                    <field name="proxy_user_id" attrs="{'invisible': [('proxy_user_id', '=', False), ('create_date', '!=', False)]}" />
                 </xpath>
             
                 <xpath expr="//field[@name='date']" position="attributes">

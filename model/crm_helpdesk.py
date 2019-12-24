@@ -342,6 +342,7 @@ class CrmHelpdesk(models.Model):
             'ticket_id': res.id,
             'product_id': values['task_product_id'],
             'direct_sale_line_id': values.get('task_direct_sale_line_id', False),
+            'user_id': values.get('proxy_user_id', False),
             'stage_id': res.ticket_status_id.stage_id.id if res.ticket_status_id.stage_id else 2
         }
         
@@ -369,6 +370,10 @@ class CrmHelpdesk(models.Model):
             object_id=res.id,
             expande={'before_body': before_body}
             )
+
+        # ---- if proxy_user_id move ticket to assigned
+        if values.get('proxy_user_id', False):
+            res.assigned_ticket()
 
         return res
 
