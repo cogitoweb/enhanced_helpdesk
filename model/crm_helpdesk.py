@@ -923,3 +923,104 @@ class CrmHelpdesk(models.Model):
             self.send_notification_mail('email_template_ticket_change_state',
                                         'crm.helpdesk', r.id, expande, custom_deliver)
 
+        #
+        # FATTURAZIONE
+        #
+        @api.multi
+        def invoice_ticket(self):
+
+            # start check
+            for record in self:
+
+                # check prodotto
+                if not record.task_product_id:
+
+                    raise Warning(
+                        _("Ticket %s does not have sale product")
+                    )
+
+                # check stato
+                if record.proxy_status_code not in ['ok']:
+
+                    raise Warning(
+                        _("Ticket %s has wrong status")
+                    )
+
+                # check ignore_invoicing
+                if record.ignore_invoicing:
+
+                    raise Warning(
+                        _("Ticket %s has to be ignored in invoicing procedure")
+                    )
+
+                # check invoiced
+                if record.invoiced:
+
+                    raise Warning(
+                        _("Ticket %s has been already invoiced")
+                    )
+            # end check     
+
+            # ordino recordset
+            records = self
+            records.sorted(self, key=lambda x: (x.partner_id, x.product_id, x.id))
+
+            invoice = False
+            invoice_line = False
+            invoice_line_zero = False
+            for record in records:
+
+                # testata
+                if not invoice or invoice.partner_id.id != record.partner_id.id:
+
+                    invoice = self.env['account.invoice'].create(
+                        {
+                            'partner_id': record.partner_id.id
+                        }
+                    )
+
+                    invoice_line = False
+                    invoice_line_zero = False
+
+                # righe a zero
+                if not record.task_points:
+
+                    if not invoice_line_zero or record.product_id.id != invoice_line_zero.product_id.id:
+
+                        invoice_line_zero = self.env['account.invoice.line'].create(
+                            {
+                                'product_id': record.product_id.id,
+                                'invoice_id': invoice.id,
+                                'quantity': 0,
+                                'name': 'Ticket a zero punti #%s' % record.id
+                            }
+                        )
+
+                    invoice_line_zero.write(
+                        {
+                            'name': invoice_line_zero.name += ", #%s" % record.id
+                        }
+                    )
+
+                else:
+
+                    # righe con punti
+                    if not invoice_line or record.product_id.id != invoice_line.product_id.id:
+
+                        invoice_line = self.env['account.invoice.line'].create(
+                            {
+                                'product_id': record.product_id.id,
+                                'invoice_id': invoice.id,
+                                'quantity': record.task_points,
+                                'name': 'Ticket #%s' % record.id
+                            }
+                        )
+
+                    invoice_line.write(
+                        {
+                            'quantity': invoice_line += record.task_points,
+                            'name': invoice_line.name += ", #%s" % record.id
+                        }
+                    )
+            # end loop
+        # end method

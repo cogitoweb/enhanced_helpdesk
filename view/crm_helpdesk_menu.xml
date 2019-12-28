@@ -116,6 +116,26 @@
         <record id="mail.mail_feeds_main" model="ir.ui.menu">
             <field name="groups_id" eval="[(3,ref('enhanced_helpdesk.ticketing_supplier_support'))]"/>
         </record>
+
+        <!-- invoicing -->
+
+        <record id="invoice_crm_helpdesk_multi_action" model="ir.actions.server">
+            <field name="name">Invoice</field>
+            <field name="model_id" ref="model_crm_helpdesk"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = env['crm.helpdesk'].browse(context.get('active_ids', [])).invoice_ticket()
+            </field>
+        </record>
+
+        <record id="invoice_crm_helpdesk_multi_menu" model="ir.values">
+            <field name="name">Invoice</field>
+            <field name="model">crm.helpdesk</field>
+            <field name="key">action</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.server,%d' % invoice_crm_helpdesk_multi_action" />
+            <field name="groups_id" eval="[(4,ref('account.group_account_invoice'))]"/>
+        </record>
         
     </data>
     
