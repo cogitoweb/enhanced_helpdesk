@@ -982,6 +982,10 @@ class CrmHelpdesk(models.Model):
         invoice_line_zero = False
         for record in records:
 
+            taxes = []
+            for t in record.task_product_id.taxes_id:
+                taxes.append((4, t.id))
+
             # testata
             if not invoice or invoice.partner_id.id != record.partner_id.id:
 
@@ -1013,7 +1017,7 @@ class CrmHelpdesk(models.Model):
                                 record.task_product_id.property_account_income else PRODUCT_ACCOUNT_ID,
                             'invoice_id': invoice.id,
                             'uos_id': record.task_product_id.uom_id.id,
-                            'invoice_line_tax_id': [(0, 0, record.task_product_id.taxes_id.ids)],
+                            'invoice_line_tax_id': taxes,
                             'price_unit': 0,
                             'quantity': 0,
                             'name': 'Ticket a zero punti #%s' % record.id
@@ -1040,7 +1044,7 @@ class CrmHelpdesk(models.Model):
                                 record.task_product_id.property_account_income else PRODUCT_ACCOUNT_ID,
                             'invoice_id': invoice.id,
                             'uos_id': record.task_product_id.uom_id.id,
-                            'invoice_line_tax_id': [(0, 0, record.task_product_id.taxes_id.ids)],
+                            'invoice_line_tax_id': taxes,
                             'price_unit': record.project_id.analytic_account_id.point_unit_price,
                             'quantity': record.task_points,
                             'name': 'Ticket #%s' % record.id
