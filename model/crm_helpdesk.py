@@ -998,7 +998,7 @@ class CrmHelpdesk(models.Model):
 
                     invoice_line_zero.write(
                         {
-                            'name': invoice_line_zero.name += ", #%s" % record.id
+                            'name': "%s ,#%s" % (invoice_line_zero.name, record.id)
                         }
                     )
 
@@ -1018,8 +1018,8 @@ class CrmHelpdesk(models.Model):
 
                     invoice_line.write(
                         {
-                            'quantity': invoice_line += record.task_points,
-                            'name': invoice_line.name += ", #%s" % record.id
+                            'quantity': invoice_line.quantity + record.task_points,
+                            'name': "%s ,#%s" % (invoice_line.name, record.id)
                         }
                     )
             # end loop
