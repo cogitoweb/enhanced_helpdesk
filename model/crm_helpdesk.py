@@ -1045,7 +1045,7 @@ class CrmHelpdesk(models.Model):
                     )
                 ticket_count += 1
 
-                _logger.info("registered invoice_line %s" % invoice_line_zero.id)
+                _logger.info("registered invoice_line %s" % invoice_line.id)
 
         # end loop
 
