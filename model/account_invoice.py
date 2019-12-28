@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2014 Apulia Software S.r.l. (<info@apuliasoftware.it>)
+#    Copyright (C) 2014 Andre@ (<a.gallina@cgsoftware.it>)
 #    All Rights Reserved
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,18 +19,31 @@
 #
 ##############################################################################
 
-from . import account_invoice
-from . import crm_helpdesk
-from . import crm_case_categ
-from . import guide
-from . import helpdesk_qa
-from . import helpdesk_status
-from . import hr_contract
-from . import ir_attachment
-from . import project_task
-from . import res_partner
-from . import res_user
-from . import res_company
-from . import wizard_reply
-from . import wizard_cancel
-from . import wizard_start_work
+from openerp import models, fields, api
+
+
+class Invoice(models.Model):
+
+    _inherit = 'account.invoice'
+
+    # override to reset compute_is_invoiced
+    # on crm helpdesk
+    @api.multi
+    def unlink(self):
+        """
+            Delete all record(s) from recordset
+            return True on success, False otherwise
+    
+            @return: True on success, False otherwise
+        """
+
+        tickets = self.env['crm.helpdesk'].search(
+            [('invoice_id', 'in', self.ids)]
+        )
+    
+        result = super(Invoice, self).unlink()
+
+        # force compute
+        tickets.sudo().compute_is_invoiced()
+    
+        return result

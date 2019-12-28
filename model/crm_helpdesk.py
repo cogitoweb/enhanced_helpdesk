@@ -261,6 +261,8 @@ class CrmHelpdesk(models.Model):
         for r in self:
             r.ignore_invoicing = True if r.task_id.an_acc_by_prj.pre_paid or r.task_id.an_acc_by_prj.custom_invoicing_plan else False
 
+    # update crm_helpdesk set invoiced = case when task_id in (select id from project_task
+    # where invoiced or invoice_id is not null) then true else false end;
     @api.multi
     @api.depends('task_id.invoice_id', 'task_id.invoiced')
     def compute_is_invoiced(self):
@@ -1011,7 +1013,7 @@ class CrmHelpdesk(models.Model):
                                 record.task_product_id.property_account_income else PRODUCT_ACCOUNT_ID,
                             'invoice_id': invoice.id,
                             'uos_id': record.task_product_id.uom_id.id,
-                            'invoice_line_tax_id': (0, 0, record.task_product_id.taxes_id.ids),
+                            'invoice_line_tax_id': [(0, 0, record.task_product_id.taxes_id.ids)],
                             'price_unit': 0,
                             'quantity': 0,
                             'name': 'Ticket a zero punti #%s' % record.id
@@ -1024,7 +1026,6 @@ class CrmHelpdesk(models.Model):
                         }
                     )
                 ticket_zero_count += 1
-
                 _logger.info("registered invoice_line_zero %s" % invoice_line_zero.id)
 
             else:
@@ -1039,7 +1040,7 @@ class CrmHelpdesk(models.Model):
                                 record.task_product_id.property_account_income else PRODUCT_ACCOUNT_ID,
                             'invoice_id': invoice.id,
                             'uos_id': record.task_product_id.uom_id.id,
-                            'invoice_line_tax_id': (0, 0, record.task_product_id.taxes_id.ids),
+                            'invoice_line_tax_id': [(0, 0, record.task_product_id.taxes_id.ids)],
                             'price_unit': record.project_id.analytic_account_id.point_unit_price,
                             'quantity': record.task_points,
                             'name': 'Ticket #%s' % record.id
@@ -1053,7 +1054,6 @@ class CrmHelpdesk(models.Model):
                         }
                     )
                 ticket_count += 1
-
                 _logger.info("registered invoice_line %s" % invoice_line.id)
 
             # update back with generated invoice
@@ -1065,8 +1065,8 @@ class CrmHelpdesk(models.Model):
             'title': _('Ticket invoicing'),
             'message': _(
                 "Invoicing procedure completed:\n\n"
-                "Generated %s invoices\n"
-                "%s evaluated tickets\n"
+                "Generated %s invoices\n\n"
+                "%s evaluated tickets\n\n"
                 "%s zero points tickets"
             ) % (invoice_count, ticket_count, ticket_zero_count),
         }
