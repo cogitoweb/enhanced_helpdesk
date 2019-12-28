@@ -262,11 +262,11 @@ class CrmHelpdesk(models.Model):
             r.ignore_invoicing = True if r.task_id.an_acc_by_prj.pre_paid or r.task_id.an_acc_by_prj.custom_invoicing_plan else False
 
     @api.multi
-    @api.depends('task_id.invoice_id')
+    @api.depends('task_id.invoice_id', 'task_id.invoiced')
     def compute_is_invoiced(self):
 
         for r in self:
-            r.invoiced = True if r.invoice_id or r.task_id.invoiced else False
+            r.invoiced = True if r.task_id.invoice_id or r.task_id.invoiced else False
 
     @api.multi
     @api.depends('task_id.points', 'task_id.direct_sale_line_id')
