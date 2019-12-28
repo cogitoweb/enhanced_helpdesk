@@ -923,104 +923,104 @@ class CrmHelpdesk(models.Model):
             self.send_notification_mail('email_template_ticket_change_state',
                                         'crm.helpdesk', r.id, expande, custom_deliver)
 
-        #
-        # FATTURAZIONE
-        #
-        @api.multi
-        def invoice_ticket(self):
+    #
+    # FATTURAZIONE
+    #
+    @api.multi
+    def invoice_ticket(self):
 
-            # start check
-            for record in self:
+        # start check
+        for record in self:
 
-                # check prodotto
-                if not record.task_product_id:
+            # check prodotto
+            if not record.task_product_id:
 
-                    raise Warning(
-                        _("Ticket %s does not have sale product")
-                    )
+                raise Warning(
+                    _("Ticket %s does not have sale product")
+                )
 
-                # check stato
-                if record.proxy_status_code not in ['ok']:
+            # check stato
+            if record.proxy_status_code not in ['ok']:
 
-                    raise Warning(
-                        _("Ticket %s has wrong status")
-                    )
+                raise Warning(
+                    _("Ticket %s has wrong status")
+                )
 
-                # check ignore_invoicing
-                if record.ignore_invoicing:
+            # check ignore_invoicing
+            if record.ignore_invoicing:
 
-                    raise Warning(
-                        _("Ticket %s has to be ignored in invoicing procedure")
-                    )
+                raise Warning(
+                    _("Ticket %s has to be ignored in invoicing procedure")
+                )
 
-                # check invoiced
-                if record.invoiced:
+            # check invoiced
+            if record.invoiced:
 
-                    raise Warning(
-                        _("Ticket %s has been already invoiced")
-                    )
-            # end check     
+                raise Warning(
+                    _("Ticket %s has been already invoiced")
+                )
+        # end check     
 
-            # ordino recordset
-            records = self
-            records.sorted(self, key=lambda x: (x.partner_id, x.product_id, x.id))
+        # ordino recordset
+        records = self
+        records.sorted(self, key=lambda x: (x.partner_id, x.product_id, x.id))
 
-            invoice = False
-            invoice_line = False
-            invoice_line_zero = False
-            for record in records:
+        invoice = False
+        invoice_line = False
+        invoice_line_zero = False
+        for record in records:
 
-                # testata
-                if not invoice or invoice.partner_id.id != record.partner_id.id:
+            # testata
+            if not invoice or invoice.partner_id.id != record.partner_id.id:
 
-                    invoice = self.env['account.invoice'].create(
+                invoice = self.env['account.invoice'].create(
+                    {
+                        'partner_id': record.partner_id.id
+                    }
+                )
+
+                invoice_line = False
+                invoice_line_zero = False
+
+            # righe a zero
+            if not record.task_points:
+
+                if not invoice_line_zero or record.product_id.id != invoice_line_zero.product_id.id:
+
+                    invoice_line_zero = self.env['account.invoice.line'].create(
                         {
-                            'partner_id': record.partner_id.id
+                            'product_id': record.product_id.id,
+                            'invoice_id': invoice.id,
+                            'quantity': 0,
+                            'name': 'Ticket a zero punti #%s' % record.id
                         }
                     )
 
-                    invoice_line = False
-                    invoice_line_zero = False
+                invoice_line_zero.write(
+                    {
+                        'name': "%s ,#%s" % (invoice_line_zero.name, record.id)
+                    }
+                )
 
-                # righe a zero
-                if not record.task_points:
+            else:
 
-                    if not invoice_line_zero or record.product_id.id != invoice_line_zero.product_id.id:
+                # righe con punti
+                if not invoice_line or record.product_id.id != invoice_line.product_id.id:
 
-                        invoice_line_zero = self.env['account.invoice.line'].create(
-                            {
-                                'product_id': record.product_id.id,
-                                'invoice_id': invoice.id,
-                                'quantity': 0,
-                                'name': 'Ticket a zero punti #%s' % record.id
-                            }
-                        )
-
-                    invoice_line_zero.write(
+                    invoice_line = self.env['account.invoice.line'].create(
                         {
-                            'name': "%s ,#%s" % (invoice_line_zero.name, record.id)
+                            'product_id': record.product_id.id,
+                            'invoice_id': invoice.id,
+                            'quantity': record.task_points,
+                            'name': 'Ticket #%s' % record.id
                         }
                     )
 
-                else:
-
-                    # righe con punti
-                    if not invoice_line or record.product_id.id != invoice_line.product_id.id:
-
-                        invoice_line = self.env['account.invoice.line'].create(
-                            {
-                                'product_id': record.product_id.id,
-                                'invoice_id': invoice.id,
-                                'quantity': record.task_points,
-                                'name': 'Ticket #%s' % record.id
-                            }
-                        )
-
-                    invoice_line.write(
-                        {
-                            'quantity': invoice_line.quantity + record.task_points,
-                            'name': "%s ,#%s" % (invoice_line.name, record.id)
-                        }
-                    )
-            # end loop
-        # end method
+                invoice_line.write(
+                    {
+                        'quantity': invoice_line.quantity + record.task_points,
+                        'name': "%s ,#%s" % (invoice_line.name, record.id)
+                    }
+                )
+        # end loop
+    # end method
