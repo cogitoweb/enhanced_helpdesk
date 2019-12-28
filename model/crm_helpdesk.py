@@ -931,6 +931,7 @@ class CrmHelpdesk(models.Model):
 
         # costanti
         ACCOUNT_ID = 33
+        PRODUCT_ACCOUNT_ID = 5342
         JOURNAL_ID = 1
 
         # start check
@@ -997,6 +998,8 @@ class CrmHelpdesk(models.Model):
                     invoice_line_zero = self.env['account.invoice.line'].create(
                         {
                             'product_id': record.task_product_id.id,
+                            'account_id': record.task_product_id.property_account_income.id if \
+                                record.task_product_id.property_account_income else PRODUCT_ACCOUNT_ID,
                             'invoice_id': invoice.id,
                             'quantity': 0,
                             'name': 'Ticket a zero punti #%s' % record.id
@@ -1019,6 +1022,8 @@ class CrmHelpdesk(models.Model):
                     invoice_line = self.env['account.invoice.line'].create(
                         {
                             'product_id': record.task_product_id.id,
+                            'account_id': record.task_product_id.property_account_income.id if \
+                                record.task_product_id.property_account_income else PRODUCT_ACCOUNT_ID,
                             'invoice_id': invoice.id,
                             'quantity': record.task_points,
                             'name': 'Ticket #%s' % record.id
