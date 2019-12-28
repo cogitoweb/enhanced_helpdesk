@@ -936,28 +936,28 @@ class CrmHelpdesk(models.Model):
             if not record.task_product_id:
 
                 raise Warning(
-                    _("Ticket %s does not have sale product")
+                    _("Ticket %s does not have sale product") % record.id
                 )
 
             # check stato
             if record.proxy_status_code not in ['ok']:
 
                 raise Warning(
-                    _("Ticket %s has wrong status")
+                    _("Ticket %s has wrong status") % record.id
                 )
 
             # check ignore_invoicing
             if record.ignore_invoicing:
 
                 raise Warning(
-                    _("Ticket %s has to be ignored in invoicing procedure")
+                    _("Ticket %s has to be ignored in invoicing procedure") % record.id
                 )
 
             # check invoiced
             if record.invoiced:
 
                 raise Warning(
-                    _("Ticket %s has been already invoiced")
+                    _("Ticket %s has been already invoiced") % record.id
                 )
         # end check     
 
