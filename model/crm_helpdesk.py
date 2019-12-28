@@ -929,6 +929,10 @@ class CrmHelpdesk(models.Model):
     @api.multi
     def invoice_ticket(self):
 
+        # costanti
+        ACCOUNT_ID = 33
+        JOURNAL_ID = 1
+
         # start check
         for record in self:
 
@@ -975,7 +979,9 @@ class CrmHelpdesk(models.Model):
 
                 invoice = self.env['account.invoice'].create(
                     {
-                        'partner_id': record.partner_id.id
+                        'partner_id': record.partner_id.id,
+                        'account_id': ACCOUNT_ID,
+                        'journal_id': JOURNAL_ID
                     }
                 )
 
