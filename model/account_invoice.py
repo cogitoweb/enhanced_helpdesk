@@ -37,13 +37,16 @@ class Invoice(models.Model):
             @return: True on success, False otherwise
         """
 
-        tickets = self.env['crm.helpdesk'].search(
+        tickets = self.env['crm.helpdesk'].sudo().search(
             [('invoice_id', 'in', self.ids)]
         )
     
         result = super(Invoice, self).unlink()
 
         # force compute
-        tickets.sudo().compute_is_invoiced()
+        # reset invoiced on task
+        for t in tickets:
+            if t.task_id and t.task_id.invoiced:
+                t.task_id.invoiced = False
     
         return result
