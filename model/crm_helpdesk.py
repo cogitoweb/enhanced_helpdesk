@@ -1029,7 +1029,7 @@ class CrmHelpdesk(models.Model):
                 else:
                     invoice_line_zero.write(
                         {
-                            'name': "%s ,#%s" % (invoice_line_zero.name, record.id)
+                            'name': "%s, #%s" % (invoice_line_zero.name, record.id)
                         }
                     )
                 ticket_zero_count += 1
@@ -1057,7 +1057,7 @@ class CrmHelpdesk(models.Model):
                     invoice_line.write(
                         {
                             'quantity': invoice_line.quantity + record.task_points,
-                            'name': "%s ,#%s" % (invoice_line.name, record.id)
+                            'name': "%s, #%s" % (invoice_line.name, record.id)
                         }
                     )
                 ticket_count += 1
