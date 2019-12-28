@@ -934,6 +934,11 @@ class CrmHelpdesk(models.Model):
         PRODUCT_ACCOUNT_ID = 5342
         JOURNAL_ID = 1
 
+        # counters
+        invoice_count = 0
+        ticket_zero_count = 0
+        ticket_count = 0
+
         # start check
         for record in self:
 
@@ -988,6 +993,7 @@ class CrmHelpdesk(models.Model):
 
                 invoice_line = False
                 invoice_line_zero = False
+                invoice_count += 1
                 _logger.info("created invoice %s for partner %s" % (invoice.id, invoice.partner_id.id))
 
             # righe a zero
@@ -1005,12 +1011,13 @@ class CrmHelpdesk(models.Model):
                             'name': 'Ticket a zero punti #%s' % record.id
                         }
                     )
-
-                invoice_line_zero.write(
-                    {
-                        'name': "%s ,#%s" % (invoice_line_zero.name, record.id)
-                    }
-                )
+                else:
+                    invoice_line_zero.write(
+                        {
+                            'name': "%s ,#%s" % (invoice_line_zero.name, record.id)
+                        }
+                    )
+                ticket_zero_count += 1
 
                 _logger.info("registered invoice_line_zero %s" % invoice_line_zero.id)
 
@@ -1029,15 +1036,27 @@ class CrmHelpdesk(models.Model):
                             'name': 'Ticket #%s' % record.id
                         }
                     )
-
-                invoice_line.write(
-                    {
-                        'quantity': invoice_line.quantity + record.task_points,
-                        'name': "%s ,#%s" % (invoice_line.name, record.id)
-                    }
-                )
+                else:
+                    invoice_line.write(
+                        {
+                            'quantity': invoice_line.quantity + record.task_points,
+                            'name': "%s ,#%s" % (invoice_line.name, record.id)
+                        }
+                    )
+                ticket_count += 1
 
                 _logger.info("registered invoice_line %s" % invoice_line_zero.id)
 
         # end loop
+
+        return {
+            'type': 'ir.actions.act_window.message',
+            'title': _('Ticket invoicing'),
+            'message': _(
+                "Invoicing procedure completed:\n\n"
+                "Generated %s invoices\n"
+                "%s evaluated tickets\n"
+                "%s zero points tickets"
+            ) % (invoice_count, ticket_count, ticket_zero_count),
+        }
     # end method
