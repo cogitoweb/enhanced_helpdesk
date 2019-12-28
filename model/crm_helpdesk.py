@@ -209,7 +209,8 @@ class CrmHelpdesk(models.Model):
         related='task_id.direct_sale_line_id'
     )
     task_product_id = fields.Many2one(
-        related='task_id.product_id'
+        related='task_id.product_id',
+        store=True
     )
 
     is_emergency = fields.Boolean(string="Is Emergency", related='categ_id.emergency')
@@ -974,7 +975,10 @@ class CrmHelpdesk(models.Model):
         # end check     
 
         # ordino recordset
-        records = self.sorted(key=lambda x: (x.partner_id, x.task_product_id, x.id))
+        records = self.search(
+            [('id', 'in', self.ids)],
+            order="partner_id asc, task_product_id asc, id asc"
+        )
 
         invoice = False
         invoice_line = False
