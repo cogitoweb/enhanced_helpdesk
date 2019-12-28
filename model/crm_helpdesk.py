@@ -1010,7 +1010,7 @@ class CrmHelpdesk(models.Model):
                             'account_id': record.task_product_id.property_account_income.id if \
                                 record.task_product_id.property_account_income else PRODUCT_ACCOUNT_ID,
                             'invoice_id': invoice.id,
-                            'uos_id': record.task_product_id.uom_id,
+                            'uos_id': record.task_product_id.uom_id.id,
                             'price_unit': 0,
                             'quantity': 0,
                             'name': 'Ticket a zero punti #%s' % record.id
@@ -1037,7 +1037,7 @@ class CrmHelpdesk(models.Model):
                             'account_id': record.task_product_id.property_account_income.id if \
                                 record.task_product_id.property_account_income else PRODUCT_ACCOUNT_ID,
                             'invoice_id': invoice.id,
-                            'uos_id': record.task_product_id.uom_id,
+                            'uos_id': record.task_product_id.uom_id.id,
                             'price_unit': record.project_id.analytic_account_id.point_unit_price,
                             'quantity': record.task_points,
                             'name': 'Ticket #%s' % record.id
