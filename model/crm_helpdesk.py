@@ -1061,6 +1061,7 @@ class CrmHelpdesk(models.Model):
                 _logger.info("registered invoice_line %s" % invoice_line.id)
 
             # update back with generated invoice
+            invoice.button_reset_taxes()
             record.invoice_id = invoice
         # end loop
 
