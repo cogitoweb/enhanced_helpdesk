@@ -974,8 +974,7 @@ class CrmHelpdesk(models.Model):
         # end check     
 
         # ordino recordset
-        records = self
-        records.sorted(key=lambda x: (x.partner_id, x.task_product_id, x.id))
+        records = self.sorted(key=lambda x: (x.partner_id, x.task_product_id, x.id))
 
         invoice = False
         invoice_line = False
