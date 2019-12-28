@@ -963,7 +963,7 @@ class CrmHelpdesk(models.Model):
 
         # ordino recordset
         records = self
-        records.sorted(self, key=lambda x: (x.partner_id, x.product_id, x.id))
+        records.sorted(key=lambda x: (x.partner_id, x.product_id, x.id))
 
         invoice = False
         invoice_line = False
