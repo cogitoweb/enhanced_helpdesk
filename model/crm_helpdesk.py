@@ -986,8 +986,11 @@ class CrmHelpdesk(models.Model):
                 invoice = self.env['account.invoice'].create(
                     {
                         'partner_id': record.partner_id.id,
-                        'account_id': ACCOUNT_ID,
-                        'journal_id': JOURNAL_ID
+                        'account_id': record.partner_id.property_account_receivable if \
+                            record.partner_id.property_account_receivable else ACCOUNT_ID,
+                        'journal_id': JOURNAL_ID,
+                        'fiscal_position': record.partner_id.property_account_position if \
+                            record.partner_id.property_account_position else False
                     }
                 )
 
@@ -1007,6 +1010,8 @@ class CrmHelpdesk(models.Model):
                             'account_id': record.task_product_id.property_account_income.id if \
                                 record.task_product_id.property_account_income else PRODUCT_ACCOUNT_ID,
                             'invoice_id': invoice.id,
+                            'uos_id': record.task_product_id.uom_id,
+                            'price_unit': 0,
                             'quantity': 0,
                             'name': 'Ticket a zero punti #%s' % record.id
                         }
@@ -1032,6 +1037,8 @@ class CrmHelpdesk(models.Model):
                             'account_id': record.task_product_id.property_account_income.id if \
                                 record.task_product_id.property_account_income else PRODUCT_ACCOUNT_ID,
                             'invoice_id': invoice.id,
+                            'uos_id': record.task_product_id.uom_id,
+                            'price_unit': 0,
                             'quantity': record.task_points,
                             'name': 'Ticket #%s' % record.id
                         }
@@ -1047,6 +1054,8 @@ class CrmHelpdesk(models.Model):
 
                 _logger.info("registered invoice_line %s" % invoice_line.id)
 
+            # update back with generated invoice
+            record.invoice_id = invoice
         # end loop
 
         return {
