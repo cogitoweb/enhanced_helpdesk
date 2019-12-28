@@ -963,7 +963,7 @@ class CrmHelpdesk(models.Model):
 
         # ordino recordset
         records = self
-        records.sorted(key=lambda x: (x.partner_id, x.product_id, x.id))
+        records.sorted(key=lambda x: (x.partner_id, x.task_product_id, x.id))
 
         invoice = False
         invoice_line = False
@@ -981,15 +981,16 @@ class CrmHelpdesk(models.Model):
 
                 invoice_line = False
                 invoice_line_zero = False
+                _logger.info("created invoice %s for partner %s" % (invoice.id, invoice.partner_id.id))
 
             # righe a zero
             if not record.task_points:
 
-                if not invoice_line_zero or record.product_id.id != invoice_line_zero.product_id.id:
+                if not invoice_line_zero or record.task_product_id.id != invoice_line_zero.product_id.id:
 
                     invoice_line_zero = self.env['account.invoice.line'].create(
                         {
-                            'product_id': record.product_id.id,
+                            'product_id': record.task_product_id.id,
                             'invoice_id': invoice.id,
                             'quantity': 0,
                             'name': 'Ticket a zero punti #%s' % record.id
@@ -1002,14 +1003,16 @@ class CrmHelpdesk(models.Model):
                     }
                 )
 
+                _logger.info("registered invoice_line_zero %s" % invoice_line_zero.id)
+
             else:
 
                 # righe con punti
-                if not invoice_line or record.product_id.id != invoice_line.product_id.id:
+                if not invoice_line or record.task_product_id.id != invoice_line.product_id.id:
 
                     invoice_line = self.env['account.invoice.line'].create(
                         {
-                            'product_id': record.product_id.id,
+                            'product_id': record.task_product_id.id,
                             'invoice_id': invoice.id,
                             'quantity': record.task_points,
                             'name': 'Ticket #%s' % record.id
@@ -1022,5 +1025,8 @@ class CrmHelpdesk(models.Model):
                         'name': "%s ,#%s" % (invoice_line.name, record.id)
                     }
                 )
+
+                _logger.info("registered invoice_line %s" % invoice_line_zero.id)
+
         # end loop
     # end method
