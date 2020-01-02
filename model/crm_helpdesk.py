@@ -24,6 +24,7 @@ from openerp import models, fields, api, SUPERUSER_ID
 
 from openerp.tools.translate import _
 from openerp.exceptions import Warning
+from openerp import workflow
 from dateutil import parser
 from datetime import datetime, timedelta
 
