@@ -376,7 +376,10 @@ class CrmHelpdesk(models.Model):
 
         # ---- if proxy_user_id move ticket to assigned
         if values.get('proxy_user_id', False):
-            res.assigned_ticket()
+            workflow.trg_validate(self._uid, 
+                                  'crm.helpdesk', 
+                                  res.id, 
+                                  'ticket_assigned', self._cr)
 
         return res
 
