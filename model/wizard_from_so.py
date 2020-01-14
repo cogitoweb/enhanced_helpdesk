@@ -96,8 +96,6 @@ class wizard_ticket_from_so(models.TransientModel):
         for line in self.order_id.order_line:
 
             if not line.tasks_ids:
-                
-                _logger.info("%s AAAAAAAA" % self.env.ref('enhanced_helpdesk.crm_case_categ_from_offer').id)
 
                 new_ticket = self.env['crm.helpdesk'].create(
                     {

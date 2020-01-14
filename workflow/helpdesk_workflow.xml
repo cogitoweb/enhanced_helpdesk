@@ -157,6 +157,12 @@
             <field name="signal">ticket_completed</field>
         </record>
 
+        <record id="t32" model="workflow.transition">
+            <field name="act_from" ref="act_new"/>
+            <field name="act_to" ref="act_completed"/>
+            <field name="signal">ticket_completed</field>
+        </record>
+
         <record id="t6" model="workflow.transition">
             <field name="act_from" ref="act_dlv"/>
             <field name="act_to" ref="act_wrk"/>
