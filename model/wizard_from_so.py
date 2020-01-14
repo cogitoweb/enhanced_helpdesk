@@ -43,8 +43,7 @@ class wizard_ticket_from_so(models.TransientModel):
     task_user_id = fields.Many2one('res.users',
                                  required=True,
                                  string='Assigned to', 
-                                 default=_get_request_user_default,
-                                 related='task_id.user_id') 
+                                 default=_get_request_user_default) 
     deadline = fields.Date(string='Deadline')
 
     # ----- Methods    
