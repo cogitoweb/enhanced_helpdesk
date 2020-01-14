@@ -8,7 +8,7 @@
         <record id="crm_case_categ_from_offer" model="crm.case.categ">
             <field name="name">Da offerta</field>
             <field name="available_for_customers">1</field>
-            <field name="object_id" ref="crm.model_crm_case_categ" />
+            <field name="object_id" ref="crm.model_crm_helpdesk" />
         </record>
 
 

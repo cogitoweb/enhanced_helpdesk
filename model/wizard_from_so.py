@@ -105,7 +105,7 @@ class wizard_ticket_from_so(models.TransientModel):
                         'partner_id': richiedente.id,
                         'name': line.name,
                         'description': line.name,
-                        'direct_sale_line_id': line.id,
+                        'task_direct_sale_line_id': line.id,
                         'user_id': self.task_user_id.id if self.task_user_id else False,
                         'task_deadline': self.deadline,
                         'source': 'internal',
