@@ -19,7 +19,7 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api
+from openerp import models, fields, api, _
 from openerp import workflow
 import logging
 #Get the logger
@@ -128,5 +128,7 @@ class wizard_ticket_from_so(models.TransientModel):
                     'ticket_completed',
                     self._cr
                 )
+
+                _logger.info("try to complete id %s" % t.id)
 
         return True
