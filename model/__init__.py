@@ -31,6 +31,7 @@ from . import project_task
 from . import res_partner
 from . import res_user
 from . import res_company
-from . import wizard_reply
 from . import wizard_cancel
+from . import wizard_from_so
+from . import wizard_reply
 from . import wizard_start_work

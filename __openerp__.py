@@ -37,6 +37,7 @@ Enhanced Openerp Helpdesk and Ticketing support
 
         'view/wizard_ticket_reply.xml',
         'view/wizard_ticket_cancel.xml',
+        'view/wizard_ticket_from_so.xml',
         'view/wizard_ticket_start_work.xml',
         'view/crm_helpdesk_view.xml',
         'view/crm_helpdesk_menu.xml',

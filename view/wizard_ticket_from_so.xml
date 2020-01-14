@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="wizard_ticket_from_so_view" model="ir.ui.view">
+            <field name="name">Ticket From SO</field>
+            <field name="model">wizard.ticket.from.so</field>
+            <field name="arch" type="xml">
+                
+                <form string="Ticket From SO">
+
+                    <group colspan="4">
+                          <field name="order_id" readonly="True" options="{'no_open': True}" />
+
+                          <field name="deadline" />
+
+                          <field name="task_user_id" domain="[('groups_id.id', 'in', [%(enhanced_helpdesk.ticketing_support)d,%(enhanced_helpdesk.ticketing_supplier_support)d])]"
+                                    options="{'no_quick_create':True,'no_create_edit':True,'no_open':True}"
+                           />
+
+                    </group>
+                    <footer>
+                          <button name="generate" string="Generate" type="object" class="oe_highlight"/>
+                          <button name="generate_and_complete" string="Generate and complete" type="object" class="oe_highlight"/>
+
+                          <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_ticket_from_so" model="ir.actions.act_window">
+            <field name="name">Ticket From SO</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wizard.ticket.from.so</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="wizard_ticket_from_so_view"/>
+            <field name="context">{'record_id' : active_id}</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>

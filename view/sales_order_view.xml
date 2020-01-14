@@ -27,7 +27,29 @@
                 </field>
 
             </field>
-       </record>        
+       </record>     
+
+
+       <record id="helpdesk_sale_order_form" model="ir.ui.view">
+            <field name="name">hepldesk.sale.order_form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form" />    
+            <field name="priority">20</field>
+
+            <field name="arch" type="xml">
+                
+                <xpath expr="//header/field[@name='state']" position="before">
+
+                    <button class="oe_highlight" type="action" attrs="{'invisible': [('id', '=', False)]}"
+                            name="%(action_ticket_reply)d"
+                            string="Create tickets"
+                            context="{'default_order_id': id}" />
+
+                </xpath>
+                
+            </field>
+       </record>
+           
 
     </data>
 </openerp>
