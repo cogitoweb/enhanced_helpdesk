@@ -104,7 +104,7 @@ class wizard_ticket_from_so(models.TransientModel):
                         'name': line.name,
                         'description': line.name,
                         'task_direct_sale_line_id': line.id,
-                        'user_id': self.task_user_id.id if self.task_user_id else False,
+                        'proxy_user_id': self.task_user_id.id if self.task_user_id else False,
                         'task_deadline': self.deadline,
                         'source': 'internal',
                         'categ_id': self.env.ref('enhanced_helpdesk.crm_case_categ_from_offer').id,
