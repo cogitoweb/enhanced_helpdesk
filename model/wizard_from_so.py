@@ -74,10 +74,21 @@ class wizard_ticket_from_so(models.TransientModel):
         # richiedente account cogito
 
         tickets = []
-        # crea parametro internal_user_id
-        richiedente = self.env['res.users'].search(
-            [('login', '=', 'noreply@cogitoweb.it')]
+
+        internal_user_id = self.env['ir.config_parameter'].sudo().get_param(
+            'internal_user_id', default=False
         )
+        
+        if not internal_user_id:
+            raise Warning(_('Please set internal_user_id param'))
+
+        # crea parametro internal_user_id
+        richiedente = self.env['res.users'].browse(
+            internal_user_id
+        )
+
+        if not richiedente:
+            raise Warning(_('Please set VALID internal_user_id param'))
 
         if not self.order_id.real_project_id:
             raise Warning(_('Please assign project to create tickets'))
@@ -96,7 +107,7 @@ class wizard_ticket_from_so(models.TransientModel):
                         'user_id': self.task_user_id.id if self.task_user_id else False,
                         'task_deadline': self.deadline,
                         'source': 'internal',
-                        'categ_id': self.env.ref('crm.case.categ.from_offer').id,
+                        'categ_id': self.env.ref('enhanced_helpdesk.crm_case_categ_from_offer').id,
                         'date': fields.Datetime.now()
                         
                     }

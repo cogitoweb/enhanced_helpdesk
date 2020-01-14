@@ -5,7 +5,7 @@
 
         <!-- Enhanced HelpDesk subtypes for messaging / Chatter -->
 
-        <record id="crm.case.categ.from_offer" model="crm.case.categ">
+        <record id="enhanced_helpdesk.crm_case_categ_from_offer" model="crm.case.categ">
             <field name="name">Da offerta</field>
         </record>
 
