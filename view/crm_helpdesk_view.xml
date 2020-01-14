@@ -164,7 +164,7 @@
                         
                         <group colspan="2">
                             <field name="categ_id" colspan="1"
-                                domain="[('object_id.model', '=', 'crm.helpdesk')]"
+                                domain="[('object_id.model', '=', 'crm.helpdesk'), ('available_for_customers', '=', True)]"
                                 context="{'object_name': 'crm.helpdesk'}"
                                 widget="selection"
                                 attrs="{'readonly': [('proxy_status_code', '!=', 'new')], 'required': True}"/>

@@ -37,3 +37,6 @@ class CrmCaseCateg(models.Model):
     
     name = fields.Char(translate=True)
     emergency =  fields.Boolean('Emergency request', translate=False)
+    available_for_customers = fields.Boolean(
+        'Available for customers', default=False, translate=False
+    )
