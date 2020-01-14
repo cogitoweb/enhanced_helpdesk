@@ -344,7 +344,7 @@ class CrmHelpdesk(models.Model):
             'name': values['name'],
             'description': values['description'],
             'ticket_id': res.id,
-            'product_id': values['task_product_id'],
+            'product_id': values.get('task_product_id', False),
             'direct_sale_line_id': values.get('task_direct_sale_line_id', False),
             'user_id': values.get('proxy_user_id', False),
             'stage_id': res.ticket_status_id.stage_id.id if res.ticket_status_id.stage_id else 2
