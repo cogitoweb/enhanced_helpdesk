@@ -93,7 +93,7 @@ class wizard_ticket_from_so(models.TransientModel):
         if not self.order_id.real_project_id:
             raise Warning(_('Please assign project to create tickets'))
 
-        for line in self.order_id:
+        for line in self.order_id.order_line:
 
             if not line.tasks_ids:
                 
@@ -113,6 +113,9 @@ class wizard_ticket_from_so(models.TransientModel):
                     }
                 )
                 tickets.append(new_ticket)
+
+        if not tickets:
+            raise Warning(_('Sorry: there are no tickets to create'))
 
         # check
         if complete:
