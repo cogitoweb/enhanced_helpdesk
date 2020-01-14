@@ -40,8 +40,8 @@
                 
                 <xpath expr="//header/field[@name='state']" position="before">
 
-                    <button class="oe_highlight" type="action" attrs="{'invisible': [('id', '=', False)]}"
-                            name="%(action_ticket_reply)d"
+                    <button class="oe_highlight" type="action"
+                            name="%(action_ticket_from_so)d"
                             string="Create tickets"
                             context="{'default_order_id': id}" />
 
