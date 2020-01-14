@@ -338,7 +338,10 @@
                 <xpath expr="//field[@name='request_id']" position="attributes">
                     <attribute name="attrs">{'readonly': [('id', '!=', False)]}</attribute>
                 </xpath>
-                
+
+                <xpath expr="//field[@name='categ_id']" position="attributes">
+                    <attribute name="domain">[('object_id.model', '=', 'crm.helpdesk')]</attribute>
+                </xpath>
             
         </field>
     </record>
@@ -389,6 +392,10 @@
             
                 <xpath expr="//field[@name='project_id']" position="after">
                     <field name="task_effort" attrs="{'readonly': True}" />
+                </xpath>
+
+                <xpath expr="//field[@name='categ_id']" position="attributes">
+                    <attribute name="domain">[('object_id.model', '=', 'crm.helpdesk')]</attribute>
                 </xpath>
                                 
         </field>
