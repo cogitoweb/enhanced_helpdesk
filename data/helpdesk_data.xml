@@ -4,6 +4,13 @@
     <data>
 
         <!-- Enhanced HelpDesk subtypes for messaging / Chatter -->
+
+        <record id="crm.case.categ.from_offer" model="crm.case.categ">
+            <field name="name">Da offerta</field>
+        </record>
+
+
+        <!-- Enhanced HelpDesk subtypes for messaging / Chatter -->
         <record id="open" model="mail.message.subtype">
             <field name="name">Ticket Aperto</field>
             <field name="res_model">crm.helpdesk</field>

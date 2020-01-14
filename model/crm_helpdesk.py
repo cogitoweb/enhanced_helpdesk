@@ -167,7 +167,12 @@ class CrmHelpdesk(models.Model):
 
     # ---- Fields
     source = fields.Selection(
-        [('portal', 'Portal'), ('phone', 'Phone'), ('mail', 'Mail')],
+        [
+            ('portal', 'Portal'),
+            ('phone', 'Phone'),
+            ('mail', 'Mail'),
+            ('internal', 'Internal'),
+        ],
         string='Source', default='portal')
        
     request_id = fields.Many2one('res.users',
@@ -340,14 +345,14 @@ class CrmHelpdesk(models.Model):
         task_value = {
             'project_id': values['project_id'],
             'partner_id': values['partner_id'],
-            'user_id': "",
             'name': values['name'],
             'description': values['description'],
             'ticket_id': res.id,
             'product_id': values.get('task_product_id', False),
             'direct_sale_line_id': values.get('task_direct_sale_line_id', False),
             'user_id': values.get('proxy_user_id', False),
-            'stage_id': res.ticket_status_id.stage_id.id if res.ticket_status_id.stage_id else 2
+            'stage_id': res.ticket_status_id.stage_id.id if res.ticket_status_id.stage_id else 2,
+            'date_deadline': values.get('task_deadline', False),
         }
         
         task_id = self.env['project.task'].sudo().create(task_value)

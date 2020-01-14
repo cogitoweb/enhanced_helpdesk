@@ -39,9 +39,8 @@ class wizard_ticket_from_so(models.TransientModel):
 
     # ---- Fields
 
-    order_id = fields.Many2one('sale.order')
+    order_id = fields.Many2one('sale.order', string='Order', required=True)
     task_user_id = fields.Many2one('res.users',
-                                 required=True,
                                  string='Assigned to', 
                                  default=_get_request_user_default) 
     deadline = fields.Date(string='Deadline')
@@ -51,12 +50,19 @@ class wizard_ticket_from_so(models.TransientModel):
     @api.multi
     def generate(self):
 
+        self.ensure_one()
+
         self.ticket_generate(False)
 
         return {'type': 'ir.actions.act_window_close'}
 
     @api.multi
     def generate_and_complete(self):
+
+        self.ensure_one()
+
+        if not self.task_user_id or not self.deadline:
+            raise Warning(_('Set assignee and deadline to complete tickets'))
 
         self.ticket_generate(True)
 
@@ -65,8 +71,47 @@ class wizard_ticket_from_so(models.TransientModel):
     def ticket_generate(self, complete):
 
         # [TODO] TICKET CREATION if not created
+        # richiedente account cogito
 
+        tickets = []
+        # crea parametro internal_user_id
+        richiedente = self.env['res.users'].search(
+            [('login', '=', 'noreply@cogitoweb.it')]
+        )
+
+        if not self.order_id.real_project_id:
+            raise Warning(_('Please assign project to create tickets'))
+
+        for line in self.order_id:
+
+            if not line.tasks_ids:
+                
+                new_ticket = self.env['crm.helpdesk'].create(
+                    {
+                        'project_id': self.order_id.real_project_id.id,
+                        'partner_id': richiedente.id,
+                        'name': line.name,
+                        'description': line.name,
+                        'direct_sale_line_id': line.id,
+                        'user_id': self.task_user_id.id if self.task_user_id else False,
+                        'task_deadline': self.deadline,
+                        'source': 'internal',
+                        'categ_id': self.env.ref('crm.case.categ.from_offer').id,
+                        'date': fields.Datetime.now()
+                        
+                    }
+                )
+                tickets.append(new_ticket)
+
+        # check
         if complete:
-            pass
+            for t in tickets:
+                workflow.trg_validate(
+                    self._uid, 
+                    'crm.helpdesk', 
+                    t.id, 
+                    'ticket_completed',
+                    self._cr
+                )
 
         return True
