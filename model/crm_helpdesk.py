@@ -354,7 +354,17 @@ class CrmHelpdesk(models.Model):
             'stage_id': res.ticket_status_id.stage_id.id if res.ticket_status_id.stage_id else 2,
             'date_deadline': values.get('task_deadline', False),
         }
+
+        # - guess product
+        if not values.get('task_product_id', False) and not values.get('task_direct_sale_line_id', False):
+            aaa = self.env['project.project'].sudo().browse(
+                values['project_id']
+            ).analytic_account_id
+
+            if aaa and aaa.ticket_product_id:
+                task_value['product_id'] = aaa.ticket_product_id.id
         
+        # task creation
         task_id = self.env['project.task'].sudo().create(task_value)
         
         # ---- if emergency priority = 2 (hight)

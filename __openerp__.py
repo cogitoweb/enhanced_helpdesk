@@ -39,26 +39,26 @@ Enhanced Openerp Helpdesk and Ticketing support
         'view/wizard_ticket_cancel.xml',
         'view/wizard_ticket_from_so.xml',
         'view/wizard_ticket_start_work.xml',
+
+        'view/account_analytic_account.xml',
+        'view/account_invoice_view.xml',
+        'view/company_view.xml',
         'view/crm_helpdesk_view.xml',
         'view/crm_helpdesk_menu.xml',
         'view/crm_case_categ_view.xml',
-        
         'view/product_category.xml',
         'view/project_view.xml',
         'view/partner_view.xml',
-        'view/company_view.xml',
         'view/guide_view.xml',
         'view/helpdesk_status.xml',
         'view/hr_contract.xml',
+        'view/sales_order_view.xml',
         
         'data/helpdesk_status_data.xml',
         'data/helpdesk_data.xml',
         'data/helpdesk_actions.xml',
         'workflow/helpdesk_workflow.xml',
         
-        'view/sales_order_view.xml',
-        'view/account_invoice_view.xml',
-
         'view/webclient_templates.xml'
         
         ],

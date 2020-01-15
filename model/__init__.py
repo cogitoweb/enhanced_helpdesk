@@ -19,6 +19,7 @@
 #
 ##############################################################################
 
+from . import account_analytic_account
 from . import account_invoice
 from . import crm_helpdesk
 from . import crm_case_categ
