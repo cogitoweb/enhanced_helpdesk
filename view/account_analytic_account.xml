@@ -10,7 +10,7 @@
 		 
 			<field name="account_type" position="after">
 				<field name="ticket_product_id"
-					attrs="{'required': [('account_type', '='. 'PM')], 'invisible': [('account_type', '!='. 'PM')]}" />
+					attrs="{'required': [('account_type', '=', 'PM')], 'invisible': [('account_type', '!=', 'PM')]}" />
 			</field>
 
         </field>
