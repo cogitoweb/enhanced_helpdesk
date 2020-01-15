@@ -100,7 +100,8 @@ class wizard_ticket_from_so(models.TransientModel):
                 new_ticket = self.env['crm.helpdesk'].create(
                     {
                         'project_id': self.order_id.real_project_id.id,
-                        'partner_id': richiedente.id,
+                        'partner_id': self.order_id.real_project_id.partner_id.id,
+                        'request_id': richiedente.id,
                         'name': line.name,
                         'description': line.name,
                         'task_direct_sale_line_id': line.id,
