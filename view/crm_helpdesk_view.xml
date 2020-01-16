@@ -425,6 +425,7 @@
 		    
                 <group expand="0" string="Group by...">
                     <filter string="Category" domain="[]" context="{'group_by' : 'categ_id'}"/>
+                    <filter string="Product" domain="[]" context="{'group_by' : 'task_product_id'}"/>
                     <filter string="Project" domain="[]" context="{'group_by' : 'project_id'}"/>
                     <filter string="Status" domain="[]" context="{'group_by' : 'ticket_status_id'}"/>
                     <filter string="Partner" domain="[]" context="{'group_by' : 'partner_id'}"/>
