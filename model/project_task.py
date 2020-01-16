@@ -56,6 +56,8 @@ class Task(models.Model):
             # check project
             project = self.env['project.project'].browse(values.get('project_id'))
             allow_creation = False
+
+            _logger.info(values)
             
             if project and project.analytic_account_id:
                 if project.analytic_account_id.account_type in ('CP', 'NS') or values.get('billing_plan', False):
