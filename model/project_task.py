@@ -53,11 +53,14 @@ class Task(models.Model):
         
         if not values.get('ticket_id', False):
             
-            # check project
-            project = self.env['project.project'].browse(values.get('project_id'))
-            allow_creation = False
+            # allow if billing_plan
+            allow_creation = values.get('billing_plan', False)
 
-            _logger.info(values)
+            # check project
+            project = False
+            project_id = values.get('project_id', False)
+            if project_id:
+                project = self.env['project.project'].browse(values.get('project_id'))
             
             if project and project.analytic_account_id:
                 if project.analytic_account_id.account_type in ('CP', 'NS') or values.get('billing_plan', False):
