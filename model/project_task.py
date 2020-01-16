@@ -30,7 +30,7 @@ class Task(models.Model):
     _inherit = 'project.task'
 
     # ----- Fields
-    ticket_id = fields.Many2one('crm.helpdesk')
+    ticket_id = fields.Many2one('crm.helpdesk', index=True)
 
     ticket_display_id = fields.Char(string='Ticket ID', related='ticket_id.display_id')
     rel_helpdesk_qa_ids = fields.One2many(string='Messages',

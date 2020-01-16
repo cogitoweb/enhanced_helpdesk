@@ -173,10 +173,12 @@ class CrmHelpdesk(models.Model):
             ('mail', 'Mail'),
             ('internal', 'Internal'),
         ],
+        index=True,
         string='Source', default='portal')
        
     request_id = fields.Many2one('res.users',
                                  required=True,
+                                 index=True,
                                  string='Sender',
                                  default=_get_request_user_default,
                                  domain=_get_request_allowed_ids)
@@ -193,13 +195,20 @@ class CrmHelpdesk(models.Model):
     merge_ticket_ids = fields.One2many('crm.helpdesk', 'merge_ticket_id')
     related_ticket = fields.Html()
 
-    project_id = fields.Many2one('project.project', required=True, string='Project')
+    project_id = fields.Many2one(
+        'project.project', required=True, string='Project',
+        index=True
+    )
     partner_id = fields.Many2one(
         compute_sudo=True,
         compute=_compute_partner_id,
-        store=True
+        store=True,
+        index=True
     )
-    task_id = fields.Many2one('project.task', required=False, string='Task')
+    task_id = fields.Many2one(
+        'project.task', required=False, string='Task',
+        index=True
+    )
     task_id_id = fields.Char(string='Ticket ID', compute='compute_display_name',)
     
     task_points = fields.Integer(string='Estimated points', related='task_id.points')
@@ -208,7 +217,8 @@ class CrmHelpdesk(models.Model):
         string='Deadline',
         compute_sudo=True,
         compute=_compute_task_deadline,
-        store=True
+        store=True,
+        index=True
     )
 
     task_direct_sale_line_id = fields.Many2one(
@@ -216,7 +226,8 @@ class CrmHelpdesk(models.Model):
     )
     task_product_id = fields.Many2one(
         related='task_id.product_id',
-        store=True
+        store=True,
+        index=True
     )
 
     is_emergency = fields.Boolean(string="Is Emergency", related='categ_id.emergency')
@@ -224,11 +235,13 @@ class CrmHelpdesk(models.Model):
     cost = fields.Float(string='Cost', related='task_id.cost', readonly=True)
 
     ticket_status_id = fields.Many2one('helpdesk.ticket.status', default=1,
-                                       string="Ticket Status", track_visibility='onchange'); 
+                                       string="Ticket Status", track_visibility='onchange',
+                                       index=True); 
     proxy_status_code = fields.Char(related='ticket_status_id.status_code')
     proxy_user_id = fields.Many2one(
         related='task_id.user_id',
-        store=True
+        store=True,
+        index=True
     )
     
     reject_reason = fields.Selection(_get_reject_reasons, string='Reject Reason')
@@ -236,11 +249,13 @@ class CrmHelpdesk(models.Model):
     
     ignore_invoicing = fields.Boolean(
         compute='compute_ignore_invoicing',
-        store=True
+        store=True,
+        index=True
     )
     invoiced = fields.Boolean(
         compute='compute_is_invoiced',
-        store=True
+        store=True,
+        index=True
     )
     invoice_id = fields.Many2one(
         related='task_id.invoice_id'
@@ -250,7 +265,9 @@ class CrmHelpdesk(models.Model):
     
     last_answer_date = fields.Datetime(
         compute='compute_ticket_last_answer',
-        string="Last Answer Date", store=True)
+        string="Last Answer Date",
+        store=True,
+        index=True)
     
     account_type = fields.Selection(related='project_id.analytic_account_id.account_type')
 
