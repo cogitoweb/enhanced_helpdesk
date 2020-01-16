@@ -19,5 +19,5 @@ class SaleOrder(models.Model):
     # Fields
 
     task_to_invoice_ids = fields.One2many(
-        domain="[('ticket_id', '=', False)]"
+        domain=[('ticket_id', '=', False)]
     )
