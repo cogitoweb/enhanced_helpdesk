@@ -222,7 +222,14 @@ class CrmHelpdesk(models.Model):
     )
 
     task_direct_sale_line_id = fields.Many2one(
-        related='task_id.direct_sale_line_id'
+        related='task_id.direct_sale_line_id',
+        store=True,
+        index=True
+    )
+    task_direct_sale_order_id = fields.Many2one(
+        related='task_id.sale_order_id',
+        store=True,
+        index=True
     )
     task_product_id = fields.Many2one(
         related='task_id.product_id',
@@ -1013,7 +1020,7 @@ class CrmHelpdesk(models.Model):
         # ordino recordset
         records = self.search(
             [('id', 'in', self.ids)],
-            order="partner_id asc, task_product_id asc, id asc"
+            order="partner_id asc, task_direct_sale_order_id asc, task_product_id asc, id asc"
         )
 
         invoice = False
