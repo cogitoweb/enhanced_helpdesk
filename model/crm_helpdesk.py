@@ -1045,7 +1045,7 @@ class CrmHelpdesk(models.Model):
                 _logger.info("created invoice %s for partner %s" % (invoice.id, invoice.partner_id.id))
 
             # da offerta
-            if record.direct_sale_line_id:
+            if record.task_direct_sale_line_id:
 
                 invoice_line_from_offer = self.env['account.invoice.line'].create(
                     {
@@ -1067,10 +1067,10 @@ class CrmHelpdesk(models.Model):
 
                     invoice.origin = "%s, %s" % (
                         invoice.origin,
-                        record.direct_sale_line_id.order_id.name
+                        record.task_direct_sale_line_id.order_id.name
                     )
                 else:
-                    invoice.origin = record.direct_sale_line_id.order_id.name
+                    invoice.origin = record.task_direct_sale_line_id.order_id.name
 
             # righe a zero
             elif not record.task_points:
