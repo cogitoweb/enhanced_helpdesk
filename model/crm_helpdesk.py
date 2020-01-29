@@ -1017,6 +1017,7 @@ class CrmHelpdesk(models.Model):
         )
 
         invoice = False
+        sale_offer_id = False
         invoice_line = False
         invoice_line_zero = False
         for record in records:
@@ -1025,7 +1026,15 @@ class CrmHelpdesk(models.Model):
             for t in record.task_product_id.taxes_id:
                 taxes.append((4, t.id))
 
+            # se cambia offerta fai reset
+            if record.task_direct_sale_line_id:
+                if sale_offer_id != record.task_direct_sale_line_id.order_id.id:
+                    invoice = False
+
+                sale_offer_id = record.task_direct_sale_line_id.order_id.id
+
             # testata
+
             if not invoice or invoice.partner_id.id != record.partner_id.id:
 
                 invoice = self.env['account.invoice'].create(
@@ -1035,7 +1044,10 @@ class CrmHelpdesk(models.Model):
                             record.partner_id.property_account_receivable else ACCOUNT_ID,
                         'journal_id': JOURNAL_ID,
                         'fiscal_position': record.partner_id.property_account_position.id if \
-                            record.partner_id.property_account_position else False
+                            record.partner_id.property_account_position else False,
+                        'order_reference_id': sale_offer_id,
+                        'origin': record.task_direct_sale_line_id.order_id.name if \
+                            record.task_direct_sale_line_id else False
                     }
                 )
 
@@ -1055,22 +1067,12 @@ class CrmHelpdesk(models.Model):
                         'invoice_id': invoice.id,
                         'uos_id': record.task_product_id.uom_id.id,
                         'invoice_line_tax_id': taxes,
-                        'price_unit': record.project_id.analytic_account_id.point_unit_price,
+                        'price_unit': record.price,
                         'quantity': 1,
                         'name': record.name,
                         'account_analytic_id': record.project_id.analytic_account_id.id
                     }
                 )
-
-                # compila origin
-                if invoice.origin:
-
-                    invoice.origin = "%s, %s" % (
-                        invoice.origin,
-                        record.task_direct_sale_line_id.order_id.name
-                    )
-                else:
-                    invoice.origin = record.task_direct_sale_line_id.order_id.name
 
             # righe a zero
             elif not record.task_points:
@@ -1085,7 +1087,7 @@ class CrmHelpdesk(models.Model):
                             'invoice_id': invoice.id,
                             'uos_id': record.task_product_id.uom_id.id,
                             'invoice_line_tax_id': taxes,
-                            'price_unit': record.price,
+                            'price_unit': record.project_id.analytic_account_id.point_unit_price,
                             'quantity': 0,
                             'name': 'Ticket a zero punti #%s' % record.id,
                             'account_analytic_id': record.project_id.analytic_account_id.id
