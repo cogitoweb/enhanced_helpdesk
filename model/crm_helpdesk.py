@@ -1044,8 +1044,36 @@ class CrmHelpdesk(models.Model):
                 invoice_count += 1
                 _logger.info("created invoice %s for partner %s" % (invoice.id, invoice.partner_id.id))
 
+            # da offerta
+            if record.direct_sale_line_id:
+
+                invoice_line_from_offer = self.env['account.invoice.line'].create(
+                    {
+                        'product_id': record.task_product_id.id,
+                        'account_id': record.task_product_id.property_account_income.id if \
+                            record.task_product_id.property_account_income else PRODUCT_ACCOUNT_ID,
+                        'invoice_id': invoice.id,
+                        'uos_id': record.task_product_id.uom_id.id,
+                        'invoice_line_tax_id': taxes,
+                        'price_unit': record.project_id.analytic_account_id.point_unit_price,
+                        'quantity': 1,
+                        'name': record.name,
+                        'account_analytic_id': record.project_id.analytic_account_id.id
+                    }
+                )
+
+                # compila origin
+                if invoice.origin:
+
+                    invoice.origin = "%s, %s" % (
+                        invoice.origin,
+                        record.direct_sale_line_id.order_id.name
+                    )
+                else:
+                    invoice.origin = record.direct_sale_line_id.order_id.name
+
             # righe a zero
-            if not record.task_points:
+            elif not record.task_points:
 
                 if not invoice_line_zero or record.task_product_id.id != invoice_line_zero.product_id.id:
 
@@ -1057,9 +1085,10 @@ class CrmHelpdesk(models.Model):
                             'invoice_id': invoice.id,
                             'uos_id': record.task_product_id.uom_id.id,
                             'invoice_line_tax_id': taxes,
-                            'price_unit': 0,
+                            'price_unit': record.price,
                             'quantity': 0,
-                            'name': 'Ticket a zero punti #%s' % record.id
+                            'name': 'Ticket a zero punti #%s' % record.id,
+                            'account_analytic_id': record.project_id.analytic_account_id.id
                         }
                     )
                 else:
@@ -1086,7 +1115,8 @@ class CrmHelpdesk(models.Model):
                             'invoice_line_tax_id': taxes,
                             'price_unit': record.project_id.analytic_account_id.point_unit_price,
                             'quantity': record.task_points,
-                            'name': 'Ticket #%s' % record.id
+                            'name': 'Ticket #%s' % record.id,
+                            'account_analytic_id': record.project_id.analytic_account_id.id
                         }
                     )
                 else:
