@@ -297,6 +297,13 @@
 
                         <button name="ticket_approved" class="oe_highlight_green" string="Approve"
                                             attrs="{'invisible': [('proxy_status_code', '!=', 'app')]}"  />
+
+                        <button class="oe_read_only" type="action"
+                                name="%(action_ticket_cancel)d"
+                                string="Reject work"
+                                context="{'default_ticket_id': id}"
+                                confirm="Are you sure you want to reject the work?"
+                                attrs="{'invisible': [('proxy_status_code', '!=', 'dlv')]}"  /> 
                     </header>
                     
                 </xpath>
