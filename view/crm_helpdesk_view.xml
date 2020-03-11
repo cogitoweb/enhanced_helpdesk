@@ -329,6 +329,11 @@
                         domain="[('groups_id.id', '=', (5, 96))]"
                      />
                 </xpath>
+
+                <xpath expr="//field[@name='project_id']" position="after">
+                    <field name="project_reference_id" 
+                        attrs="{'invisible': [('task_id', '=', False)]}" />
+                </xpath>
             
                 <xpath expr="//field[@name='date']" position="attributes">
                     <attribute name="attrs">{'readonly': [('id', '!=', False)]}</attribute>
@@ -417,6 +422,7 @@
                 <field name="id" />
                 <field name="name" />
                 <field name="project_id" />
+                <field name="project_reference_id" />
                 <field name="categ_id" />
 		        <field name="proxy_user_id"/>
                 <field name="description" />
@@ -434,6 +440,7 @@
                     <filter string="Category" domain="[]" context="{'group_by' : 'categ_id'}"/>
                     <filter string="Product" domain="[]" context="{'group_by' : 'task_product_id'}"/>
                     <filter string="Project" domain="[]" context="{'group_by' : 'project_id'}"/>
+                    <filter string="Project reference" domain="[]" context="{'group_by' : 'project_reference_id'}" />
                     <filter string="Status" domain="[]" context="{'group_by' : 'ticket_status_id'}"/>
                     <filter string="Partner" domain="[]" context="{'group_by' : 'partner_id'}"/>
                     <filter string="Assigned to" domain="[]" context="{'group_by' : 'proxy_user_id'}"/>

@@ -199,6 +199,11 @@ class CrmHelpdesk(models.Model):
         'project.project', required=True, string='Project',
         index=True
     )
+    project_reference_id = fields.Many2one(
+        related='task_id.project_ref_id',
+        store=True,
+        index=True
+    )
     partner_id = fields.Many2one(
         compute_sudo=True,
         compute=_compute_partner_id,
@@ -206,10 +211,15 @@ class CrmHelpdesk(models.Model):
         index=True
     )
     task_id = fields.Many2one(
-        'project.task', required=False, string='Task',
+        'project.task',
+        required=False,
+        string='Task',
         index=True
     )
-    task_id_id = fields.Char(string='Ticket ID', compute='compute_display_name',)
+    task_id_id = fields.Char(
+        string='Ticket ID',
+        compute='compute_display_name'
+    )
     
     task_points = fields.Integer(string='Estimated points', related='task_id.points')
     task_effort = fields.Float(string='Time effort (hours)', related='task_id.planned_hours')
