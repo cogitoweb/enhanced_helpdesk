@@ -29,6 +29,7 @@ from . import helpdesk_status
 from . import hr_contract
 from . import ir_attachment
 from . import project_task
+from . import project_project
 from . import res_partner
 from . import res_user
 from . import res_company
