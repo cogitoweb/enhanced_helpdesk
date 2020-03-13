@@ -96,6 +96,7 @@ class CrmHelpdesk(models.Model):
                     'project_id': [
                         ('state', '=', 'open'),
                         ('privacy_visibility', 'in', ['portal']),
+                        ('published', '=', True),
                         ('id', 'in', lista_project_ids),
                         ('analytic_account_id.account_type', '=', 'PM')
                     ]
