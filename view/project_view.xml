@@ -331,6 +331,11 @@
                 </page>
                 
             </xpath>
+
+            <field name="privacy_visibility" position="after">
+                <field name="published" attrs="{'invisible': [('privacy_visibility', '!=', 'portal')]}" />
+            </field>
+
         </field>
     </record>
 
