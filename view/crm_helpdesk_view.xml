@@ -101,7 +101,7 @@
                     
                     <button class="oe_highlight" type="action"
                     name="%(action_ticket_reply)d"
-                    string="Reply" attrs="{'invisible': [('id', '=', False), ('proxy_status_code', 'in', ['ok', 'xx'])]}"
+                    string="Reply" attrs="{'invisible': ['|', ('id', '=', False), ('proxy_status_code', 'in', ['ok', 'xx'])]}"
                     context="{'default_ticket_id': id}" />
 
                     <button name="ticket_approved" class="oe_highlight_green" string="Approve" attrs="{'invisible': [('proxy_status_code', '!=', 'app')]}"/>
