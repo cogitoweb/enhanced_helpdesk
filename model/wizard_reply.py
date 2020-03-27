@@ -163,6 +163,8 @@ class wizard_ticket_reply(models.TransientModel):
                 "attachment": values.get('attachment', False),
             }
             values = safe_values
+
+            _logger.info("safe values %s" % values)
     
         result = super(wizard_ticket_reply, self).create(values)
     
