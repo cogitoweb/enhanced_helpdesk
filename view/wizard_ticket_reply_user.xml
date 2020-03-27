@@ -14,7 +14,7 @@
                           <field name="ticket_id" readonly="True" options="{'no_open': True}" />
                           <field name="ticket_status_id" readonly="True" options="{'no_open': True}" />
                           
-                          <field name="ticket_reply" attrs="{'required': [('new_deadline', '!=', False)]}"/>
+                          <field name="ticket_reply"/>
                         
                           <field name="attachment_name" attrs="{'invisible': True}"/>
                           <field name="attachment" filename="attachment_name"/>
