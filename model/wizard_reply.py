@@ -219,8 +219,8 @@ class wizard_ticket_reply(models.TransientModel):
             self.env['ir.attachment'].create(attach_value)
 
         # ---- write new value on ticket
-        if not self.ticket_id.user_id:
-            self.ticket_id.user_id = self._uid
+        # if not self.ticket_id.user_id:
+        #    self.ticket_id.user_id = self._uid
             
         _logger.info('try validate workflow %s', wkf_trigger)
             
