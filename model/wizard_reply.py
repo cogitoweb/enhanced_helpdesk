@@ -145,7 +145,28 @@ class wizard_ticket_reply(models.TransientModel):
             else:
                 r.can_quote_ticket = False
 
+    @api.model
+    def create(self, values):
+        """
+            Create a new record for a model ModelName
+            @param values: provides a data for new record
+    
+            @return: returns a id of new record
+        """
 
+        if self.env.user.has_group('enhanced_helpdesk.ticketing_external_user'):
+
+            safe_values = {
+                "task_user_id":  values.get('task_user_id', False),
+                "ticket_reply": values.get('ticket_reply', False),
+                "attachment_name": values.get('attachment_name', False),
+                "attachment": values.get('attachment', False),
+            }
+            values = safe_values
+    
+        result = super(wizard_ticket_reply, self).create(values)
+    
+        return result
 
     @api.multi
     def reply(self, context=None, wkf_trigger=''):
