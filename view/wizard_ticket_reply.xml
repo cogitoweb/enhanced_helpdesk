@@ -33,7 +33,7 @@
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('new'))],
                                         'readonly': [('task_direct_sale_line_id', '!=', False)]}" />
                           
-                          <field name="deadline" groups="enhanced_helpdesk.ticketing_support"
+                          <field name="deadline" groups="enhanced_helpdesk.ticketing_support,enhanced_helpdesk.ticketing_supplier_support"
                                 attrs="{'invisible': ['!', ('proxy_status_code', 'in', ('ass', 'app', 'wrk'))], 
                                         'readonly': ['!', ('proxy_status_code', 'in', ('ass'))]}" />
 
