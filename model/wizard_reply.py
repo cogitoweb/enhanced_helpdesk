@@ -165,6 +165,7 @@ class wizard_ticket_reply(models.TransientModel):
             }
             
             result = super(wizard_ticket_reply, self).sudo().create(safe_values)
+            return result.reply()
         else:
 
             result = super(wizard_ticket_reply, self).create(values)
