@@ -145,33 +145,6 @@ class wizard_ticket_reply(models.TransientModel):
             else:
                 r.can_quote_ticket = False
 
-    @api.model
-    def create(self, values):
-        """
-            Create a new record for a model ModelName
-            @param values: provides a data for new record
-    
-            @return: returns a id of new record
-        """
-
-        if self.env.user.has_group('enhanced_helpdesk.ticketing_external_user'):
-
-            safe_values = {
-                "task_user_id":  values.get('task_user_id', False),
-                "ticket_reply": values.get('ticket_reply', False),
-                "attachment_name": values.get('attachment_name', False),
-                "attachment": values.get('attachment', False),
-                "ticket_id": values.get('ticket_id', False),
-            }
-            
-            result = super(wizard_ticket_reply, self).sudo().create(safe_values)
-            result.reply()
-        else:
-
-            result = super(wizard_ticket_reply, self).create(values)
-    
-        return result
-
     @api.multi
     def reply(self, context=None, wkf_trigger=''):
 
@@ -219,8 +192,8 @@ class wizard_ticket_reply(models.TransientModel):
             self.env['ir.attachment'].create(attach_value)
 
         # ---- write new value on ticket
-        # if not self.ticket_id.user_id:
-        #    self.ticket_id.user_id = self._uid
+        if not self.ticket_id.user_id:
+            self.ticket_id.user_id = self._uid
             
         _logger.info('try validate workflow %s', wkf_trigger)
             

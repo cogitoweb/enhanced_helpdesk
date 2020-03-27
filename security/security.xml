@@ -76,7 +76,7 @@
             <field name="perm_read" eval="True"/>
             <field name="perm_create" eval="False"/>
             <field name="perm_unlink" eval="False"/>
-            <field name="perm_write" eval="False"/>
+            <field name="perm_write" eval="True"/>
        </record>
 
         <record id="see_company_ticket" model="ir.rule">
