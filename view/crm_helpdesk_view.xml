@@ -90,43 +90,29 @@
         
         <field name="arch" type="xml">
 
-            <form string="Helpdesk Support">
+            <form string="Helpdesk Support" edit="0">
                 
-                <field name="proxy_status_code" invisible="1" />
-                <field name="is_emergency" invisible="1" />
+                <field name="proxy_status_code" invisible="1"/>
+                <field name="is_emergency" invisible="1"/>
                 
                 <header>
              
-                    <field name="ticket_status_id" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;1&quot;:&quot;blue&quot;}" /> 
+                    <field name="ticket_status_id" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;1&quot;:&quot;blue&quot;}"/> 
                     
-                    <button name="ticket_approved" class="oe_highlight_green" string="Approve"
-                            attrs="{'invisible': [('proxy_status_code', '!=', 'app')]}"  />
-                    
-                    <button name="ticket_completed" class="oe_highlight_green" string="Accept deliver"
-                            attrs="{'invisible': [('proxy_status_code', '!=', 'dlv')]}"  /> 
-                    
-                    <button class="oe_read_only" type="action"
-                            name="%(action_ticket_cancel)d"
-                            string="Reject work"
-                            context="{'default_ticket_id': id}"
-                            confirm="Are you sure you want to reject the work?"
-                            attrs="{'invisible': [('proxy_status_code', '!=', 'dlv')]}"  /> 
+                    <button class="oe_highlight" type="action"
+                    name="%(action_ticket_reply)d"
+                    string="Reply" attrs="{'invisible': [('id', '=', False), ('proxy_status_code', 'in', ['ok', 'xx'])]}"
+                    context="{'default_ticket_id': id}" />
 
-                    <button class="oe_read_only" type="action"
-                            name="%(action_ticket_cancel)d"
-                            string="Cancel"
-                            context="{'default_ticket_id': id}" 
-                            confirm="Are you sure you want to cancel this ticket?"
-                            attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'in', ('wrk', 'dlv', 'ok', 'xx'))]}"
-                            />
+                    <button name="ticket_approved" class="oe_highlight_green" string="Approve" attrs="{'invisible': [('proxy_status_code', '!=', 'app')]}"/>
                     
-                    <button class="oe_read_only" type="action"
-                            name="%(action_ticket_cancel)d"
-                            string="Reject"
-                            context="{'default_ticket_id': id}" 
-                            confirm="Are you sure you want to reject the quotation?"
-                            attrs="{'invisible': [('proxy_status_code', '!=', 'app')]}"
-                            />
+                    <button name="ticket_completed" class="oe_highlight_green" string="Accept deliver" attrs="{'invisible': [('proxy_status_code', '!=', 'dlv')]}"/> 
+                    
+                    <button class="oe_read_only" type="action" name="753" string="Reject work" context="{'default_ticket_id': id}" confirm="Are you sure you want to reject the work?" attrs="{'invisible': [('proxy_status_code', '!=', 'dlv')]}"/> 
+
+                    <button class="oe_read_only" type="action" name="753" string="Cancel" context="{'default_ticket_id': id}" confirm="Are you sure you want to cancel this ticket?" attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'in', ('wrk', 'dlv', 'ok', 'xx'))]}"/>
+                    
+                    <button class="oe_read_only" type="action" name="753" string="Reject" context="{'default_ticket_id': id}" confirm="Are you sure you want to reject the quotation?" attrs="{'invisible': [('proxy_status_code', '!=', 'app')]}"/>
                     
                 </header>
                 
@@ -137,65 +123,49 @@
                             <span>Ticket ID</span> #<field name="id" class="oe_inline" readonly="1" colspan="1" nolabel="1"/>
                         </h2>
                         
-                        <field name="user_id" invisible="1" colspan="4"
-                            context="{'default_groups_ref':
-                                      ['base.group_user',
-                                       'base.group_partner_manager',
-                                       'base.group_sale_salesman_all_leads']}" />
+                        <field name="user_id" invisible="1" colspan="4" context="{'default_groups_ref':                                       ['base.group_user',                                        'base.group_partner_manager',                                        'base.group_sale_salesman_all_leads']}"/>
                         
-                        <field name="request_id" string="Sender" colspan="2" attrs="{'readonly': True}" options="{'no_quick_create':True,'no_create_edit':True,'no_open':True}" />
+                        <field name="request_id" string="Sender" colspan="2" attrs="{'readonly': True}" options="{'no_quick_create':True,'no_create_edit':True,'no_open':True}"/>
                         
                         <field name="date" attrs="{'readonly': True}" colspan="2" string="Date"/>
                         <field name="date_deadline" invisible="1" colspan="4"/>
-                        <field name="email_from" invisible="1" />
+                        <field name="email_from" invisible="1"/>
                         <!--  Partner_id is required for annoying checking rules -->
                         <field name="partner_id" invisible="1"/>
                         <group colspan="2">
-                             <field name="project_id" widget="selection" colspan="2" string="Project"
-                                    attrs="{'readonly': [('proxy_status_code', '!=', 'new')]}" />
+                             <field name="project_id" widget="selection" colspan="2" string="Project" attrs="{'readonly': [('proxy_status_code', '!=', 'new')]}"/>
                             
                              <field name="channel_id" invisible="1"/>
                              <field name="source" groups="enhanced_helpdesk.ticketing_support" attrs="{'readonly': [('id', '!=', False)]}"/>
 
-                             <field name="task_id" groups="enhanced_helpdesk.ticketing_support" attrs="{'readonly': True, 'invisible': [('task_id', '=', False)]}" action="action_view_portal_task"   />
-                             <field name="task_points" string="Estimated points" attrs="{'readonly': True, 'invisible': ['|',('task_points', '=', 0),('task_id', '=', False)]}" />
-			                 <field name="task_deadline" string="Deadline" attrs="{'readonly': True, 'invisible': [('task_deadline', '=', False)]}" />
+                             <field name="task_id" groups="enhanced_helpdesk.ticketing_support" attrs="{'readonly': True, 'invisible': [('task_id', '=', False)]}" action="action_view_portal_task"/>
+                             <field name="task_points" string="Estimated points" attrs="{'readonly': True, 'invisible': ['|',('task_points', '=', 0),('task_id', '=', False)]}"/>
+			                 <field name="task_deadline" string="Deadline" attrs="{'readonly': True, 'invisible': [('task_deadline', '=', False)]}"/>
                         </group>
                         
                         <group colspan="2">
-                            <field name="categ_id" colspan="1"
-                                domain="[('object_id.model', '=', 'crm.helpdesk'), ('available_for_customers', '=', True)]"
-                                context="{'object_name': 'crm.helpdesk'}"
-                                widget="selection"
-                                attrs="{'readonly': [('proxy_status_code', '!=', 'new')], 'required': True}"/>
+                            <field name="categ_id" colspan="1" domain="[('object_id.model', '=', 'crm.helpdesk'), ('available_for_customers', '=', True)]" context="{'object_name': 'crm.helpdesk'}" widget="selection" attrs="{'readonly': [('proxy_status_code', '!=', 'new')], 'required': True}"/>
 
-                            <field name="priority" widget="priority" colspan="1"
-                                attrs="{'readonly': [('proxy_status_code', 'in', ('xx','ok','wrk','dlv','app'))]}"/>
+                            <field name="priority" widget="priority" colspan="1" attrs="{'readonly': [('proxy_status_code', 'in', ('xx','ok','wrk','dlv','app'))]}"/>
                                  
                         </group>
                         
                         <separator string="Subject" colspan="4"/>
                         
                         <group colspan="4">
-                            <field name="name" nolabel="1" colspan="4"
-                                attrs="{'readonly': [('proxy_status_code', '!=', 'new')]}"/>
+                            <field name="name" nolabel="1" colspan="4" attrs="{'readonly': [('proxy_status_code', '!=', 'new')]}"/>
                         </group>
                         
                         <separator string="Description" colspan="4"/>
                         
                         <group colspan="4">
-                            <field name="description" widget="html" nolabel="1" colspan="4"
-                                attrs="{'readonly': [('proxy_status_code', '!=', 'new')]}"/>
-                            <field name="related_ticket" nolabel="1" colspan="4" readonly="1"
-                                    attrs="{'invisible': [('related_ticket', '=', False)]}"/>
+                            <field name="description" widget="html" nolabel="1" colspan="4" attrs="{'readonly': [('proxy_status_code', '!=', 'new')]}"/>
+                            <field name="related_ticket" nolabel="1" colspan="4" readonly="1" attrs="{'invisible': [('related_ticket', '=', False)]}"/>
                         </group>
 
                         <separator string="Attachment" colspan="4"/>
                         
-                        <field name="attachment_ids" colspan="4" mode="kanban"
-                                context="{'default_res_id':uid, 'default_res_model':'res.users'}"
-                                nolabel="1"
-                                attrs="{'readonly': [('proxy_status_code', 'in', ('xx','ok'))]}">
+                        <field name="attachment_ids" colspan="4" mode="kanban" context="{'default_res_id':uid, 'default_res_model':'res.users'}" nolabel="1" attrs="{'readonly': [('proxy_status_code', 'in', ('xx','ok'))]}">
                             <form>
                                 <field name="name" colspan="4" invisible="True"/>
                                 <label for="datas" colspan="4"/>
@@ -206,21 +176,21 @@
                             </form>
                         </field>
                         
-                        <separator string="Messages" colspan="4" attrs="{'invisible': [('id', '=', False)]}" />
+                        <separator string="Messages" colspan="4" attrs="{'invisible': [('id', '=', False)]}"/>
 
-                        <field name="helpdesk_qa_ids" nolabel="1" class="ticket_messages" colspan="4"
-                            attrs="{'readonly': [('proxy_status_code', 'in', ('xx','ok'))], 'invisible': [('id', '=', False)]}">
+                        <field name="helpdesk_qa_ids" nolabel="1" class="ticket_messages" colspan="4" attrs="{'readonly': [('proxy_status_code', 'in', ('xx','ok'))], 'invisible': [('id', '=', False)]}">
 
-                            <tree string="Messagges List">
+                            <tree string="Messagges List" delete="0">
                                 <field name="complete_message" string=""/>
                             </tree>
                             <form string="New Message">
                                 <field name="date" readonly="1" colspan="4"/>
-                                <field name="message" colspan="4"/>
+                                <field name="id" invisible="1" />
+                                <field name="message" colspan="4" attrs="{'readonly': [('id', '!=', False)]}" />
                                 <field name="complete_message" colspan="4" invisible="1"/>
                                 <separator string="Attachments" colspan="4"/>
-                                <field name="attachment_ids" colspan="4" mode="kanban" context="{'default_res_id':uid, 'default_res_model':'res.users'}">
-                                    <form>
+                                <field name="attachment_ids" attrs="{'readonly': [('id', '!=', False)]}" colspan="4" mode="kanban" context="{'default_res_id':uid, 'default_res_model':'res.users'}">
+                                    <form delete="0">
                                         <field name="name" colspan="4" invisible="True"/>
                                         <label for="datas" colspan="4"/>
                                         <field name="datas" colspan="4" filename="name"/>
@@ -234,14 +204,11 @@
                     </group>
                     
                     <group>
-                        <field name="merge_ticket_id" readonly="1" colspan="4"
-                               attrs="{'invisible':[('merge_ticket_id', '=', False)]}"
-                               context="{'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form'}"/>
-                        <field name="merge_ticket_ids" colspan="4" readonly="1"
-                               attrs="{'invisible':[('merge_ticket_ids', '=', [])]}">
+                        <field name="merge_ticket_id" readonly="1" colspan="4" attrs="{'invisible':[('merge_ticket_id', '=', False)]}" context="{'form_view_ref':'enhanced_helpdesk.enhanced_helpdesk_form'}"/>
+                        <field name="merge_ticket_ids" colspan="4" readonly="1" attrs="{'invisible':[('merge_ticket_ids', '=', [])]}">
                             <tree string="Merge">
-                                <field name="id" string="#" />
-                                <field name="name" string="Title" />
+                                <field name="id" string="#"/>
+                                <field name="name" string="Title"/>
                                 <field name="date" string="Date"/>
                             </tree>
                         </field>
