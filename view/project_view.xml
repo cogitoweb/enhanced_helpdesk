@@ -298,6 +298,7 @@
                                 <group string="Miscellaneous" name="misc">
                                     <field name="date_start" string="Start Date"/>
                                     <field name="date" string="End Date"/>
+                                    <field name="privacy_visibility" readonly="1" />
                                 </group>
                             </page>
                         </notebook>

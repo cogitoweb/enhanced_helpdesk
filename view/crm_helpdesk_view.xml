@@ -100,7 +100,7 @@
                     <field name="ticket_status_id" widget="statusbar" attrs="{'readonly':True}" statusbar_colors="{&quot;1&quot;:&quot;blue&quot;}"/> 
                     
                     <button class="oe_highlight" type="action"
-                    name="%(action_ticket_reply)d"
+                    name="%(action_ticket_reply_user)d"
                     string="Reply" attrs="{'invisible': ['|', ('id', '=', False), ('proxy_status_code', 'in', ['ok', 'xx'])]}"
                     context="{'default_ticket_id': id}" />
 

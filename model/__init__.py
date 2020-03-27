@@ -37,4 +37,5 @@ from . import sale_order
 from . import wizard_cancel
 from . import wizard_from_so
 from . import wizard_reply
+from . import wizard_reply_user
 from . import wizard_start_work

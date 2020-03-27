@@ -36,6 +36,7 @@ Enhanced Openerp Helpdesk and Ticketing support
         'security/ir.model.access.csv',
 
         'view/wizard_ticket_reply.xml',
+        'view/wizard_ticket_reply_user.xml',
         'view/wizard_ticket_cancel.xml',
         'view/wizard_ticket_from_so.xml',
         'view/wizard_ticket_start_work.xml',

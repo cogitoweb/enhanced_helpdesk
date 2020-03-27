@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="wizard_ticket_replay_user_view" model="ir.ui.view">
+            <field name="name">Ticket Reply</field>
+            <field name="model">wizard.ticket.reply.user</field>
+            <field name="arch" type="xml">
+                  
+              <form string="Ticket Reply">
+                  
+                        
+                      <group colspan="4">
+                          <field name="ticket_id" readonly="True" options="{'no_open': True}" />
+                          <field name="ticket_status_id" readonly="True" options="{'no_open': True}" />
+                          
+                          <field name="ticket_reply" attrs="{'required': [('new_deadline', '!=', False)]}"/>
+                        
+                          <field name="attachment_name" attrs="{'invisible': True}"/>
+                          <field name="attachment" filename="attachment_name"/>
+                      </group>
+
+                      <footer>
+                          <button name="reply" string="Reply" type="object" class="oe_highlight" />
+                          
+                          
+                          <button string="Cancel" class="oe_link" special="cancel" />
+                      </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_ticket_reply_user" model="ir.actions.act_window">
+            <field name="name">Ticket Reply User</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wizard.ticket.reply.user</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="wizard_ticket_replay_user_view"/>
+            <field name="context">{'record_id' : active_id}</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>
