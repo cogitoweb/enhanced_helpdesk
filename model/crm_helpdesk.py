@@ -279,10 +279,16 @@ class CrmHelpdesk(models.Model):
         related='task_id.invoice_id'
     )
     
-    last_answer_user_id = fields.Many2one('res.users', compute='compute_ticket_last_answer', string="Last Answer User")
+    last_answer_user_id = fields.Many2one(
+        'res.users',
+        compute='compute_ticket_last_answer',
+        compute_sudo=True,
+        string="Last Answer User"
+    )
     
     last_answer_date = fields.Datetime(
         compute='compute_ticket_last_answer',
+        compute_sudo=True,
         string="Last Answer Date",
         store=True,
         index=True)
