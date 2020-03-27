@@ -161,6 +161,7 @@ class wizard_ticket_reply(models.TransientModel):
                 "ticket_reply": values.get('ticket_reply', False),
                 "attachment_name": values.get('attachment_name', False),
                 "attachment": values.get('attachment', False),
+                "ticket_id": values.get('ticket_id', False),
             }
             
             result = super(wizard_ticket_reply, self).sudo().create(safe_values)
