@@ -43,11 +43,11 @@
                                         'readonly': ['!', ('proxy_status_code', 'in', ('app', 'wrk'))]}" />
 
                                           
-                          <field name="points"
+                          <field name="points"  groups="enhanced_helpdesk.ticketing_support"
                                 attrs="{'invisible': ['|', ('can_quote_ticket', '=', False), ('quote_mode', '!=', 'POINTS')],
                                         'readonly': ['|', ('can_quote_ticket', '=', False), ('quote_mode', '!=', 'POINTS')]}" />
                           
-                          <field name="effort" string="Time effort (hours)"
+                          <field name="effort" string="Time effort (hours)"  groups="enhanced_helpdesk.ticketing_supplier_support"
                                 attrs="{'invisible': ['|', ('can_quote_ticket', '=', False), ('quote_mode', '!=', 'EFFORT')],
                                         'readonly': ['|', ('can_quote_ticket', '=', False), ('quote_mode', '!=', 'EFFORT')]}" />
 
