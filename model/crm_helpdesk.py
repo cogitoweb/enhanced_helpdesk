@@ -200,6 +200,12 @@ class CrmHelpdesk(models.Model):
         'project.project', required=True, string='Project',
         index=True
     )
+    project_line_id = fields.Many2one(
+        related='project_id.analytic_account_id.parent_id',
+        store=True,
+        index=True
+    )
+
     project_reference_id = fields.Many2one(
         related='task_id.project_ref_id',
         store=True,

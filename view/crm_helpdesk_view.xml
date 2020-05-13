@@ -400,6 +400,7 @@
 		        <field name="proxy_user_id"/>
                 <field name="description" />
 		        <field name="last_answer_date" />
+                <field name="project_line_id" />
 
                 <group expand="0" string="Status">
                     <filter name="filter_new" domain="[('proxy_status_code', '=', 'new')]" string="New"/> 
@@ -430,6 +431,7 @@
                     <filter string="Partner" domain="[]" context="{'group_by' : 'partner_id'}"/>
                     <filter string="Assigned to" domain="[]" context="{'group_by' : 'proxy_user_id'}"/>
                     <filter string="Priority" domain="[]" context="{'group_by' : 'priority'}"/>
+                    <filter string="Line" domain="[]" context="{'group_by' : 'project_line_id'}"/>
                  </group>
             </search>
         </field>
