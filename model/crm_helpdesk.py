@@ -839,7 +839,9 @@ class CrmHelpdesk(models.Model):
             
             _logger.info("approved estimation")
             is_approved = True
-            custom_deliver.extend(self.add_invoice_contacts())
+
+        # always notify administration when ticket is in working
+        custom_deliver.extend(self.add_invoice_contacts())
 
         deadline_date = None
         deadline = None
