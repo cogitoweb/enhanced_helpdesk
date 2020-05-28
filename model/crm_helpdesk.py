@@ -205,6 +205,11 @@ class CrmHelpdesk(models.Model):
         store=True,
         index=True
     )
+    project_account_type = fields.Selection(
+        related='project_id.account_type',
+        store=True,
+        index=True
+    )
 
     project_reference_id = fields.Many2one(
         related='task_id.project_ref_id',

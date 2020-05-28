@@ -432,6 +432,7 @@
                     <filter string="Assigned to" domain="[]" context="{'group_by' : 'proxy_user_id'}"/>
                     <filter string="Priority" domain="[]" context="{'group_by' : 'priority'}"/>
                     <filter string="Line" domain="[]" context="{'group_by' : 'project_line_id'}"/>
+                    <filter string="Account type" domain="[]" context="{'group_by' : 'project_account_type'}"/>
                  </group>
             </search>
         </field>
