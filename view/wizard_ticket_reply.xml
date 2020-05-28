@@ -18,7 +18,7 @@
                       <group colspan="4">
                           <field name="ticket_id" readonly="True" options="{'no_open': True}" />
                           <field name="ticket_status_id" readonly="True" options="{'no_open': True}" />
-                          <field name="task_direct_sale_line_id" invisible="True" />
+                          <field name="task_direct_sale_line_id" groups="enhanced_helpdesk.ticketing_support" invisible="True" />
                           
                           <field name="task_user_id" domain="[('groups_id.id', 'in', [%(enhanced_helpdesk.ticketing_support)d,%(enhanced_helpdesk.ticketing_supplier_support)d])]"
                                     options="{'no_quick_create':True,'no_create_edit':True,'no_open':True}"
