@@ -12,9 +12,14 @@
                       <group colspan="4">
                           <field name="ticket_id" readonly="True" options="{'no_open': True}" />
 
-                        <!-- only for support / not for suppliers -->
-                          
-                          <field name="deadline" />
+                          <field name="deadline" required="True" />
+                      </group>
+
+                      <group colspan="4">
+                          <p><strong>ATTENTION:</strong><br />
+                          starting an activity without customer's request for approval<br />
+                          implies that the activity will be carried out without any effort acknowledged
+                          </p>
                       </group>
 
                       <footer>

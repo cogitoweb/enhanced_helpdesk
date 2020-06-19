@@ -355,6 +355,13 @@
                             name="%(action_ticket_reply)d"
                             string="Ticket Reply"
                             context="{'default_ticket_id': id}" />
+
+                        <button type="action"
+                            attrs="{'invisible': ['|',('id', '=', False), ('proxy_status_code', 'not in', ('ass'))]}"
+                            string="Start work"
+                            name="%(action_ticket_start_work)d" class="" 
+                            context="{'default_ticket_id': id}"
+                        />
                         
                     </header>
                     
