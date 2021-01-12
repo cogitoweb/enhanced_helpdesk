@@ -9,6 +9,6 @@ class IrMailServer(models.Model):
     # fields declaration
 
     # override field to increase size
-    smtp_pass = fields.char(
+    smtp_pass = fields.Char(
         size=69
     )
