@@ -28,6 +28,7 @@ from . import helpdesk_qa
 from . import helpdesk_status
 from . import hr_contract
 from . import ir_attachment
+from . import ir_mail_server
 from . import project_task
 from . import project_project
 from . import res_partner
