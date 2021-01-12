@@ -154,10 +154,15 @@ class wizard_ticket_reply(models.TransientModel):
             if(self.new_deadline):
 
                 new_deadline = parser.parse(self.new_deadline).strftime('%d/%m/%Y')
-                deadline = parser.parse(self.deadline).strftime('%d/%m/%Y')
+                deadline = self.deadline
+                if deadline:
+                    deadline = parser.parse(deadline).strftime('%d/%m/%Y')
 
-                message = (_('La data di consegna del ticket è stata modificata dal %s al %s con la seguente motivazione: %s') 
+                    message = (_('La data di consegna del ticket è stata modificata dal %s al %s con la seguente motivazione: %s')
                     % (deadline, new_deadline, self.ticket_reply))
+                else:
+                    message = (_('La data di consegna del ticket è stata modificata in %s con la seguente motivazione: %s')
+                    % (new_deadline, self.ticket_reply))
 
                 self.deadline = self.new_deadline
             else:
